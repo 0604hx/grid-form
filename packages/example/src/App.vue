@@ -15,14 +15,13 @@
 
     let osTheme     = useOsTheme()
     let theme = computed(()=> {
-        if(osTheme.value === 'dark')    return darkTheme
         let h = new Date().getHours()
-        let _theme = h>=18||h<=8? darkTheme: null
+        let _theme =  osTheme.value === 'dark'? darkTheme : (h>=18||h<=8? darkTheme: null)
 
         if(_theme != null)
             document.querySelector("body").classList.add("dark")
 
-            return _theme
+        return _theme
     })
 
     onMounted(()=> console.debug(theme))

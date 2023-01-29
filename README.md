@@ -17,6 +17,54 @@
 
 ![渲染器](docs/screenshot/render.png)
 
+## 开始使用 / GETTING STARTED
+
+### 仅使用渲染器
+
+1. 安装依赖
+
+```shell
+npm i -S @grid-form/render-naive
+# OR
+yarn add @grid-form/render-naive
+```
+
+2. 使用渲染器组件
+
+```html
+<FormRender :renders="RenderFuncs" :form="form" @submit="onSubmit" @failed="onFailed" @inited="onInited" debug />
+```
+
+```javascript
+import { FormRender, RenderFuncs } from "@grid-form/render-naive"
+
+// 如需扩展 RenderFuncs 请自行扩写
+// 详细的 form 数据结构请查看 packages/example/src/views/渲染器.vue
+let form = reactive({})
+```
+
+### 使用设计器
+
+```shell
+npm i -S @grid-form/designer
+# OR
+yarn add @grid-form/designer
+```
+
+```html
+<Designer :renders="RenderFuncs" :components="Components" :compact="false" :form="form" style="height: 100vh;" debug show-footer />
+```
+
+```javascript
+import { reactive } from 'vue'
+import { Designer, Components } from "@grid-form/designer"
+import { RenderFuncs } from "@grid-form/render-naive"
+import { createForm } from "@grid-form/common"
+
+// 如需扩展 RenderFuncs、Components ，请自行扩写
+let form = reactive(createForm())
+```
+
 ## 开发 / DEVELOPMENT
 
 ```shell

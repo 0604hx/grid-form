@@ -12,3 +12,4 @@ yarn-debug.log*
 yarn-error.log*
 
 package-lock.json
+.DS_store
