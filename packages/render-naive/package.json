@@ -1,0 +1,19 @@
+{
+    "name": "@grid-form/render-naive",
+    "version": "0.0.1",
+    "description": "基于 naive-ui 的渲染器",
+    "homepage": "https://github.com/0604hx/grid-form",
+    "repository": "https://github.com/0604hx/grid-form",
+    "main": "index.js",
+    "scripts": {},
+    "keywords": [],
+    "author": "0604hx <zxingming@foxmail.com>",
+    "license": "MIT",
+    "publishConfig": {
+        "access": "public"
+    },
+    "dependencies": {
+        "@grid-form/common": "workspace:*",
+        "naive-ui": "^2.34.3"
+    }
+}

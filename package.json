@@ -1,0 +1,17 @@
+{
+    "name": "grid-form",
+    "version": "0.0.1",
+    "description": "",
+    "repository": "https://github.com/0604hx/grid-form",
+    "private": true,
+    "scripts": {
+        "build:example": "pnpm -F example run build",
+        "release": "pnpm publish -r"
+    },
+    "keywords": ["GRID FORM", "表单设计器", "表单渲染器"],
+    "author": "0604hx <zxingming@foxmail.com>",
+    "license": "MIT",
+    "dependencies": {
+        "vue": "^3.2.45"
+    }
+}

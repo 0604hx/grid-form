@@ -1,0 +1,23 @@
+{
+    "name": "@grid-form/designer",
+    "version": "0.0.2",
+    "description": "基于 naive-ui 组件库的表单设计器",
+    "homepage": "https://github.com/0604hx/grid-form",
+    "repository": "https://github.com/0604hx/grid-form",
+    "main": "index.js",
+    "scripts": {},
+    "keywords": [],
+    "author": "0604hx <zxingming@foxmail.com>",
+    "license": "MIT",
+    "publishConfig": {
+        "access": "public"
+    },
+    "dependencies": {
+        "@codemirror/lang-javascript": "^6.1.2",
+        "@grid-form/common": "workspace:*",
+        "@vicons/fa": "^0.12.0",
+        "codemirror": "^6.0.1",
+        "naive-ui": "^2.34.3",
+        "vue-codemirror": "^6.1.1"
+    }
+}
