@@ -1,5 +1,5 @@
 <div align=center>
-<span style="font-size:2rem;"> <img src="packages/example/public/logo.svg" width=40 />  栅栏（格子）表单 / GRID-FORM </span>
+<h1> <img src="packages/example/public/logo.svg" width=40 />  栅栏（格子）表单 / GRID-FORM </h1>
 
 ![Language](https://img.shields.io/github/languages/top/0604hx/grid-form?logo=javascript&color=blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
