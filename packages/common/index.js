@@ -55,10 +55,22 @@ export function createFormItem(widget) {
 }
 
 /**
- * 构建适配于 naive-ui 的下拉框选择内容
+ * 构建适配于 naive-ui 的下拉框选择内容，示例：[{label:"选项一",value:"01"}]
+ *
+ * 参数 text 类型可以是 Array、String、Object
+ *  Array   ["01|选项一","02|选项二"]
+ *  String  01|选项一,02|选项二
+ *  Object  {"01":"选项一", "02":"选项二"}
+ *
+ * 处理逻辑：
+ *  1、将参数 text 转换为 Array<String>（key与value 用英文 | 隔开）
+ *  2、遍历上述数组元素转换为 { label, value }
+ *  3、若参数没有区分 key 跟 value 则二者相同
+ *
  * @param {*} text
+ * @param {*} valueField    默认为 value
  */
-export function buildOptions(text, valueField="value") {
+export function buildOptions(text, valueField="value", labelField="label") {
     let options = []
     if(!text)   return options
 
@@ -79,7 +91,7 @@ export function buildOptions(text, valueField="value") {
         if(i==-1)
             obj[valueField] = obj.label = o
         else{
-            obj.label =  o.substring(i+1)
+            obj[labelField] =  o.substring(i+1)
             obj[valueField] = o.substring(0, i)
         }
 

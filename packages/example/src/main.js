@@ -3,11 +3,14 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 
 import App from './App.vue'
 
-import naive from 'naive-ui'
-
 const app = createApp(App)
 
+import naive from 'naive-ui'
 app.use(naive)
+
+import Vant from 'vant'
+import 'vant/lib/index.css'
+app.use(Vant)
 
 const router = createRouter({
     history: createWebHashHistory(),

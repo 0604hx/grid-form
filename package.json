@@ -1,10 +1,11 @@
 {
     "name": "grid-form",
     "version": "0.0.1",
-    "description": "",
+    "description": "基于 GRID 布局的简单表单工具（包含可视化设计器、渲染器），默认组件库为 Naive UI",
     "repository": "https://github.com/0604hx/grid-form",
     "private": true,
     "scripts": {
+        "dev": "pnpm -F example run dev",
         "build:example": "pnpm -F example run build",
         "release": "pnpm publish -r"
     },

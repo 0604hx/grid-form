@@ -1,8 +1,11 @@
 <template>
     <div style="padding: 20px; margin:0px auto; width:80%;">
-        <n-card title="表单渲染示例" :segmented="{content: true}">
+        <!-- <n-card title="表单渲染示例" :segmented="{content: true}">
             <FormRender :renders="RenderFuncs" :form="form" @submit="onSubmit" @failed="onFailed" @inited="onInited" debug />
         </n-card>
+        -->
+        <n-divider title-placement="center">基于 Vant4 的渲染示例</n-divider>
+        <VantRender :renders="VantRenderFuncs" :form="form" @submit="onSubmit" @failed="onFailed" @inited="onInited" debug />
 
         <n-divider title-placement="center">表单反馈输出</n-divider>
         <div v-if="result.title">
@@ -18,6 +21,7 @@
     import { NInput } from 'naive-ui'
 
     import { FormRender, RenderFuncs } from "@grid-form/render-naive"
+    import { FormRender as VantRender, RenderFuncs as VantRenderFuncs } from "@grid-form/render-vant"
 
     const COLS = 4
 
@@ -26,20 +30,21 @@
         "size":"medium",
         "width":"100%",
         "grid":3,
-        "labelWidth":120,
+        "labelWidth":90,
         "labelShow":true,
         "labelPlacement":"top",
-        "labelAlign":"left",
+        "labelAlign":"top",
         "submitText":"提交数据",
         "url":"",
         "okText":"",
         "onLoad":"console.debug(`表单初始化完成`, form); form.scale= form.scale||1",
         "onSubmit":"",
         "items":[
-            {"_widget":"INPUT","_uuid":"name","_text":"企业名称","_col":1,"_required":true,"_regex":"","_message":"","placeholder":"请输入","clearable":true,"show-count":true,"rows":1,"_value":"","_active":true,"minlength":4},
-            {"_widget":"NUMBER","_uuid":"scale","_text":"企业规模","_col":1,"_required":true,"_regex":"","_message":"","placeholder":"请输入","clearable":true,"_active":false,"suffix":"人","min":1},
-            {"_widget":"INPUT","_uuid":"address","_text":"办公地址","_col":1,"_required":false,"_regex":"","_message":"","placeholder":"请输入","clearable":true,"show-count":false,"rows":1,"_value":"","_active":false},
-            {"_widget":"TAGS","_uuid":"tags","_text":"企业标签","_col":3,"_required":false,"_regex":"","_message":"","closable":true,"round":false,"_active":false}
+            {"_widget":"INPUT","_uuid":"name","_text":"企业名称","_col":1,"_required":true,"_regex":"","_message":"","placeholder":"请输入","clearable":true,"show-count":true,"rows":1,"_value":"","minlength":4},
+            {"_widget":"NUMBER","_uuid":"scale","_text":"企业规模","_col":1,"_required":true,"_regex":"","_message":"","placeholder":"请输入","clearable":true,"suffix":"人","min":1},
+            {"_widget":"SELECT","_uuid":"nature","_text":"企业性质","_col":1,"_required":false,"_value":"国有企业","options":"国有企业, 集体企业, 私营企业, 个体工商户, 合伙企业, 联营企业, 股份合作制企业, 有限责任公司, 股份有限公司"},
+            {"_widget":"INPUT","_uuid":"address","_text":"办公地址","_col":1,"_required":false,"_regex":"","_message":"","placeholder":"请输入","clearable":true,"show-count":false,"rows":1,"_value":""},
+            {"_widget":"TAGS","_uuid":"tags","_text":"企业标签","_col":3,"_required":false,"_regex":"","_message":"","closable":true,"round":false}
         ],
         "buttons":[
             {"text":"自定义按钮", theme:"info", type:"download", code:`console.debug("自定义按钮被点击了，即将触发 ACTION=DOWNLOAD 类型的表单提交")`},
