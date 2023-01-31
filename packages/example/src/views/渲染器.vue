@@ -1,9 +1,9 @@
 <template>
-    <div style="padding: 20px; margin:0px auto; width:80%;">
-        <!-- <n-card title="表单渲染示例" :segmented="{content: true}">
+    <div style="padding: 0px; margin:0px auto;">
+        <n-card title="表单渲染示例" :segmented="{content: true}">
             <FormRender :renders="RenderFuncs" :form="form" @submit="onSubmit" @failed="onFailed" @inited="onInited" debug />
         </n-card>
-        -->
+
         <n-divider title-placement="center">基于 Vant4 的渲染示例</n-divider>
         <VantRender :renders="VantRenderFuncs" :form="form" @submit="onSubmit" @failed="onFailed" @inited="onInited" debug />
 

@@ -1,5 +1,5 @@
 import { h, toRaw, unref } from 'vue'
-import { lifeCycles, computeDefaultValue, triggerBeforeSubmit, triggerExtraButtonClick, triggerLoaded } from './runtime'
+// import { lifeCycles, computeDefaultValue, triggerBeforeSubmit, triggerExtraButtonClick, triggerLoaded } from './runtime'
 
 /**
  * 创建 Form 数据对象
@@ -69,6 +69,7 @@ export function createFormItem(widget) {
  *
  * @param {*} text
  * @param {*} valueField    默认为 value
+ * @param {*} labelField    默认为 label
  */
 export function buildOptions(text, valueField="value", labelField="label") {
     let options = []
@@ -89,7 +90,7 @@ export function buildOptions(text, valueField="value", labelField="label") {
         let i = o.indexOf("|")
         let obj = {}
         if(i==-1)
-            obj[valueField] = obj.label = o
+            obj[valueField] = obj[labelField] = o
         else{
             obj[labelField] =  o.substring(i+1)
             obj[valueField] = o.substring(0, i)
@@ -141,5 +142,21 @@ export function withHtmlNode (html){
     return ()=> h('div', {innerHTML: html})
 }
 
+export function formatFileSize(mem){
+    var G = 0
+    var M = 0
+    var KB = 0
+    mem >= (1 << 30) && (G = (mem / (1 << 30)).toFixed(2))
+    mem >= (1 << 20) && (mem < (1 << 30)) && (M = (mem / (1 << 20)).toFixed(2))
+    mem >= (1 << 10) && (mem < (1 << 20)) && (KB = (mem / (1 << 10)).toFixed(2))
+    return G > 0
+        ? G + 'GB'
+        : M > 0
+            ? M + 'MB'
+            : KB > 0
+                ? KB + 'KB'
+                : mem + 'B'
+}
 
-export { triggerBeforeSubmit, triggerExtraButtonClick, triggerLoaded, lifeCycles, computeDefaultValue }
+export * from './runtime'
+

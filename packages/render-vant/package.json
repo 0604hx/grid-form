@@ -14,6 +14,9 @@
     },
     "dependencies": {
         "@grid-form/common": "workspace:*",
+        "compressorjs": "^1.1.1"
+    },
+    "devDependencies": {
         "vant": "^4.0.9"
     }
 }

@@ -1,6 +1,8 @@
 import { h } from 'vue'
 import { NInput, NInputNumber, NDatePicker, NSwitch, NSelect, NText, NRadioGroup, NRadio, NRadioButton, NAlert, NDivider, NRate, NCheckboxGroup, NCheckbox, NColorPicker, NDynamicTags } from 'naive-ui'
 
+import { buildOptions  } from '@grid-form/common'
+
 import FileSelector from "./widgets/FileSelector.vue"
 import FormRender from "./Render.vue"
 

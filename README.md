@@ -11,6 +11,14 @@
 
 此工具仅适用于布局简单纯粹、无嵌套的表单场景 😄
 
+包名|说明|进度
+-|-|-
+common|通用工具|✅
+designer|可视化设计器（基于 Naive UI）|✅
+render-naive|基于[Naive UI](https://www.naiveui.com)实现的渲染器|✅
+render-element|基于[Element Plus](https://element-plus.org/zh-CN/)实现的渲染器|
+render-vant|基于[Vant4](https://vant-ui.github.io)实现的渲染器|✅
+
 ## 总览 / OVERVIEW
 
 ![框架](docs/screenshot/overview.png)
