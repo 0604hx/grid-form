@@ -59,9 +59,30 @@ gridGap|Number|10|可视化区域栅栏间隔，单位 px
 form|Object|undefined|表单对象
 review|Boolean|false|是否在提交前对表单项做校验
 debug|Boolean|false|开启debug 模式后，会在控制台输入各种信息
+placeholder|String|`^\\${(.*)}$`|默认值占位符检测正则表达式
+valueProvider|Object|{}|占位符内容计算函数，详见下一节的说明
 on-inited|()=>void|undefined|
 on-submit|(formObj:Object,action="post")=>void|undefined|用户点击提交按钮后触发（如设置了 `review` 则自检成功后方触发）
 on-failed|(fails:Array[String])=>void|undefined|设置`review`后自检失败触发
+
+#### 表单项默认值
+> 我们可以通过`${xxxx}`的格式设置（注意，前后不能有其他字符）表单项的默认值，渲染过程中会将占位符替换为计算后的值
+
+```javascript
+//默认使用的计算函数
+import { formValueProvider } from "@grid-form/common"
+
+import dayjs from 'dayjs'
+
+/*
+扩展默认的表单默认值计算器
+支持 Promise （未作异常捕获，慎用）
+*/
+formValueProvider["${date}"]        = ()=> dayjs(new Date()).format("YYYY-MM-DD")
+formValueProvider["${username}"]    = ()=> "集成显卡"
+
+//详见 packages\example\src\views\渲染器.vue
+```
 
 ### 使用设计器
 > 设计器依赖 render-naive

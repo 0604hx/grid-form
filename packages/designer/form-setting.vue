@@ -6,7 +6,7 @@
                     <n-form-item label-placement="left">
                         <template #label>
                             <n-tooltip trigger="hover">
-                                <template #trigger>表单宽度</template>
+                                <template #trigger><span style="cursor: help;">表单宽度</span></template>
                                 默认100%（支持 %、px）
                             </n-tooltip>
                         </template>
@@ -22,7 +22,7 @@
                     <n-form-item>
                         <template #label>
                             <n-tooltip trigger="hover">
-                                <template #trigger>表单列数</template>
+                                <template #trigger><span style="cursor: help;">表单列数</span></template>
                                 默认 3 列（最大 24 列，但不推荐）
                             </n-tooltip>
                         </template>
@@ -47,7 +47,7 @@
                     <n-form-item>
                         <template #label>
                             <n-tooltip trigger="hover">
-                                <template #trigger>标签宽度</template>
+                                <template #trigger><span style="cursor: help;">标签宽度</span></template>
                                 默认 120 px
                             </n-tooltip>
                         </template>

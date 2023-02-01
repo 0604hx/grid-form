@@ -186,9 +186,27 @@ const _DIVIDER = {
 }
 
 const _FILE = {
-    id:"FILE", label:"文件选择", icon: FolderRegular,
+    id:"FILE", label:"文件上传", icon: FolderRegular,
     items: [
-        buildBasicProperty()
+        buildBasicProperty(),
+        buildProperty([
+            { id:"maxSize", label:"文件大小限制", widget:Types.NUMBER, min:1, max:50, value:2, suffix:"兆(MB)", summary:"超过该值的文件将不允许提交" },
+            // 参考 https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept
+            {
+                id:"accept", label:"允许文件类型", widget:Types.SELECT, value:"image/*",
+                options:{
+                    "*":"不限",
+                    "image/*":"图片格式",
+                    "image/png,image/jpeg":"PNG或JPG",".doc,.docx,.xls,.xlsx,.ppt,.pptx":"OFFICE 文档",
+                    ".pdf": "PDF 文档",
+                    ".zip,.7z,.rar,.tar":"常用压缩包",
+                    ".txt": "TXT 纯文本",
+                    ".csv": "CSV 文档"
+                }
+            },
+            { id:"acceptCustom", label:"自定义类型", summary:"⌈允许文件类型⌋与⌈自定义类型⌋同时存在时，优先使用后者", widget:Types.INPUT, placeholder:"自定义文件类型" },
+            { id:"dataType", label:"读取方式", widget:Types.SELECT, value:"", options:"|默认,base64|BASE64,text|纯文本", summary:"提交到服务器的数据形式" }
+        ])
     ]
 }
 // ----------------------------- END 控件清单 END -----------------------------

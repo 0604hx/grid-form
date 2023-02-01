@@ -1,5 +1,4 @@
 import { h, toRaw, unref } from 'vue'
-// import { lifeCycles, computeDefaultValue, triggerBeforeSubmit, triggerExtraButtonClick, triggerLoaded } from './runtime'
 
 /**
  * 创建 Form 数据对象
@@ -142,13 +141,13 @@ export function withHtmlNode (html){
     return ()=> h('div', {innerHTML: html})
 }
 
-export function formatFileSize(mem){
+export function formatFileSize(mem, fixed=2){
     var G = 0
     var M = 0
     var KB = 0
-    mem >= (1 << 30) && (G = (mem / (1 << 30)).toFixed(2))
-    mem >= (1 << 20) && (mem < (1 << 30)) && (M = (mem / (1 << 20)).toFixed(2))
-    mem >= (1 << 10) && (mem < (1 << 20)) && (KB = (mem / (1 << 10)).toFixed(2))
+    mem >= (1 << 30) && (G = (mem / (1 << 30)).toFixed(fixed))
+    mem >= (1 << 20) && (mem < (1 << 30)) && (M = (mem / (1 << 20)).toFixed(fixed))
+    mem >= (1 << 10) && (mem < (1 << 20)) && (KB = (mem / (1 << 10)).toFixed(fixed))
     return G > 0
         ? G + 'GB'
         : M > 0

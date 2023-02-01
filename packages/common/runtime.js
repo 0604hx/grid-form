@@ -58,15 +58,22 @@ export function triggerExtraButtonClick(body, form){
  * @param {*} code
  * @returns
  */
-export function computeDefaultValue (code){
-    if(code=='${date}')             return D.date()
-    if(code=='${yesterday}')        return D.addDay(-1)
-    if(code=='${month}')            return D.date(Date(), "YYYY-MM")
-    if(code=='${monthBegin}')       return D.beginOf()
-    if(code=='${monthEnd}')         return D.endOf()
-    if(code=='${lastMonthBegin}')   return D.addDay(-1, D.beginOf(), 'month')
-    if(code=='${lastMonthEnd}')     return D.addDay(-1, D.endOf(), 'month')
-    if(code=='${yearBegin}')        return D.beginOf('year')
-    if(code=='${yearEnd}')          return D.endOf('year')
-    return eval("`"+code+"`")
-}
+// export function computeDefaultValue (code){
+//     if(code=='${date}')             return D.date()
+//     if(code=='${yesterday}')        return D.addDay(-1)
+//     if(code=='${month}')            return D.date(Date(), "YYYY-MM")
+//     if(code=='${monthBegin}')       return D.beginOf()
+//     if(code=='${monthEnd}')         return D.endOf()
+//     if(code=='${lastMonthBegin}')   return D.addDay(-1, D.beginOf(), 'month')
+//     if(code=='${lastMonthEnd}')     return D.addDay(-1, D.endOf(), 'month')
+//     if(code=='${yearBegin}')        return D.beginOf('year')
+//     if(code=='${yearEnd}')          return D.endOf('year')
+//     return eval("`"+code+"`")
+// }
+
+/**
+ * 根据占位符计算表单项的默认值
+ *
+ * 支持 Promise 形式的返回
+ */
+export const formValueProvider = {}

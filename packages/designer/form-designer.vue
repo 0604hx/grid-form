@@ -164,7 +164,6 @@
             //判断字段合法性
             for (let i = 0; i < items.length; i++) {
                 const item = items[i]
-                delete item._active
 
                 if(("_uuid" in item && !item._uuid) || ("_text" in item && !item._text))
                     return provider.value.message(`第${i+1}个表单项的编号及中文名不能为空`, 'warning')
@@ -172,6 +171,9 @@
         }
 
         let form = unref(toRaw(props.form))
+        if(form.items){
+            form.items.forEach(v=> delete v._active)
+        }
         // 父类组件按需将 items、buttons 两个数组转换为 JSON 格式的字符串
         // form.items = JSON.stringify(form.items || "[]")
         // form.buttons = JSON.stringify(form.buttons||"[]")

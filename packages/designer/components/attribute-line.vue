@@ -2,7 +2,7 @@
     <n-form-item>
         <template #label>
             <n-tooltip v-if="summary" placement="left" trigger="hover">
-                <template #trigger> <span class="cursor-help">{{label}}</span> </template>
+                <template #trigger> <span style="cursor: help;">{{label}}</span> </template>
                 {{summary}}
             </n-tooltip>
             <template v-else>{{label}}</template>
@@ -39,7 +39,7 @@
         suffix: {type:String},
         min:{type:Number, default:undefined},
         max:{type:Number, default:undefined},
-        options:{type:[String, Array]},
+        options:{type:[String, Array, Object]},
         rows:{type:Number, default: 1 }
     })
 

@@ -23,6 +23,4 @@
 
         return _theme
     })
-
-    onMounted(()=> console.debug(theme))
 </script>
