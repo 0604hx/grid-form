@@ -1,6 +1,6 @@
 <template>
     <n-form :show-feedback="false" :label-width="100" label-placement="left">
-        <n-collapse :default-expanded-names="['basic','hook']">
+        <n-collapse :default-expanded-names="['basic']">
             <n-collapse-item title="表单基础设置" name="basic">
                 <n-space vertical :size="compact?'small':'medium'">
                     <n-form-item label-placement="left">
@@ -70,6 +70,32 @@
                         </n-space>
                     </n-list-item>
                 </n-list>
+            </n-collapse-item>
+
+            <n-collapse-item title="表单默认值" name="hide">
+                <template #header-extra>
+                    隐藏表单项
+                </template>
+                <n-table :bordered="false" :single-line="true" size="small">
+                    <thead>
+                        <tr>
+                            <th width="100">参数名</th>
+                            <th>值</th>
+                            <th width="24">
+                                <n-button size="tiny" type="primary" tertiary circle @click="addHide"> <template #icon><n-icon :component="Plus" /></template> </n-button>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item, index) in form.hides">
+                            <td><n-input size="small" v-model:value="item.id" /></td>
+                            <td><n-input size="small" v-model:value="item.value" /></td>
+                            <td>
+                                <n-button size="tiny" type="error" quaternary circle @click="form.hides.splice(index, 1)"> <template #icon><n-icon :component="Trash" /></template> </n-button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </n-table>
             </n-collapse-item>
 
             <n-collapse-item title="扩展按钮" name="button">
@@ -162,7 +188,7 @@
 
     import CodeEditor from "./components/editor.code.vue"
 
-    import { buildOptions, lifeCycles } from '@grid-form/common'
+    import { buildOptions, lifeCycles, createExtraButton, createHideItem } from '@grid-form/common'
 
     const props = defineProps({
         form: {type:Object},
@@ -198,10 +224,15 @@
         hooker.show = true
     }
 
-    const addBtn = e=>{
+    const _toAdd = (e, name, provider=createExtraButton)=>{
         e.stopPropagation()
-        props.form.buttons.push({text:"按钮", theme:"default", type:"post", code:""})
+        if(!Array.isArray(props.form[name]))
+            props.form[name] = []
+        props.form[name].push(provider())
     }
+
+    const addBtn = e=> _toAdd(e, "buttons")
+    const addHide = e=> _toAdd(e, "hides", createHideItem)
 
     const editBtnScript = v=> {
         btner.item = v

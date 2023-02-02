@@ -2,7 +2,7 @@
 <template>
     <van-field v-model="shadow" is-link readonly name="picker" :label="label" :placeholder="placeholder" @click="show = true" />
     <van-popup v-model:show="show" position="bottom">
-        <van-picker :columns="options" @confirm="onConfirm" @cancel="show = false" />
+        <van-picker :title="label" :columns="options" @confirm="onConfirm" @cancel="show = false" />
     </van-popup>
 </template>
 

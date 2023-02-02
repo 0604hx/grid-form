@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite'
-import { join } from 'path'
+import { join, resolve } from 'path'
 
 import vue from '@vitejs/plugin-vue'
 
@@ -16,6 +16,14 @@ export default defineConfig({
             '@/'            : src(),
             '@V/'           : src(`views`),
             '@C/'           : src("component")
+        },
+    },
+    build: {
+        rollupOptions: {
+            input: {
+                index: resolve('index.html'),
+                vant: resolve('render-vant.html'),
+            },
         },
     },
 })

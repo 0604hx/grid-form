@@ -3,7 +3,7 @@
 <template>
     <n-input v-model:value="path" :placeholder="placeholder" clearable readonly @click="toSelect" @clear="onClear">
         <template #prefix> <n-tag size="small" type="default" :bordered="false">选择文件</n-tag> </template>
-        <template #suffix> <n-tag size="small" type="info" :bordered="false">{{maxSize}}MB</n-tag> </template>
+        <template #suffix> <n-tag size="small" type="primary" :bordered="false">{{maxSize}}MB</n-tag> </template>
     </n-input>
 </template>
 

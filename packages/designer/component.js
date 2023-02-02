@@ -31,7 +31,7 @@ const buildBasicProperty = (cnName="标签", value, valueLabel="默认值")=>{
 const buildProperty = (items, id="special", label="控件属性")=> ({ id, label, items })
 
 const PLACEHOLDER   = (value="请输入")=> ({ label:"提示信息", id:"placeholder", widget:Types.INPUT, value})
-const CLEARABLE     = (value=true)=> ({ label:"可清空", id:"clearable", summary:"在输入框尾部显示小按钮，点击后清空已输入内容", widget: Types.SWITCH, value })
+const CLEARABLE     = (value=false)=> ({ label:"可清空", id:"clearable", summary:"在输入框尾部显示小按钮，点击后清空已输入内容", widget: Types.SWITCH, value })
 const CLOSABLE      = (value=false)=> ({ label:"可关闭", id:"closable", summary:"显示关闭按钮，点击后关掉组件", widget:Types.SWITCH, value })
 const PREFIX        = (value)=> ({ label:"前缀文本", id:"prefix", summary:"显示在控件首部的文字", widget:Types.INPUT, value })
 const SUFFIX        = (value)=> ({ label:"后缀文本", id:"suffix", summary:"显示在控件尾部的文字", widget:Types.INPUT, value })

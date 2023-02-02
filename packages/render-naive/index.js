@@ -1,21 +1,20 @@
 import { h } from 'vue'
-import { NInput, NInputNumber, NDatePicker, NSwitch, NSelect, NText, NRadioGroup, NRadio, NRadioButton, NAlert, NDivider, NRate, NCheckboxGroup, NCheckbox, NColorPicker, NDynamicTags } from 'naive-ui'
+import { NInput, NTag, NInputNumber, NDatePicker, NSwitch, NSelect, NText, NRadioGroup, NRadio, NRadioButton, NAlert, NDivider, NRate, NCheckboxGroup, NCheckbox, NColorPicker, NDynamicTags } from 'naive-ui'
 
 import { buildOptions  } from '@grid-form/common'
 
 import FileSelector from "./widgets/FileSelector.vue"
 import FormRender from "./Render.vue"
 
+const buildTag = text=> ()=>h(NTag, {type:"primary", size:"small", bordered:false}, ()=>text)
+
 const buildSlotWithPrefixAndSuffix = props=>{
     let slots = {}
-    if(!!props.prefix){
-        let prefix = props.prefix
-        slots.prefix = ()=> prefix
-    }
-    if(!!props.suffix){
-        let suffix = props.suffix
-        slots.suffix = ()=> suffix
-    }
+    if(!!props.prefix)
+        slots.prefix = buildTag(props.prefix)
+    if(!!props.suffix)
+        slots.suffix = buildTag(props.suffix)
+
     delete props.prefix
     delete props.suffix
     return slots

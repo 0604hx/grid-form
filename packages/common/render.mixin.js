@@ -91,37 +91,50 @@ export default (props, emits, suffix="")=>{
         }
     }
 
+    const _computeValue = async (text, id)=>{
+        /**
+         * 对于符合 placeholder 的特定默认值（如 ${date}）
+         * 判断 valueProvider 是否具备其处理函数，若存在，则调用（支持 Promise 返回）并将返回值作为表单值
+         *
+         * 下方注释的代码是针对去除开始的 ${ 及结尾的 } 符号后的代码实现，如需可启用
+         */
+        if(RegExp(props.placeholder).test(text) && (text in props.valueProvider)){
+            // 支持 Promise 形式的返回，但是未作异常捕获
+            let computedVal = await props.valueProvider[text]()
+            if(props.debug) track(`[表单值计算 #${id}]`, text," > ", computedVal)
+
+            return computedVal
+        }
+
+        // let holder = RegExp(props.placeholder).exec(v._value)
+        // if(holder && !!holder[1] && (holder[1] in props.valueProvider)){
+        //     let computedVal = await props.valueProvider[holder[1]]()
+        //     if(props.debug) track(`[表单值计算 #${id}]`, v._value," > ", computedVal)
+
+        //     formData[id] = computedVal
+        // }
+        return text
+    }
+
     const initForm = async ()=>{
-        let items = props.form.items
+        let { items, hides } = props.form
+
+        //处理默认值，add on 2023-02-02
+        if(Array.isArray(hides)){
+            for(let v of hides){
+                if(!!v.id) {
+                    formData[v.id] = await _computeValue(v.value, v.id)
+                }
+            }
+        }
+
         if(Array.isArray(items)){
             for (const v of items) {
-                let id = v._uuid
-                if(!!id){
-                    formData[id] = v._value
-
-                    /**
-                     * 对于符合 placeholder 的特定默认值（如 ${date}）
-                     * 判断 valueProvider 是否具备其处理函数，若存在，则调用（支持 Promise 返回）并将返回值作为表单值
-                     *
-                     * 下方注释的代码是针对去除开始的 ${ 及结尾的 } 符号后的代码实现，如需可启用
-                     */
-                    if(RegExp(props.placeholder).test(v._value) && (v._value in props.valueProvider)){
-                        // 支持 Promise 形式的返回，但是未作异常捕获
-                        let computedVal = await props.valueProvider[v._value]()
-                        if(props.debug) track(`[表单值计算 #${id}]`, v._value," > ", computedVal)
-
-                        formData[id] = computedVal
-                    }
-                    // let holder = RegExp(props.placeholder).exec(v._value)
-                    // if(holder && !!holder[1] && (holder[1] in props.valueProvider)){
-                    //     let computedVal = await props.valueProvider[holder[1]]()
-                    //     if(props.debug) track(`[表单值计算 #${id}]`, v._value," > ", computedVal)
-
-                    //     formData[id] = computedVal
-                    // }
+                if(!!v._uuid){
+                    formData[v._uuid] = await _computeValue(v._value, v._uuid)
 
                     if(v._required === true){
-                        formRequired[id] = { regex: v._regex, msg: v._message, label: v._text }
+                        formRequired[v._uuid] = { regex: v._regex, msg: v._message, label: v._text }
                     }
                 }
             }
@@ -138,6 +151,7 @@ export default (props, emits, suffix="")=>{
             emits("inited")
         })
     }
+
     const onExtraBtn = btn=>{
         let result = triggerExtraButtonClick(btn.code, formData)
         if(btn.type == 'script')    return

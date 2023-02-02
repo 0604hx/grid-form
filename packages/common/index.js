@@ -19,6 +19,8 @@ export function createForm(ps={}){
         okText:"",
         onLoad:"",
         onSubmit:"",
+        afterSubmit:"",
+        hides:[],                               //表单默认值（隐藏项），包含`id`、`value`两个属性
         items: [],
         buttons:[]                              //额外按钮，Object类型，属性包含：text（显示文本）、type（事件类型，post、download、script）、theme（配色）、code（脚本）
     }, ps)
@@ -52,6 +54,14 @@ export function createFormItem(widget) {
     if(item._value == undefined) item._value = widget.value
     return item
 }
+
+/**
+ * 新建额外按钮数据对象
+ * @returns
+ */
+export const createExtraButton = ()=>({text:"按钮", theme:"default", type:"post", code:""})
+
+export const createHideItem = (id="", value="")=>({ id, value})
 
 /**
  * 构建适配于 naive-ui 的下拉框选择内容，示例：[{label:"选项一",value:"01"}]
