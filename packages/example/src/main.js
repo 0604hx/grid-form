@@ -18,6 +18,7 @@ const router = createRouter({
         { path: '/home', name: 'home', component: () => import('@V/Home.vue') },
         { path: '/designer', name: 'designer', component: () => import('@V/设计器.vue') },
         { path: '/render', name: 'render', component: () => import('@V/render.vue') },
+        { path: '/data-view', name: 'data', component: () => import('@V/数据展示/Index.vue') },
 
         {
             path: '/',

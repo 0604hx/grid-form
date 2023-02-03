@@ -13,6 +13,9 @@
     import hljs from 'highlight.js/lib/core'
     import javascript from 'highlight.js/lib/languages/javascript'
 
+    //如需使用请通过 'npm i -S highlight.js' 安装组件
+    hljs.registerLanguage('javascript', javascript)
+
     let osTheme     = useOsTheme()
     let theme = computed(()=> {
         let h = new Date().getHours()

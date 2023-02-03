@@ -1,0 +1,21 @@
+{
+    "name": "@grid-form/render-data",
+    "version": "0.0.3",
+    "description": "基于 naive-ui 的数据展示组件",
+    "homepage": "https://github.com/0604hx/grid-form",
+    "repository": "https://github.com/0604hx/grid-form",
+    "main": "index.js",
+    "scripts": {},
+    "keywords": [],
+    "author": "0604hx <zxingming@foxmail.com>",
+    "license": "MIT",
+    "publishConfig": {
+        "access": "public"
+    },
+    "devDependencies": {
+        "naive-ui": "^2.34.3"
+    },
+    "dependencies": {
+        "marked": "^4.2.12"
+    }
+}

@@ -11,6 +11,7 @@
     "dependencies": {
         "@grid-form/common": "workspace:*",
         "@grid-form/designer": "workspace:*",
+        "@grid-form/render-data": "workspace:*",
         "@grid-form/render-naive": "workspace:*",
         "@grid-form/render-vant": "workspace:*",
         "@vicons/fa": "^0.12.0",
