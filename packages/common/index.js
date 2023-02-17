@@ -45,7 +45,8 @@ export function createFormItem(widget) {
             }
         }
     }
-    item._uuid = _widget.toLowerCase() + "_"+(`${1000 + ID_COUNTER++}`.substring(1))
+    if("_uuid" in item)
+        item._uuid = _widget.toLowerCase() + "_"+(`${1000 + ID_COUNTER++}`.substring(1))
     if("_text" in item){
         if(!!widget.label) item._text = widget.label
     }
