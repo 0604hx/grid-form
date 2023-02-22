@@ -16,6 +16,25 @@ export function RenderDemo(){
     }
     formValueProvider["${username}"]    = ()=> "集成显卡"
 
+    /**
+     * 数据变动参数
+     *      form    表单数据对象
+     *      agent
+     *      items   表单项列表，可以修改值以改变表单
+     */
+    let onChange = `
+    if(agent.key=='nature'){
+        if(agent.to=='个体工商户'){
+            items.filter(v=>v._uuid=='yyzz')[0].disabled=true
+            form.scale = 1
+            alert(agent.to+"无需填写规模")
+        }
+        else{
+            items.filter(v=>v._uuid=='yyzz')[0].disabled=false
+        }
+    }
+    `
+
     // 如需扩展 Widgets,Components ，请自行扩写
     let form = reactive({
         "size":"medium",
@@ -29,6 +48,7 @@ export function RenderDemo(){
         "url":"",
         "okText":"",
         "onLoad":"console.debug(`表单初始化完成`, form); form.scale= form.scale||1",
+        onChange,
         "onSubmit":"",
         "hides":[
             { id:"username", value:"${username}" }
@@ -36,7 +56,7 @@ export function RenderDemo(){
         "items":[
             {"_widget":"INPUT","_uuid":"name","_text":"企业名称","_col":1,"_required":true,"_regex":"","_message":"","placeholder":"请输入","clearable":true,"show-count":true,"rows":1,"_value":"","minlength":4},
             {"_widget":"NUMBER","_uuid":"scale","_text":"企业规模","_col":1,"_required":true,"_regex":"","_message":"","placeholder":"请输入","clearable":false,"suffix":"人","min":1},
-            {"_widget":"SELECT","_uuid":"nature","_text":"企业性质","_col":1,"_required":false,"_value":"国有企业","options":"国有企业, 集体企业, 私营企业, 个体工商户, 合伙企业, 联营企业, 股份合作制企业, 有限责任公司, 股份有限公司"},
+            {"_widget":"SELECT","_uuid":"nature","_text":"企业性质","_col":1,"_watch":true,"_required":false,"_value":"国有企业","options":"国有企业, 集体企业, 私营企业, 个体工商户, 合伙企业, 联营企业, 股份合作制企业, 有限责任公司, 股份有限公司"},
             {"_widget":"INPUT","_uuid":"address","_text":"办公地址","_col":1,"_required":false,"_regex":"","_message":"","_value":"${date}","placeholder":"请输入","clearable":false,"show-count":false,"rows":1},
             {"_widget":"FILE","_uuid":"yyzz","_text":"营业执照影像","_col":1,"maxSize":2,"accept":"image/png,image/jpeg","dataType":""},//可选的 dataType 有：base64,text
             {"_widget":"TAGS","_uuid":"tags","_text":"企业标签","_col":3,"_required":false,"_regex":"","_message":"","closable": true,"round":false}

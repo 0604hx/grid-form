@@ -1,7 +1,7 @@
 <!--文件选择框-->
 <!--选择文件-->
 <template>
-    <n-input v-model:value="path" :placeholder="placeholder" clearable readonly @click="toSelect" @clear="onClear">
+    <n-input v-model:value="path" :disabled="disabled" :placeholder="placeholder" clearable readonly @click="toSelect" @clear="onClear">
         <template #prefix> <n-tag size="small" type="default" :bordered="false">选择文件</n-tag> </template>
         <template #suffix> <n-tag size="small" type="primary" :bordered="false">{{maxSize}}MB</n-tag> </template>
     </n-input>
@@ -20,6 +20,7 @@
         accept:{type:String, default:"image/*"},
         acceptCustom:{type:String, default:undefined},
         maxSize:{type:Number, default: 5 },
+        disabled:{type:Boolean, default: false},
         dataType:{type:String, default:""}
     })
 
@@ -33,6 +34,8 @@
     }
 
     let toSelect = ()=> {
+        if(props.disabled === true) return
+
         //使用原生 JS 选择文件
         let input = document.createElement("input")
         input.type = 'file'

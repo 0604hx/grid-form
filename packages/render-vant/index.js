@@ -19,6 +19,7 @@ const inputField = (props, attrs)=>{
         placeholder         : props.placeholder,
         "show-word-limit"   : props["show-count"],
         clearable           : props.clearable,
+        disabled            : props.disabled,
         rows                : props.rows,
         maxlength           : props.maxlength,
         type                : attrs._widget=='NUMBER'?"number":"text"
@@ -26,15 +27,19 @@ const inputField = (props, attrs)=>{
     return h(Field, ps)
 }
 
+const _toProps = (props, attrs, ps={})=>{
+    return Object.assign({label:attrs._text, disabled:props.disabled}, ps)
+}
+
 const RenderFuncs = {
     "INPUT"     : inputField,
     "NUMBER"    : inputField,
-    "SELECT"    : (props, attrs)=> h(Selector, {label:attrs._text, placeholder:props.placeholder, options:buildOptions(props.options, "value", "text")}),
-    "CHECKBOX"  : (props, attrs)=> h(Checkbox, {label:attrs._text, options:buildOptions(props.options)}),
-    "RADIO"     : (props, attrs)=> h(Radio, {label:attrs._text, options:buildOptions(props.options)}),
-    "SWITCH"    : (props, attrs)=> h(Switch, {label:attrs._text}),
+    "SELECT"    : (props, attrs)=> h(Selector, _toProps(props, attrs, {placeholder:props.placeholder, options:buildOptions(props.options, "value", "text")})),
+    "CHECKBOX"  : (props, attrs)=> h(Checkbox, _toProps(props, attrs, {options:buildOptions(props.options)})),
+    "RADIO"     : (props, attrs)=> h(Radio, _toProps(props, attrs, {options:buildOptions(props.options)})),
+    "SWITCH"    : (props, attrs)=> h(Switch, _toProps(props, attrs)),
     "DATE"      : (props, attrs)=> {
-        let ps = {label:attrs._text, placeholder:props.placeholder}
+        let ps = _toProps(props, attrs, {placeholder:props.placeholder})
         if(props.type=='month') ps.type=['year','month']
         if(props.type=='year')  ps.type=['year']
 
@@ -42,7 +47,7 @@ const RenderFuncs = {
     },
 
     "FILE"      : (props, attrs)=>{
-        return h(SelectorImage, {label:attrs._text})
+        return h(SelectorImage, _toProps(props, attrs))
     },
 
     //暂无对动态标签的实现

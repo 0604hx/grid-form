@@ -2,7 +2,7 @@
 <template>
     <van-field :label="label">
         <template #input>
-            <van-uploader v-model="shadow" :after-read="onChange" :accept="accept" :max-size="maxSize" :preview-size="120" :max-count="maxCount" />
+            <van-uploader v-model="shadow" :disabled="disabled" :after-read="onChange" :accept="accept" :max-size="maxSize" :preview-size="120" :max-count="maxCount" />
         </template>
     </van-field>
 </template>
@@ -18,6 +18,7 @@
         placeholder: {type:String, default:"请选择"},
         accept:{type:String, default:"image/*"},
         maxSize:{type:Number, default: 5*1024*1024 },
+        disabled:{type:Boolean, default: false},
         maxCount: {type:Number, default: 1}
     })
 

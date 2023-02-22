@@ -1,6 +1,6 @@
-import { ref, reactive, toRaw, unref, onMounted, nextTick } from 'vue'
+import { ref, reactive, toRaw, unref, onMounted, nextTick, watch } from 'vue'
 
-import { triggerLoaded, triggerBeforeSubmit, triggerExtraButtonClick, formValueProvider } from './runtime'
+import { triggerLoaded, triggerBeforeSubmit, triggerChanged,  triggerExtraButtonClick, formValueProvider } from './runtime'
 
 export const RenderProps = {
     renders:{type:Object},
@@ -21,6 +21,7 @@ export default (props, emits, suffix="")=>{
      * 当表单项设置为必填时，会向该对象赋值
      */
     const formRequired = {}
+    const watchFields  = new Set()
 
     /**
      * 此处使用JSON反序列化的方式去响应式
@@ -47,8 +48,8 @@ export default (props, emits, suffix="")=>{
     /**
      * 跟踪数据变动，未来可考虑添加回调函数
      */
-    // watch(formData, v=>{
-    //     //track("表单数据更新", formData, v)
+    // watch(formData, (v, v2, v3)=>{
+    //     track("表单数据更新", formData, v)
     // })
 
     const _submitDo = (formObj, action='post') =>{
@@ -136,11 +137,24 @@ export default (props, emits, suffix="")=>{
                     if(v._required === true){
                         formRequired[v._uuid] = { regex: v._regex, msg: v._message, label: v._text }
                     }
+                    if(v._watch === true)
+                        watchFields.add(v._uuid)
                 }
             }
         }
 
         if(props.debug) track("表单值", formData)
+
+        //开启监听
+        if(watchFields.size && props.form.onChange){
+            watchFields.forEach(key=>{
+                watch(()=> formData[key], (to, from)=>{
+                    if(props.debug) track(`<onChange> 触发表单项 ${key} 变动：${from} > ${to}`)
+                    triggerChanged(props.form.onChange, formData, {key, from, to}, props.form.items)
+                })
+            })
+        }
+
         nextTick(()=>{
             if(props.form.onLoad){
                 if(props.debug) track("<onLoad> 触发表单初始化事件")

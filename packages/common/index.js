@@ -19,6 +19,7 @@ export function createForm(ps={}){
         okText:"",
         onLoad:"",
         onSubmit:"",
+        onChange:"",
         afterSubmit:"",
         hides:[],                               //表单默认值（隐藏项），包含`id`、`value`两个属性
         items: [],
@@ -88,7 +89,7 @@ export function buildOptions(text, valueField="value", labelField="label") {
     if(Array.isArray(text))
         options = text
     else if(typeof(text) === 'string'){
-        options = text.replace(" ", "").split(",")
+        options = text.replace(/ /g, "").split(",")
     }
     else if(typeof(text) === 'object'){
         options = Object.keys(text).map(k=> `${k}|${text[k]}`)
@@ -110,7 +111,6 @@ export function buildOptions(text, valueField="value", labelField="label") {
     })
 }
 
-const HAS_PREFIX = ["INPUT", "NUMBER"]
 /**
  *
  * @param {*} item
@@ -141,10 +141,6 @@ export function buildComponent(item, widget, track=true){
 
     if(typeof(widget)==='function')
         return widget(_props, attrs)
-
-    if(HAS_PREFIX.includes(item._widget)){
-
-    }
     return h(widget, _props)
 }
 

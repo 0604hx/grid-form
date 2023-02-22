@@ -1,5 +1,5 @@
 <template>
-    <van-field :label="label">
+    <van-field :label="label" :disabled="disabled">
         <template #input>
             <van-radio-group @change="onChange" v-model="shadow" :direction="vertical?'vertical':'horizontal'">
                 <van-radio v-for="item in options" :name="item.value">{{item.label}}</van-radio>
@@ -16,6 +16,7 @@
         modelValue:{type: [String, Number], default:undefined},
         label:{type:String, default:"单选框"},
         options:{type:Array},
+        disabled:{type:Boolean, default: false},
         vertical:{type:Boolean, default:false}
     })
 

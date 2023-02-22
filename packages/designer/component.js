@@ -20,6 +20,7 @@ const buildBasicProperty = (cnName="标签", value, valueLabel="默认值")=>{
     )
     if(!!cnName){
         items.push(
+            { label:"变动监听", id:"_watch", widget: Types.SWITCH, value: false, summary:"当该项的值变动时触发表单的 onChange 事件（需预先填写代码）" },
             { label:"是否必填", id:"_required", widget: Types.SWITCH, value: false },
             { label:"校验正则", id:"_regex", widget: Types.INPUT, value: "", summary:"请填写正则表达式（仅限勾选必填）" },
             { label:"回显文案", id:"_message", widget: Types.INPUT, value: "", summary:"当校验失败时提示的内容（仅限勾选必填）" }

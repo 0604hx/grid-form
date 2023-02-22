@@ -1,7 +1,8 @@
 export const lifeCycles = [
     { name:"onLoad", text:"加载完成", summary:"表单加载完成后调用，参数格式为：function onLoad(form)", promise:false},
     { name:"onSubmit", text:"表单提交前", summary:"表单提交前触发，以 Promise 形式返回，当报错或者返回 false 时中断提交", promise:true},
-    { name:"afterSubmit", text:"表单提交后", summary:"表单成功提交后触发，参数格式为：function afterSubmit(form)", promise:false}
+    { name:"afterSubmit", text:"表单提交后", summary:"表单成功提交后触发，参数格式为：function afterSubmit(form)", promise:false},
+    { name:"onChange", text:"表单值变动时", summary:"表单值变动时出发，参数格式为：function onChange(form, agent)", promise: false }
 ]
 
 let _showError = (e, funcType)=> console.error(`${funcType} 回调执行异常`, e)
@@ -37,6 +38,17 @@ export function triggerLoaded(body, form){
  */
 export function triggerBeforeSubmit(body, form, items){
     return new Function("form", "items", buildFuncBody(body))(form, items).catch(e=> _showError(e, "onSubmit"))
+}
+
+/**
+ *
+ * @param {*} body
+ * @param {*} form
+ * @param {*} agent
+ * @returns
+ */
+export function triggerChanged(body, form, agent, items){
+    return _triggerWithoutPromise(body, "onChange", ["form","agent", "items"], [form, agent, items])
 }
 
 /**

@@ -1,6 +1,6 @@
 <!--弹出选择器-->
 <template>
-    <van-field v-model="shadow" is-link readonly name="picker" :label="label" :placeholder="placeholder" @click="show = true" />
+    <van-field v-model="shadow" :disabled="disabled" is-link readonly name="picker" :label="label" :placeholder="placeholder" @click="show = true" />
     <van-popup v-model:show="show" position="bottom">
         <van-picker :title="label" :columns="options" @confirm="onConfirm" @cancel="show = false" />
     </van-popup>
@@ -14,6 +14,7 @@
         modelValue:{type: String, default:undefined},
         label:{type:String, default:"下拉选择"},
         placeholder: {type:String, default:"请选择"},
+        disabled:{type:Boolean, default: false},
         options:{type:[String, Array, Object]}
     })
 

@@ -1,5 +1,5 @@
 <template>
-    <van-field :label="label">
+    <van-field :label="label" :disabled="disabled">
         <template #input>
             <van-switch v-model="shadow" @change="onChange" />
         </template>
@@ -12,6 +12,7 @@
     const emits = defineEmits(['update:modelValue', 'change'])
     const props = defineProps({
         modelValue:{type: Boolean, default:undefined},
+        disabled:{type:Boolean, default: false},
         label:{type:String, default:"开关项"},
     })
 

@@ -1,5 +1,5 @@
 <template>
-    <van-field v-model="shadow" is-link readonly :label="label" :placeholder="placeholder"  @click="show=true" />
+    <van-field v-model="shadow" :disabled="disabled" is-link readonly :label="label" :placeholder="placeholder"  @click="show=true" />
     <van-popup v-model:show="show" position="bottom">
         <van-date-picker @confirm="onDatePick" v-model="day" :title="label" :min-date="minDate" @cancel="show = false" :columns-type="type"/>
     </van-popup>
@@ -14,6 +14,7 @@
         label:{type:String, default:"下拉选择"},
         placeholder: {type:String, default:"请选择"},
         type:{type:Array, default:['year', 'month', 'day']},
+        disabled:{type:Boolean, default: false},
         minDate:{type:Date}
     })
 
