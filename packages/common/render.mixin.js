@@ -117,6 +117,22 @@ export default (props, emits, suffix="")=>{
         return text
     }
 
+    const _setupWatchForChange = ()=>{
+        let { onChange } = props.form
+        if(watchFields.size && !onChange)       return props.debug && track(`<onChange> 尝试监听 ${watchFields.size} 个表单项变动事件，但未定义 onChange 回调代码...`)
+        if(watchFields.size == 0 && !!onChange) return props.debug && track(`<onChange> 已定义 onChange 回调代码，但未对任何表单项设置监听选项...`)
+
+        //开启监听
+        if(watchFields.size && onChange){
+            watchFields.forEach(key=>{
+                watch(()=> formData[key], (to, from)=>{
+                    if(props.debug) track(`<onChange> 触发表单项 ${key} 变动：${from} > ${to}`)
+                    triggerChanged(props.form.onChange, formData, {key, from, to}, props.form.items)
+                })
+            })
+        }
+    }
+
     const initForm = async ()=>{
         let { items, hides } = props.form
 
@@ -145,15 +161,7 @@ export default (props, emits, suffix="")=>{
 
         if(props.debug) track("表单值", formData)
 
-        //开启监听
-        if(watchFields.size && props.form.onChange){
-            watchFields.forEach(key=>{
-                watch(()=> formData[key], (to, from)=>{
-                    if(props.debug) track(`<onChange> 触发表单项 ${key} 变动：${from} > ${to}`)
-                    triggerChanged(props.form.onChange, formData, {key, from, to}, props.form.items)
-                })
-            })
-        }
+        _setupWatchForChange()
 
         nextTick(()=>{
             if(props.form.onLoad){

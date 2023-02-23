@@ -161,6 +161,7 @@ okText|String||提交完成后回显文案（由业务系统进行回显）
 url|String||后端接口地址（由业务系统完成数据提交）
 onLoad|String|undefined|`JS 代码`表单初始化后调用
 onSubmit|String|undefined|`JS 代码`表单提交前调用钩子，用于进行数据预处理，也可以中断表单（返回 Promise）
+onChange|String|undefined|`JS 代码`表单值变动时调用钩子，通常用于表单联动（`since v0.0.4`）
 afterSubmit|String|undefined|`JS 代码`表单提交完成后调用钩子（注意：需要由业务系统自行调用）
 hides|Array|[]|表单默认值（隐藏项），包含`id`、`value`两个属性
 items|Array|[]|表单项
@@ -200,7 +201,9 @@ git clone https://github.com/0604hx/grid-form
 pnpm i
 
 # 运行示例
-pnpm -F example run dev
+pnpm dev
+
+# 执行成功后，浏览器访问 http://localhost:10086
 ```
 
 ## 5. 附录 / ABOUT

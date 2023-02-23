@@ -66,7 +66,7 @@
                             <n-tag :bordered="false" :type="form[item.name]?'success':'default'" size="small">
                                 {{item.name}}
                             </n-tag>
-                            {{item.text}}
+                            <n-text depth="3">{{item.text}}</n-text>
                         </n-space>
                     </n-list-item>
                 </n-list>
@@ -74,7 +74,7 @@
 
             <n-collapse-item title="表单默认值" name="hide">
                 <template #header-extra>
-                    隐藏表单项
+                    <n-text depth="3">隐藏表单项</n-text>
                 </template>
                 <n-table :bordered="false" :single-line="true" size="small">
                     <thead>
@@ -138,18 +138,18 @@
 
     <n-modal v-model:show="hooker.show" preset="card" :style="{width: '1000px'}" :mask-closable="false">
         <template #header>
-            <Bolt class="icon" />
+            <n-icon :component="Bolt" />
             <n-tag v-if="hooker.func.promise" type="info" class="ml-3" :bordered="false">PROMISE</n-tag>
             {{hooker.func.text}}
         </template>
 
-        <n-alert :title="hooker.func.summary" type="info" class="mb-2" :bordered="false"/>
-        <CodeEditor v-model:value="form[hooker.func.name]" height="360px"/>
+        <n-alert :title="hooker.func.summary" type="info" :bordered="false"/>
+        <CodeEditor v-model:value="form[hooker.func.name]" height="360px" style="margin-top: 8px;"/>
     </n-modal>
 
     <n-modal v-model:show="btner.show" preset="card" :style="{width: '1000px'}" :title="'⌈'+btner.item.text+'⌋的脚本'" :mask-closable="false">
         <template #header>
-            <Bolt class="icon" />
+            <n-icon :component="Bolt" />
             ⌈{{btner.item.text}}⌋的脚本
         </template>
 
@@ -177,7 +177,7 @@
             </n-table>
         </n-alert>
 
-        <CodeEditor v-model:value="btner.item.code" height="360px"/>
+        <CodeEditor v-model:value="btner.item.code" height="360px" style="margin-top: 8px;"/>
     </n-modal>
 </template>
 

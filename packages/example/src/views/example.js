@@ -25,12 +25,12 @@ export function RenderDemo(){
     let onChange = `
     if(agent.key=='nature'){
         if(agent.to=='个体工商户'){
-            items.filter(v=>v._uuid=='yyzz')[0].disabled=true
+            items.filter(v=>v._uuid=='scale')[0].disabled=true
             form.scale = 1
             alert(agent.to+"无需填写规模")
         }
         else{
-            items.filter(v=>v._uuid=='yyzz')[0].disabled=false
+            items.filter(v=>v._uuid=='scale')[0].disabled=false
         }
     }
     `

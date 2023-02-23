@@ -2,7 +2,7 @@
     <van-form :label-width="form.labelWidth" :label-align="form.labelAlign">
         <van-cell-group inset>
             <template v-for="(item, index) in form.items">
-                <component v-model="formData[item._uuid]" :is="buildComponent(item, renders[item._widget], false)" />
+                <component v-if="item._hide!=true" v-model="formData[item._uuid]" :is="buildComponent(item, renders[item._widget], false)" />
             </template>
             <!-- <template v-for="(item, index) in items">
                 <component v-model="formData[item._uuid]" :is="buildComponent(item, renders[item._widget], false)" />
