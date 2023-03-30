@@ -166,7 +166,7 @@ export default (props, emits, suffix="")=>{
         nextTick(()=>{
             if(props.form.onLoad){
                 if(props.debug) track("<onLoad> 触发表单初始化事件")
-                triggerLoaded(props.form.onLoad, formData)
+                triggerLoaded(props.form.onLoad, formData, props.form.items)
             }
 
             inited.value = true

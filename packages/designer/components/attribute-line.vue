@@ -8,10 +8,15 @@
             <template v-else>{{label}}</template>
         </template>
 
-        <n-input v-if="widget=='INPUT'" v-model:value="shadow" placeholder="请输入" @blur="onChange" :rows="rows" :type="rows>1?'textarea':'text'">
-            <template v-if="prefix" #prefix>{{prefix}}</template>
-            <template v-if="suffix" #suffix>{{suffix}}</template>
-        </n-input>
+        <n-space v-if="widget=='INPUT'" vertical size="small" style="width:100%">
+            <n-input v-model:value="shadow" placeholder="请输入" @blur="onChange" :rows="rows" :type="isTextarea?'textarea':'text'" :show-count="isTextarea">
+                <template v-if="prefix" #prefix>{{prefix}}</template>
+                <template v-if="suffix" #suffix>{{suffix}}</template>
+            </n-input>
+            <div v-if="isTextarea" style="text-align: right;">
+                <n-button quaternary size="tiny" @click="largeEdit">大屏编辑</n-button>
+            </div>
+        </n-space>
         <n-input-number v-else-if="widget=='NUMBER'" class="w-full" v-model:value="shadow" placeholder="请输入数值" @blur="onChange" :min="min" :max="max">
             <template v-if="prefix" #prefix>{{prefix}}</template>
             <template v-if="suffix" #suffix>{{suffix}}</template>
@@ -25,7 +30,8 @@
 </template>
 
 <script setup>
-    import { ref, watch, toRaw, unref } from 'vue'
+    import { ref, watch, toRaw, unref, h } from 'vue'
+    import { useDialog, NInput } from 'naive-ui'
 
     import { buildOptions } from '@grid-form/common'
 
@@ -42,8 +48,10 @@
         options:{type:[String, Array, Object]},
         rows:{type:Number, default: 1 }
     })
+    const dialog = useDialog()
 
     let shadow = ref(props.value)
+    let isTextarea = ref(props.rows>1)
 
     // watch(shadow, v=>{
     //     if(props.widget != "SWITCH") return
@@ -63,5 +71,14 @@
     const onChange = v=> {
         if(shadow.value != props.value)
             emits("update:value", toRaw(unref(shadow.value)))
+    }
+    const largeEdit = ()=>{
+        console.debug("------", dialog)
+        dialog.create({
+            type:"info",
+            style:{width: "1000px"},
+            title:"大屏编辑",
+            content: ()=> h(NInput, {rows:20, showCount:true})
+        })
     }
 </script>

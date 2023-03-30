@@ -25,8 +25,15 @@ function _triggerWithoutPromise(body, eventName, paramsNames, params){
     }
 }
 
-export function triggerLoaded(body, form){
-    return _triggerWithoutPromise(body, "onLoad", ["form"], [form])
+/**
+ * 表单初始化后调用
+ * @param {*} body
+ * @param {*} form
+ * @param {*} items
+ * @returns
+ */
+export function triggerLoaded(body, form, items){
+    return _triggerWithoutPromise(body, "onLoad", ["form", "items"], [form, items])
 }
 
 /**

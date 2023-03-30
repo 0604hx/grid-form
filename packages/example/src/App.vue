@@ -1,8 +1,12 @@
 <template>
     <n-config-provider :theme="theme" :locale="zhCN" :date-locale="dateZhCN" :hljs="hljs">
-        <div style="min-height: 100%;">
-            <router-view></router-view>
-        </div>
+        <n-dialog-provider>
+            <n-message-provider>
+                <div style="min-height: 100%;">
+                    <router-view></router-view>
+                </div>
+            </n-message-provider>
+        </n-dialog-provider>
     </n-config-provider>
 </template>
 
