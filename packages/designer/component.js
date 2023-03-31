@@ -15,7 +15,7 @@ const buildBasicProperty = (cnName="标签", value, valueLabel="默认值")=>{
     let items = [ { label:"表单编号", id:"_uuid", summary:"表单提交时的参数名称", widget: Types.INPUT, value:"" }]
     if(!!cnName) items.push({ label:"中文名称", id:"_text", widget: cnName===false? undefined: Types.INPUT, value: cnName })
     items.push(
-        { label:"所占列数", id:"_col", widget: Types.NUMBER, min:0, max: 24, suffix:"列", value: 1 },
+        COL(),
         { label:valueLabel, id:"_value", widget: Types.INPUT, value }
     )
     if(!!cnName){
@@ -32,6 +32,8 @@ const buildBasicProperty = (cnName="标签", value, valueLabel="默认值")=>{
 
 const buildProperty = (items, id="special", label="控件属性")=> ({ id, label, items })
 
+const COL           = ()=> ({ label:"所占列数", id:"_col", widget: Types.NUMBER, min:0, max: 24, suffix:"列", value: 1 })
+const TEXTAREA      = (label="内容", value="文本内容", rows=3)=> ({ label, id:"_value", widget: Types.INPUT, value, rows })
 const PLACEHOLDER   = (value="请输入")=> ({ label:"提示信息", id:"placeholder", widget:Types.INPUT, value})
 const CLEARABLE     = (value=false)=> ({ label:"可清空", id:"clearable", summary:"在输入框尾部显示小按钮，点击后清空已输入内容", widget: Types.SWITCH, value })
 const CLOSABLE      = (value=false)=> ({ label:"可关闭", id:"closable", summary:"显示关闭按钮，点击后关掉组件", widget:Types.SWITCH, value })
@@ -151,8 +153,8 @@ const _TEXT = {
         {
             id:"basic", label:"基本信息",
             items:[
-                { label:"所占列数", id:"_col", widget: Types.NUMBER, min:0, max: 24, suffix:"列", value: 1 },
-                { label:"文本内容", id:"_value", widget: Types.INPUT, value:"文本显示", rows:3 },
+                COL(),
+                TEXTAREA()
             ]
         },
         buildProperty([
@@ -169,9 +171,7 @@ const _ALERT = {
     items:[
         {
             id:"basic", label:"基本信息",
-            items:[
-                { label:"所占列数", id:"_col", widget: Types.NUMBER, min:0, max: 24, suffix:"列", value: 1 }
-            ]
+            items:[ COL() ]
         },
         buildProperty([TITLE(), CONTENT("提示内容"),USE_HTML(), TYPE("info"), BORDERED(), CLOSABLE()])
     ]
@@ -179,7 +179,13 @@ const _ALERT = {
 const _DIVIDER = {
     id:"DIVIDER", label:"分割直线", icon: Divide, //MinusSquareRegular
     items:[
-        buildBasicProperty(false, "我是分割线", "内容"),
+        {
+            id:"basic", label:"基本信息",
+            items:[
+                COL(),
+                TEXTAREA("内容", "我是分割线", 1)
+            ]
+        },
         buildProperty([
             { id:"dashed", label:"使用虚线", widget:Types.SWITCH, value:false },
             { id:"title-placement", label:"标题位置", widget:Types.RADIO, value:"center", options:"left|靠左,center|居中,right|靠右" }

@@ -119,7 +119,7 @@ export function buildOptions(text, valueField="value", labelField="label") {
 export function buildComponent(item, widget, track=true){
     if(!item._widget) return console.error(`[渲染组件] 必须存在 _widget 属性...`, item)
     if(!widget) throw Error(`渲染组件 ${item._widget} 失败：无效的组件（请先注册相应的 Widgets）`)
-    if(track) console.debug("绘制组件", toRaw(unref(item)))
+    if(track)   (typeof(track)==='function'? track:console.debug)("绘制组件", toRaw(unref(item)))
 
     //基础属性
     let attrs = {}

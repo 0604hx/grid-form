@@ -9,7 +9,7 @@
         </template>
 
         <n-space v-if="widget=='INPUT'" vertical size="small" style="width:100%">
-            <n-input v-model:value="shadow" placeholder="请输入" @blur="onChange" :rows="rows" :type="isTextarea?'textarea':'text'" :show-count="isTextarea">
+            <n-input v-model:value="shadow" placeholder="请输入" @blur="onChange" :rows="rows" :size="isTextarea?'small':'medium'" :type="isTextarea?'textarea':'text'" :show-count="isTextarea">
                 <template v-if="prefix" #prefix>{{prefix}}</template>
                 <template v-if="suffix" #suffix>{{suffix}}</template>
             </n-input>
@@ -30,8 +30,8 @@
 </template>
 
 <script setup>
-    import { ref, watch, toRaw, unref, h } from 'vue'
-    import { useDialog, NInput } from 'naive-ui'
+    import { ref, watch, toRaw, unref, h, nextTick } from 'vue'
+    import { useDialog, NInput, NSpace, NTag } from 'naive-ui'
 
     import { buildOptions } from '@grid-form/common'
 
@@ -53,12 +53,8 @@
     let shadow = ref(props.value)
     let isTextarea = ref(props.rows>1)
 
-    // watch(shadow, v=>{
-    //     if(props.widget != "SWITCH") return
+    let bigInput = ""
 
-    //     if(shadow.value != props.value)
-    //         emits("update:value", _raw(shadow.value))
-    // })
     /**
      * 对于 SWTICH 控件，单独处理（on-update:value 机制与其他不一样 =.=）
      */
@@ -72,13 +68,31 @@
         if(shadow.value != props.value)
             emits("update:value", toRaw(unref(shadow.value)))
     }
+
     const largeEdit = ()=>{
-        console.debug("------", dialog)
         dialog.create({
-            type:"info",
-            style:{width: "1000px"},
-            title:"大屏编辑",
-            content: ()=> h(NInput, {rows:20, showCount:true})
+            showIcon: false,
+            style:{width: "85%"},
+            title: ()=>h(NSpace, {}, ()=>[h(NTag, {bordered:false, type:"primary"}, ()=>"大屏编辑"), props.label]),
+            maskClosable:false,
+            positiveText:"编辑完成",
+            content: ()=> h(
+                NInput,
+                {
+                    size:"small",
+                    rows:20,
+                    showCount:true,
+                    type:"textarea",
+                    defaultValue: shadow.value,
+                    "on-update:value": v=> bigInput = v
+                }
+            ),
+            onPositiveClick: ()=> {
+                shadow.value = bigInput
+                onChange(bigInput)
+
+                nextTick(()=> bigInput = "")
+            }
         })
     }
 </script>

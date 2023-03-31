@@ -37,7 +37,7 @@
                                             </n-popconfirm>
                                             <!-- <n-button class="remove" secondary type="error" size="tiny" circle @click="toRemove(item, index)"> <template #icon> <n-icon :component="Trash" /> </template> </n-button> -->
 
-                                            <component :is="buildComponent(item, renders[item._widget], debug)" />
+                                            <component :is="buildComponent(item, renders[item._widget], debug? track: false)" />
                                         </n-form-item-gi>
 
                                         <!-- <n-form-item-gi :show-feedback="false" class="cell" label="文本输入框">
