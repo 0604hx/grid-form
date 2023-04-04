@@ -178,7 +178,7 @@ export default (props, emits, suffix="")=>{
         let result = triggerExtraButtonClick(btn.code, formData)
         if(btn.type == 'script')    return
 
-        if(result === false){
+        if(result !== true){
             if(props.debug) track(`<自定义按钮点击> 返回 ${result} 故中断后续的动作`)
             return
         }
