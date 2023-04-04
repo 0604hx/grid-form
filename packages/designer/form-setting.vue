@@ -187,6 +187,7 @@
     import { Bolt, Plus, Edit, Cog, Code, Trash } from "@vicons/fa"
 
     import CodeEditor from "./components/editor.code.vue"
+    import { buildIcon } from "./component"
 
     import { buildOptions, lifeCycles, createExtraButton, createHideItem } from '@grid-form/common'
 
@@ -194,8 +195,6 @@
         form: {type:Object},
         compact: {type:Boolean, default:false }
     })
-
-    const buildIcon= (icon, ps={})=> ()=> createVNode(NIcon, Object.assign({component: icon}, ps))
 
     const themeOptions = buildOptions(["default|普通", "primary|主配色", "info|蓝色", "warning|橙色", "error|红色"])
     const typeTexts = {post:"提交", download:"下载", script:"脚本"}

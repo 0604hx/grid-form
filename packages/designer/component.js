@@ -1,3 +1,5 @@
+import { h } from 'vue'
+import { NIcon } from 'naive-ui'
 import { TextWidth, Font, Percent, FolderRegular, MinusSquareRegular, CalendarAlt, Tasks, ToggleOff, CheckSquareRegular, BellRegular, Divide, Star, CheckCircleRegular, Palette, Tags } from '@vicons/fa'
 
 /**
@@ -224,3 +226,5 @@ export default [
     { label:"选择组件", items: [ _DATE, _SELECT, _RADIO, _CHECK_BOX, _SWITCH, _RATE, _COLOR, _FILE ]},
     { label:"展示组件", items: [ _TEXT, _ALERT, _DIVIDER] },
 ]
+
+export const buildIcon= (icon, ps={})=> ()=> h(NIcon, Object.assign({component: icon}, ps))

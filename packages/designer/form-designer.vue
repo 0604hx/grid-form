@@ -27,7 +27,7 @@
                                 <n-form :label-width="form.labelWidth" :size="form.size" :label-placement="form.labelPlacement" :label-align="form.labelAlign" :show-label="form.labelShow">
                                     <n-grid :x-gap="gridGap" :y-gap="gridGap" :cols="form.grid" class="designer-content" :style="{width: form.width, margin:'0px auto' }">
                                         <n-form-item-gi v-for="(item, index) in form.items" :key="index" :span="item._col" :show-feedback="false" :show-label="item._text!=undefined" :label="item._text===false?'':item._text"
-                                            @click.stop="toActice(item)" class="cell" :class="{active:item._active === true}">
+                                            @click.stop="toActice(item)" class="cell" :class="{active:item._active === true}"  @contextmenu="e=>contextMenu && menu.show(e, index)">
 
                                             <n-popconfirm @positive-click="()=> form.items.splice(index, 1)">
                                                 <template #trigger>
@@ -72,12 +72,17 @@
                 </n-layout>
             </n-message-provider>
         </n-dialog-provider>
+
+        <!--右键菜单-->
+        <!-- <n-dropdown v-if="contextMenu" placement="bottom-start" trigger="manual" :x="menu.x" :y="menu.y" :options="menuOptions" :show="menu.show"
+            :on-clickoutside="()=>menu.show=false" @select="onMenuSelect" /> -->
+        <ContextMenu v-if="contextMenu" :components="components" ref="menu" @select="onMenuSelect" />
     </div>
 </template>
 
 <script setup>
     import { ref, onMounted,onUnmounted, h, reactive, toRaw, unref } from 'vue'
-    import { Bolt, Plus, Trash, CheckCircle, Download, FileDownload } from "@vicons/fa"
+    import { Bolt, Plus, Trash, CheckCircle, Download, FileDownload, Copy, HandPointLeftRegular,HandPointRightRegular } from "@vicons/fa"
     import { useMessage, useDialog } from "naive-ui"
 
     import { createFormItem, buildOptions, buildComponent, withHtmlNode } from '@grid-form/common'
@@ -85,6 +90,7 @@
     import Selector from "./components/selector.vue"
     import AttributeEditor from "./form-attribute.vue"
     import FormSetting from "./form-setting.vue"
+    import ContextMenu from "./components/context-menu.vue"
 
     const message = useMessage()
     const dialog = useDialog()
@@ -102,12 +108,50 @@
         headerHeight: { type:Number, default: 55 },
         debug: {type:Boolean, default: false},                  //开启debug 模式后，会在控制台输入各种信息
         showFooter: {type:Boolean, default: false},
-        footerHeight: {type:Number, default: 50 }
+        footerHeight: {type:Number, default: 50 },
+        contextMenu: {type:Boolean, default: false},            //开启右键菜单
     })
 
     const track = (...ps)=> console.debug("%c[DESIGNER]", "background:#8c0776;padding:3px;color:white", ...ps)
 
     const collapsedWidth = 10
+
+    let menu = ref()
+    let copied = ""
+    const showMenu = (e, index)=>  menu.value.show(e, index)
+    const onMenuSelect = (key, index, com)=>{
+        console.debug(key, index, com)
+        if(key == 'copy'){
+            copied = JSON.stringify(props.form.items[index])
+            navigator.clipboard.writeText(copied)
+            message.success(`表单项已复制到粘贴板`)
+        }
+        else if(key == 'paste'){
+            if(!!copied){
+                let item = JSON.parse(copied)
+                delete item._active
+                doAddComponent(item, index-1)
+            }
+            else
+                message.warning(`请先复制再进行粘贴`)
+        }
+        else if(key == 'delete'){
+            let item = props.form.items[index]
+            console.debug(item)
+            item && dialog.warning({
+                title:`删除组件`,
+                content: `确定删除表单项⌈${item._text}⌋吗？`,
+                positiveText: "确定",
+                negativeText: "我再想想",
+                onPositiveClick: () => {
+                    props.form.items.splice(index, 1)
+                }
+            })
+        }
+        else {
+            doAddComponent(createFormItem(com), index)
+        }
+    }
 
     /**
      *
@@ -123,13 +167,18 @@
 
     const attrEditor = reactive({ bean:{}, items:[] })
 
-    const onAddComponent = row=> {
-        let item = createFormItem(row)
+    const onAddComponent = row=> doAddComponent(createFormItem(row))
+
+    const doAddComponent = (item, position=-1)=> {
         if(props.debug) {
-            message.info(`添加组件：${row.label}`)
-            track(`添加表单项 ${row.id} `, item)
+            message.info(`添加组件：${item._text}`)
+            track(`添加表单项 ${item._widget} `, item)
         }
-        props.form.items.push(item)
+
+        if(position<=-1)
+            props.form.items.push(item)
+        else
+            props.form.items.splice(position, 0, item)
     }
 
     const toActice = item=> {
@@ -155,31 +204,43 @@
         content: withHtmlNode(props.form.okText||`数据提交完成，感谢支持`)
     })
 
+    const _error = msg =>{
+        message.warning(msg)
+        throw Error(msg)
+    }
+
     const _toSimpleObject = ()=>{
         if(props.review){
-            if(!/^[0-9]+%$|px$/.test(props.form.width))  return message.warning(`表单宽度填写不合法`)
+            if(!/^[0-9]+%$|px$/.test(props.form.width))  _error(`表单宽度填写不合法`)
 
+            let idMap = {}
             let items = props.form.items
             //判断字段合法性
             for (let i = 0; i < items.length; i++) {
                 const item = items[i]
 
                 if(("_uuid" in item && !item._uuid) || ("_text" in item && !item._text))
-                    return message.warning(`第${i+1}个表单项的编号及中文名不能为空`)
+                    _error(`第${i+1}个表单项的编号及中文名不能为空`)
+
+                idMap[item._uuid] = (idMap[item._uuid] || 0) + 1
             }
+
+            let repeatId = Object.keys(idMap).filter(v=>idMap[v]>1).join("、")
+            if(!!repeatId)  _error(`存在重复表单项ID ⌈ ${repeatId} ⌋`)
         }
 
         let form = unref(toRaw(props.form))
         if(form.items){
             form.items.forEach(v=> delete v._active)
         }
+
         // 父类组件按需将 items、buttons 两个数组转换为 JSON 格式的字符串
         // form.items = JSON.stringify(form.items || "[]")
         // form.buttons = JSON.stringify(form.buttons||"[]")
         return form
     }
 
-    const toSave = ()=>emits("save", _toSimpleObject())
+    const toSave = ()=>  emits("save", _toSimpleObject())
 
     const toExport = type=>{
         let json = JSON.stringify(_toSimpleObject(), null, type=='pretty'? 4 : undefined)
@@ -190,7 +251,6 @@
 
     onMounted(()=> message.info(`欢迎使用 GRID-FROM 设计器`))
 </script>
-
 
 <style>
     .designer-content .cell {

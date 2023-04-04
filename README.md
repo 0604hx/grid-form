@@ -123,12 +123,13 @@ components|Array|[]|组件库
 renders|Object|{}|组件渲染函数
 siderWidth|Number,String|360|左右侧边栏的宽度，支持 px、% 单位，建议直接传递数值
 gridGap|Number|10|可视化区域栅栏间隔，单位 px
-review|Boolean|false|是否对表单项做校验
+review|Boolean|false|是否对表单项做校验（如id、名称不能为空，不允许重复 id），校验不通过则抛出异常
 form|Object|undefined|表单对象
 compact|Boolean|false|紧凑的布局，如果设置为true，则左右两侧的属性编辑行距缩短
 headerHeight|Number|55|设计器头部高度
 showFooter|Boolean|false|是否显示设计器底部
 footerHeight|Number|50|设计器底部高度，单位 px
+contextMenu|Boolean|false|`SINCE 0.0.6`是否启用右键菜单（方便操控表单项）
 debug|Boolean|false|开启debug 模式后，会在控制台输入各种信息
 
 **Slots**
@@ -203,7 +204,7 @@ pnpm i
 # 运行示例
 pnpm dev
 
-# 执行成功后，浏览器访问 http://localhost:10086
+# 执行成功后，浏览器访问 http://localhost:8080
 ```
 
 ## 5. 附录 / ABOUT

@@ -84,7 +84,8 @@
                     showCount:true,
                     type:"textarea",
                     defaultValue: shadow.value,
-                    "on-update:value": v=> bigInput = v
+                    "on-update:value": v=> bigInput = v,
+                    "on-keyup": e=>console.debug(e)
                 }
             ),
             onPositiveClick: ()=> {

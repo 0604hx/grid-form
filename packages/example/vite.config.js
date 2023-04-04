@@ -9,7 +9,7 @@ let src = (suffix = "") => join(__dirname, "src", suffix) + '/'
 export default defineConfig({
     plugins: [vue()],
     server:{
-        port: 10086
+        port: 8080
     },
     resolve: {
         alias: {
