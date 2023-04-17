@@ -1,6 +1,6 @@
 {
     "name": "@grid-form/render-vant",
-    "version": "0.0.4",
+    "version": "0.0.6",
     "description": "基于 vant4 的渲染器",
     "homepage": "https://github.com/0604hx/grid-form",
     "repository": "https://github.com/0604hx/grid-form",
@@ -16,6 +16,6 @@
         "@grid-form/common": "workspace:*"
     },
     "devDependencies": {
-        "vant": "^4.0.9"
+        "vant": "^4.2.0"
     }
 }

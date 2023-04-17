@@ -54,6 +54,7 @@ export function RenderDemo(){
             { id:"username", value:"${username}" }
         ],
         "items":[
+            {"_widget":"ALERT","_col":1, "title": "操作说明", "content": "请按照要求填写数据，并点击提交按钮", "_html": true,"type": "info",},
             {"_widget":"INPUT","_uuid":"name","_text":"企业名称","_col":1,"_required":true,"_regex":"","_message":"","placeholder":"请输入","clearable":true,"show-count":true,"rows":1,"_value":"","minlength":4},
             {"_widget":"NUMBER","_uuid":"scale","_text":"企业规模","_col":1,"_required":true,"_regex":"","_message":"","placeholder":"请输入","clearable":false,"suffix":"人","min":1},
             {"_widget":"SELECT","_uuid":"nature","_text":"企业性质","_col":1,"_watch":true,"_required":false,"_value":"国有企业","options":"国有企业, 集体企业, 私营企业, 个体工商户, 合伙企业, 联营企业, 股份合作制企业, 有限责任公司, 股份有限公司"},

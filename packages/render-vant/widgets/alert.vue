@@ -1,5 +1,5 @@
 <template>
-    <div :style="{backgroundColor, padding:'16px', margin:'0px 5px 0px 5px', borderRadius:'4px', position:'relative', display: show?'':'none'}">
+    <div :style="{backgroundColor, padding, margin:'5px 5px 0px 5px', borderRadius:'4px', position:'relative', display: show?'':'none'}">
         <van-icon :name="icon" size="1.8rem" :color="colors[type]" style="display: flex;position: absolute; top: 18px;" />
         <van-icon v-if="closeable" name="cross" style="position: absolute; top:18px;right:15px; cursor: pointer;" @click="show=false" />
 
@@ -18,7 +18,8 @@
     const props = defineProps({
         type:{type:String, default:"info"},
         title:{type:String},
-        closeable:{type:Boolean, default:false}
+        closeable:{type:Boolean, default:false},
+        padding:{type:String, default:"10px 14px"}
     })
 
     const bgColors = {
