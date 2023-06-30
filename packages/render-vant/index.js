@@ -34,7 +34,7 @@ const _toProps = (props, attrs, ps={})=>{
 const RenderFuncs = {
     "INPUT"     : inputField,
     "NUMBER"    : inputField,
-    "SELECT"    : (props, attrs)=> h(Selector, _toProps(props, attrs, {placeholder:props.placeholder, options:buildOptions(props.options, "value", "text")})),
+    "SELECT"    : (props, attrs)=> h(Selector, _toProps(props, attrs, {placeholder:props.placeholder, multiple:props.multiple, options:buildOptions(props.options, "value", "text")})),
     "CHECKBOX"  : (props, attrs)=> h(Checkbox, _toProps(props, attrs, {options:buildOptions(props.options)})),
     "RADIO"     : (props, attrs)=> h(Radio, _toProps(props, attrs, {options:buildOptions(props.options)})),
     "SWITCH"    : (props, attrs)=> h(Switch, _toProps(props, attrs)),
