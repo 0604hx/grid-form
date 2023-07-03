@@ -29,11 +29,11 @@
 </template>
 
 <script setup>
-    import { ref } from 'vue'
+    import { ref, onMounted, watch } from 'vue'
 
     const emits = defineEmits(['update:modelValue', 'change'])
     const props = defineProps({
-        modelValue:{type: String, default:undefined},
+        modelValue:{type: [String, Array], default:undefined},
         label:{type:String, default:"下拉选择"},
         placeholder: {type:String, default:"请选择"},
         disabled:{type:Boolean, default: false},
@@ -41,13 +41,15 @@
         multiple:{type:Boolean, default: false}
     })
 
+    const buildShadow = v=> Array.isArray(v)? v.join(",") : v
+
     let show        = ref(false)
     let shadow      = ref(props.modelValue)
     let selected    = ref(props.modelValue??[])
 
     let checkboxRefs= ref([])
 
-    let onConfirm = ({ selectedOptions }) => {
+    const onConfirm = ({ selectedOptions }) => {
         show.value = false
         let item = selectedOptions[0]
         emits("update:modelValue", item.value)
@@ -63,7 +65,14 @@
             })
             .filter(v=>!!v)
         emits("update:modelValue", checks.map(v=>v.value))
-        shadow.value = checks.map(v=>v.text)
+        shadow.value = checks.map(v=>v.text).join(",")
         show.value = false
     }
+
+    watch(()=> props.modelValue, ()=> {
+        if(props.multiple === true && typeof(props.modelValue)==='string')
+            selected.value = props.modelValue?.split(",")
+
+        shadow.value = Array.isArray(props.modelValue)? props.modelValue.join(",") : props.modelValue
+    })
 </script>
