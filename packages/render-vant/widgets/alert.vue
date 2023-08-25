@@ -4,10 +4,10 @@
 -->
 <template>
     <div :class="cls" :style="{backgroundColor, padding, margin:'5px 5px 0px 5px', borderRadius:'4px', position:'relative', display: show?'':'none'}">
-        <van-icon :name="icon" size="1.7rem" :color="colors[type]" style="display: flex;position: absolute; top: 12px;" />
+        <van-icon v-if="showIcon" :name="icon" size="1.7rem" :color="colors[type]" style="display: flex;position: absolute; top: 12px;" />
         <van-icon v-if="closeable" name="cross" style="position: absolute; top:18px;right:15px; cursor: pointer;" @click="show=false" />
 
-        <div style="padding-left: 36px;">
+        <div :style="{paddingLeft: showIcon?'36px':'0px' }">
             <div style="font-size: 1.2rem;" class="gf-alert-title">{{title}}</div>
             <div class="gf-alert-content" style="margin-top:8px;">
                 <slot></slot>
@@ -22,6 +22,7 @@
     const props = defineProps({
         type:{type:String, default:"info"},
         title:{type:String},
+        showIcon:{type:Boolean, default: true},
         closeable:{type:Boolean, default:false},
         padding:{type:String, default:"10px 14px"}
     })

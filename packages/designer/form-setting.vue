@@ -166,7 +166,7 @@
                         <td>将数据以 POST 形式提交到后台，并接受 JSON 返回值</td>
                     </tr>
                     <tr>
-                        <td><n-tag size="small" type="primary">按钮</n-tag></td>
+                        <td><n-tag size="small" type="primary">下载</n-tag></td>
                         <td>将数据以 POST 形式提交到后台，并接受返回的文件流另存为本地文件</td>
                     </tr>
                     <tr>
