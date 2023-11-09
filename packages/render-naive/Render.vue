@@ -11,7 +11,10 @@
             <n-message-provider>
                 <n-grid :x-gap="gridGap" :y-gap="gridGap" :cols="form.grid" :style="{width: form.width, margin:'0px auto' }">
                     <template v-for="(item, index) in form.items" :key="index">
-                        <n-form-item-gi v-if="item._hide!=true" :span="item._col" :show-feedback="false" :label="item._text" :show-label="item._text!=undefined">
+                        <n-form-item-gi v-if="item._hide!=true" :span="item._col" :show-feedback="false">
+                            <template #label>
+                                {{item._text}}<span v-if="item._required" style="color: red;"> *</span>
+                            </template>
                             <component v-model:value="formData[item._uuid]" :is="buildComponent(item, renders[item._widget], false)" />
                         </n-form-item-gi>
                     </template>

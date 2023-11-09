@@ -1,6 +1,6 @@
 export const lifeCycles = [
-    { name:"onLoad", text:"加载完成", summary:"表单加载完成后调用，参数格式为：function onLoad(form)", promise:false},
-    { name:"onSubmit", text:"表单提交前", summary:"表单提交前触发，以 Promise 形式返回，当报错或者返回 false 时中断提交", promise:true},
+    { name:"onLoad", text:"加载完成时", summary:"表单加载完成后调用，参数格式为：function onLoad(form, items)", promise:false},
+    { name:"onSubmit", text:"表单提交前", summary:"表单提交前触发，以 Promise 形式返回，当报错或者返回非 true 时中断提交，参数：form, items", promise:true},
     { name:"onChange", text:"表单值变动时", summary:"表单值变动时出发，参数格式为：function onChange(form, agent, items)", promise: false },
     { name:"afterSubmit", text:"表单提交后", summary:"表单成功提交后触发，参数格式为：function afterSubmit(form)", promise:false},
 ]

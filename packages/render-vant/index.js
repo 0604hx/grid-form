@@ -16,6 +16,7 @@ import FormRender from "./Render.vue"
 const inputField = (props, attrs)=>{
     let ps = {
         label               : attrs._text,
+        required            : attrs._required,
         placeholder         : props.placeholder,
         "show-word-limit"   : props["show-count"],
         clearable           : props.clearable,
@@ -28,7 +29,7 @@ const inputField = (props, attrs)=>{
 }
 
 const _toProps = (props, attrs, ps={})=>{
-    return Object.assign({label:attrs._text, disabled:props.disabled}, ps)
+    return Object.assign({label:attrs._text, disabled:props.disabled, required: attrs._required}, ps)
 }
 
 const RenderFuncs = {

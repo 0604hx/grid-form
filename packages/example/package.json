@@ -17,8 +17,8 @@
         "@vicons/fa": "^0.12.0",
         "dayjs": "^1.11.7",
         "highlight.js": "^11.7.0",
-        "naive-ui": "^2.34.3",
-        "vant": "^4.0.9",
+        "naive-ui": "^2.35.0",
+        "vant": "^4.7.3",
         "vue-router": "^4.1.6"
     },
     "devDependencies": {

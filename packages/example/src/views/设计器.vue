@@ -1,5 +1,5 @@
 <template>
-    <Designer :renders="RenderFuncs" :components="Components" :context-menu="true" @save="onSave" :review="true"
+    <Designer :renders="RenderFuncs" :components="Components" :context-menu="true" @save="onSave" :review="true" :enableCtrlS="true"
         :compact="false" :form="form" style="height: 100vh;" debug show-footer :footer-height="45"></Designer>
 </template>
 

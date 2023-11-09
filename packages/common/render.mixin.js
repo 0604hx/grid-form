@@ -2,6 +2,8 @@ import { ref, reactive, toRaw, unref, onMounted, nextTick, watch } from 'vue'
 
 import { triggerLoaded, triggerBeforeSubmit, triggerChanged,  triggerExtraButtonClick, formValueProvider } from './runtime'
 
+const DEFAULT_ACTION = "post"
+
 export const RenderProps = {
     renders:{type:Object},
     form: {type:Object},
@@ -52,9 +54,7 @@ export default (props, emits, suffix="")=>{
     //     track("表单数据更新", formData, v)
     // })
 
-    const _submitDo = (formObj, action='post') =>{
-        delete formObj['_disabled']
-
+    const _checkRequire = formObj=>{
         if(props.review){
             //进行表单项校验
             let fails = []
@@ -68,19 +68,36 @@ export default (props, emits, suffix="")=>{
                 }
             })
 
-            if(fails.length)    return emits("failed", fails)
+            if(fails.length){
+                props.debug && track(`[表单检查]`, fails)
+                return emits("failed", fails)
+            }
         }
-
-        emits("submit", formObj, action)
+        return true
     }
 
+    const _submitDo = (formObj, action=DEFAULT_ACTION) =>{
+        delete formObj['_disabled']
+
+        if(_checkRequire(formObj) === true)
+            emits("submit", formObj, action)
+    }
+
+    /**
+     * 点击主按钮时回调
+     *
+     */
     const toSubmit = ()=>{
         let { onSubmit } = props.form
+        let formObj = _raw(formData)
         if(!!onSubmit && typeof(onSubmit==='string')){
+            if(_checkRequire(formObj) != true) return
+
             triggerBeforeSubmit(onSubmit, formData, _raw(props.form.items)).then(obj=>{
-                if(props.debug) track("<onSubmit> 回调函数返回（仅当返回布尔 true 方能继续提交表单）=", obj)
+                if(props.debug) track("<onSubmit> 回调函数返回（仅当返回布尔 true 方能继续提交表单）", obj)
                 if(obj === true){
-                    _submitDo(typeof(obj) === 'object'? obj: _raw(formData))
+                    // _submitDo(typeof(obj) === 'object'? obj: _raw(formData))
+                    emits("submit", formObj, DEFAULT_ACTION)
                 }
                 else{
                     if(props.debug) track(`<onSubmit> 回调函数返回非 true ，中断表单提交`)
@@ -88,7 +105,7 @@ export default (props, emits, suffix="")=>{
             })
         }
         else{
-            _submitDo(_raw(formData))
+            _submitDo(formObj)
         }
     }
 

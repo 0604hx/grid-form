@@ -26,8 +26,11 @@
                             <n-layout :native-scrollbar="false" content-style="padding: 10px 20px 10px 20px;">
                                 <n-form :label-width="form.labelWidth" :size="form.size" :label-placement="form.labelPlacement" :label-align="form.labelAlign" :show-label="form.labelShow">
                                     <n-grid :x-gap="gridGap" :y-gap="gridGap" :cols="form.grid" class="designer-content" :style="{width: form.width, margin:'0px auto' }">
-                                        <n-form-item-gi v-for="(item, index) in form.items" :key="index" :span="item._col" :show-feedback="false" :show-label="item._text!=undefined" :label="item._text===false?'':item._text"
+                                        <n-form-item-gi v-for="(item, index) in form.items" :key="index" :span="item._col" :show-feedback="false"
                                             @click.stop="toActice(item)" class="cell" :class="{active:item._active === true}"  @contextmenu="e=>contextMenu && menu.show(e, index)">
+                                            <template #label>
+                                                {{item._text}}<span v-if="item._required" style="color: red;font-weight: 600;">*</span>
+                                            </template>
 
                                             <n-popconfirm @positive-click="()=> form.items.splice(index, 1)">
                                                 <template #trigger>
@@ -110,6 +113,7 @@
         showFooter: {type:Boolean, default: false},
         footerHeight: {type:Number, default: 50 },
         contextMenu: {type:Boolean, default: false},            //开启右键菜单
+        enableCtrlS: {type:Boolean, default: false},            //是否开启 CTRL+S 保存快捷键
     })
 
     const track = (...ps)=> console.debug("%c[DESIGNER]", "background:#8c0776;padding:3px;color:white", ...ps)
@@ -247,6 +251,17 @@
         if(props.debug) track("表单导出", type, json)
         navigator.clipboard.writeText(json)
         message.success(`表单数据已复制到粘贴板`)
+    }
+
+    if(props.enableCtrlS){
+        props.debug && track("绑定 CTRL+S 保存快捷键")
+        document.onkeydown = e => {
+            let {ctrlKey, key} = e
+            if(ctrlKey==true && key=='s'){
+                e.preventDefault()
+                toSave()
+            }
+        }
     }
 
     onMounted(()=> message.info(`欢迎使用 GRID-FROM 设计器`))

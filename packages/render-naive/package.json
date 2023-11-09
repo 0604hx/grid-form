@@ -1,6 +1,6 @@
 {
     "name": "@grid-form/render-naive",
-    "version": "0.0.6",
+    "version": "0.0.8",
     "description": "基于 naive-ui 的渲染器",
     "homepage": "https://github.com/0604hx/grid-form",
     "repository": "https://github.com/0604hx/grid-form",
@@ -16,6 +16,6 @@
         "@grid-form/common": "workspace:*"
     },
     "devDependencies": {
-        "naive-ui": "^2.34.3"
+        "naive-ui": "^2.35.0"
     }
 }
