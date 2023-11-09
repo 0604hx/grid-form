@@ -130,6 +130,7 @@ headerHeight|Number|55|设计器头部高度
 showFooter|Boolean|false|是否显示设计器底部
 footerHeight|Number|50|设计器底部高度，单位 px
 contextMenu|Boolean|false|`SINCE 0.0.6`是否启用右键菜单（方便操控表单项）
+enableCtrlS|Boolean|false|`SINCE 0.0.8`是否启用 CTRL+S 保存快捷键
 debug|Boolean|false|开启debug 模式后，会在控制台输入各种信息
 
 **Slots**
