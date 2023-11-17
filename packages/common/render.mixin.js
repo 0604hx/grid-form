@@ -97,7 +97,7 @@ export default (props, emits, suffix="")=>{
                 if(props.debug) track("<onSubmit> 回调函数返回（仅当返回布尔 true 方能继续提交表单）", obj)
                 if(obj === true){
                     // _submitDo(typeof(obj) === 'object'? obj: _raw(formData))
-                    emits("submit", formObj, DEFAULT_ACTION)
+                    emits("submit", _raw(formData), DEFAULT_ACTION)
                 }
                 else{
                     if(props.debug) track(`<onSubmit> 回调函数返回非 true ，中断表单提交`)
