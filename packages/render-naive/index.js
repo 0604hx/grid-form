@@ -1,5 +1,9 @@
 import { h } from 'vue'
-import { NInput, NTag, NInputNumber, NDatePicker, NSwitch, NSelect, NText, NRadioGroup, NRadio, NRadioButton, NAlert, NDivider, NRate, NCheckboxGroup, NCheckbox, NColorPicker, NDynamicTags } from 'naive-ui'
+import {
+    NInput, NTag, NInputNumber, NDatePicker, NSwitch, NSelect, NText, NRadioGroup, NRadio,
+    NRadioButton, NAlert, NDivider, NRate, NCheckboxGroup, NCheckbox, NColorPicker, NDynamicTags,
+    NCard
+} from 'naive-ui'
 
 import { buildOptions  } from '@grid-form/common'
 
@@ -79,6 +83,9 @@ const RenderFuncs = {
     "COLOR"     : (props, attrs)=>{
         if(!!props.swatches) props.swatches = props.swatches.trim().split("\n")
         return h(NColorPicker, props)
+    },
+    "CARD"      : (props, attrs)=>{
+        return h(NCard, props)
     }
 }
 

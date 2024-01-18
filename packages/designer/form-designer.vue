@@ -10,6 +10,7 @@
                             </slot>
 
                             <n-space>
+                                <!-- <n-button type="primary" secondary @click="toPreview"><template #icon><n-icon :component="Eye" /></template> 预览</n-button> -->
                                 <n-dropdown trigger="click" :options="buildOptions('oneLine|单行JSON,pretty|格式化JSON', 'key')" :show-arrow="true" @select="toExport">
                                     <n-button type="primary" secondary><template #icon><n-icon :component="FileDownload" /></template> 导出表单</n-button>
                                 </n-dropdown>
@@ -18,38 +19,21 @@
                             </n-space>
                         </n-space>
                     </n-layout-header>
+
                     <n-layout position="absolute" :style="{top: headerHeight + 'px', bottom: showFooter?(footerHeight + 'px'):'0px'}" has-sider>
+                        <!--左侧表单配置面板-->
                         <n-layout-sider collapse-mode="transform" :collapsed-width="collapsedWidth" :width="siderWidth" show-trigger="arrow-circle" content-style="padding: 12px;" :native-scrollbar="false" bordered>
                             <FormSetting :form="form" :compact="compact" />
                         </n-layout-sider>
+
+                        <!--设计器主体-->
                         <n-layout  has-sider sider-placement="right">
                             <n-layout :native-scrollbar="false" content-style="padding: 10px 20px 10px 20px;">
-                                <n-form :label-width="form.labelWidth" :size="form.size" :label-placement="form.labelPlacement" :label-align="form.labelAlign" :show-label="form.labelShow">
-                                    <n-grid :x-gap="gridGap" :y-gap="gridGap" :cols="form.grid" class="designer-content" :style="{width: form.width, margin:'0px auto' }">
-                                        <n-form-item-gi v-for="(item, index) in form.items" :key="index" :span="item._col" :show-feedback="false"
-                                            @click.stop="toActice(item)" class="cell" :class="{active:item._active === true}"  @contextmenu="e=>contextMenu && menu.show(e, index)">
-                                            <template #label>
-                                                {{item._text}}<span v-if="item._required" style="color: red;font-weight: 600;">*</span>
-                                            </template>
+                                <n-form :label-width="form.labelWidth" :size="form.size" :label-placement="form.labelPlacement" :label-align="form.labelAlign">
+                                    <Container :form="form" :gridGap="gridGap" :contextMenu="menu" :bindClick="toActice"
+                                        :renders="renders" :components="components"
+                                        :track="debug?track:null" />
 
-                                            <n-popconfirm @positive-click="()=> form.items.splice(index, 1)">
-                                                <template #trigger>
-                                                    <n-button class="remove" secondary type="error" size="tiny" circle> <template #icon> <n-icon :component="Trash" /> </template> </n-button>
-                                                </template>
-                                                删除 <n-text code>{{item._uuid}}/{{item._text}}</n-text> 吗？
-                                            </n-popconfirm>
-                                            <!-- <n-button class="remove" secondary type="error" size="tiny" circle @click="toRemove(item, index)"> <template #icon> <n-icon :component="Trash" /> </template> </n-button> -->
-
-                                            <component :is="buildComponent(item, renders[item._widget], debug? track: false)" />
-                                        </n-form-item-gi>
-
-                                        <!-- <n-form-item-gi :show-feedback="false" class="cell" label="文本输入框">
-                                            <n-input />
-                                        </n-form-item-gi> -->
-                                        <n-gi class="cell flex" style="align-items: center; justify-content: center;">
-                                            <Selector @select="onAddComponent" :components="components" />
-                                        </n-gi>
-                                    </n-grid>
                                     <div style="text-align: center; margin-top: 12px;">
                                         <n-space justify="center">
                                             <n-button v-if="form.submitText" size="large" type="primary" @click="toTestSubmit">{{form.submitText}}</n-button>
@@ -60,11 +44,13 @@
                                 </n-form>
                             </n-layout>
 
+                            <!--右侧组件属性面板-->
                             <n-layout-sider collapse-mode="transform" :collapsed-width="collapsedWidth" show-trigger="arrow-circle" content-style="padding: 12px;" :native-scrollbar="false" :width="siderWidth" bordered>
                                 <AttributeEditor :bean="attrEditor.bean" :items="attrEditor.items" :compact="compact" />
                             </n-layout-sider>
                         </n-layout>
                     </n-layout>
+
                     <n-layout-footer v-if="showFooter" position="absolute" :style="{height: footerHeight+'px', padding: '10px'}" bordered>
                         <slot name="footer">
                             <div style="text-align:center">
@@ -85,15 +71,16 @@
 
 <script setup>
     import { ref, onMounted,onUnmounted, h, reactive, toRaw, unref } from 'vue'
-    import { Bolt, Plus, Trash, CheckCircle, Download, FileDownload, Copy, HandPointLeftRegular,HandPointRightRegular } from "@vicons/fa"
+    import { Bolt, Plus, CheckCircle, Download, FileDownload, Copy, HandPointLeftRegular,HandPointRightRegular, Eye } from "@vicons/fa"
     import { useMessage, useDialog } from "naive-ui"
 
-    import { createFormItem, buildOptions, buildComponent, withHtmlNode } from '@grid-form/common'
+    import { createFormItem, buildOptions, buildComponent, withHtmlNode, showLabel, copyText } from '@grid-form/common'
 
     import Selector from "./components/selector.vue"
     import AttributeEditor from "./form-attribute.vue"
     import FormSetting from "./form-setting.vue"
     import ContextMenu from "./components/context-menu.vue"
+    import Container from "./container.vue"
 
     const message = useMessage()
     const dialog = useDialog()
@@ -116,25 +103,26 @@
         enableCtrlS: {type:Boolean, default: false},            //是否开启 CTRL+S 保存快捷键
     })
 
-    const track = (...ps)=> console.debug("%c[DESIGNER]", "background:#8c0776;padding:3px;color:white", ...ps)
+    const track = (...ps)=> console.debug("%c[GRID-FORM DESIGNER]", "background:#8c0776;padding:3px;color:white", ...ps)
 
     const collapsedWidth = 10
 
     let menu = ref()
+    const attrEditor = reactive({ bean:{}, items:[] })
+
     let copied = ""
-    const showMenu = (e, index)=>  menu.value.show(e, index)
-    const onMenuSelect = (key, index, com)=>{
-        console.debug(key, index, com)
+    const onMenuSelect = (key, index, com, container)=>{
+        console.debug(key, index, com, container)
         if(key == 'copy'){
-            copied = JSON.stringify(props.form.items[index])
-            navigator.clipboard.writeText(copied)
+            copied = container.copy(index)
+            copyText(copied)
             message.success(`表单项已复制到粘贴板`)
         }
         else if(key == 'paste'){
             if(!!copied){
                 let item = JSON.parse(copied)
                 delete item._active
-                doAddComponent(item, index-1)
+                container.add(item, index)
             }
             else
                 message.warning(`请先复制再进行粘贴`)
@@ -147,19 +135,14 @@
                 content: `确定删除表单项⌈${item._text}⌋吗？`,
                 positiveText: "确定",
                 negativeText: "我再想想",
-                onPositiveClick: () => {
-                    props.form.items.splice(index, 1)
-                }
+                onPositiveClick: () => container.remove(index)
             })
         }
         else {
-            doAddComponent(createFormItem(com), index)
+            container.add(createFormItem(com), index)
         }
     }
 
-    /**
-     *
-     */
     const getItemsByWidget = widget=>{
         for(let g of props.components){
             for(let son of g.items){
@@ -167,22 +150,6 @@
                     return son.items
             }
         }
-    }
-
-    const attrEditor = reactive({ bean:{}, items:[] })
-
-    const onAddComponent = row=> doAddComponent(createFormItem(row))
-
-    const doAddComponent = (item, position=-1)=> {
-        if(props.debug) {
-            message.info(`添加组件：${item._text}`)
-            track(`添加表单项 ${item._widget} `, item)
-        }
-
-        if(position<=-1)
-            props.form.items.push(item)
-        else
-            props.form.items.splice(position, 0, item)
     }
 
     const toActice = item=> {
@@ -226,7 +193,9 @@
                 if(("_uuid" in item && !item._uuid) || ("_text" in item && !item._text))
                     _error(`第${i+1}个表单项的编号及中文名不能为空`)
 
-                idMap[item._uuid] = (idMap[item._uuid] || 0) + 1
+                if(item._uuid){
+                    idMap[item._uuid] = (idMap[item._uuid] || 0) + 1
+                }
             }
 
             let repeatId = Object.keys(idMap).filter(v=>idMap[v]>1).join("、")
@@ -249,9 +218,14 @@
     const toExport = type=>{
         let json = JSON.stringify(_toSimpleObject(), null, type=='pretty'? 4 : undefined)
         if(props.debug) track("表单导出", type, json)
-        navigator.clipboard.writeText(json)
+        copyText(json)
         message.success(`表单数据已复制到粘贴板`)
     }
+
+    // const toPreview = ()=> {
+    //     track("预览表单")
+    //     message.warning(`此功能开发中，敬请期待...`)
+    // }
 
     if(props.enableCtrlS){
         props.debug && track("绑定 CTRL+S 保存快捷键")
@@ -264,7 +238,14 @@
         }
     }
 
-    onMounted(()=> message.info(`欢迎使用 GRID-FROM 设计器`))
+    onMounted(()=> {
+        let welcome = `欢迎使用 GRID-FROM 设计器`
+        console.group(welcome)
+        console.log("这是一个%c开源项目", "color:#8c0776;font-weight:bold", "https://github.com/0604hx/grid-form")
+        console.log("如果对您有所帮助，请不吝点个Star 😄")
+        console.groupEnd()
+        message.info(welcome)
+    })
 </script>
 
 <style>
@@ -282,7 +263,8 @@
         background: rgba(200, 200, 200, 0.15);
     }
 
-    .designer-content .cell.active .remove {
+    /* 暂不知道如何设置只对第一个 .remove 生效，有方案的大神请不吝赐教😄 */
+    .designer-content .cell.active .remove:nth-of-type(1) {
         display: inline-flex;
     }
 

@@ -2,29 +2,19 @@
     <div>
         <template v-if="!inited">
             <slot name="tip">
-                <div class="text-center">
+                <div style="text-align: center;">
                     <n-spin><template #description>表单渲染中...</template></n-spin>
                 </div>
             </slot>
         </template>
         <n-form v-else :size="form.size||'medium'" :label-width="form.labelWidth" :label-placement="form.labelPlacement" :label-align="form.labelAlign" :show-label="form.labelShow">
             <n-message-provider>
-                <n-grid :x-gap="gridGap" :y-gap="gridGap" :cols="form.grid" :style="{width: form.width, margin:'0px auto' }">
-                    <template v-for="(item, index) in form.items" :key="index">
-                        <n-form-item-gi v-if="item._hide!=true" :span="item._col" :show-feedback="false">
-                            <template #label>
-                                {{item._text}}<span v-if="item._required" style="color: red;"> *</span>
-                            </template>
-                            <component v-model:value="formData[item._uuid]" :is="buildComponent(item, renders[item._widget], false)" />
-                        </n-form-item-gi>
-                    </template>
-                </n-grid>
-                <div class="text-center mt-4">
-                    <n-space justify="center">
-                        <n-button v-if="form.submitText" :disabled="formData._disabled" size="large" type="primary" @click="toSubmit">{{form.submitText}}</n-button>
-                        <n-button v-for="btn in form.buttons" :type="btn.theme" size="large" @click="onExtraBtn(btn)">{{btn.text}} </n-button>
-                    </n-space>
-                </div>
+                <Container :gridGap="gridGap" :renders="renders" :form="form" :formData="formData" />
+
+                <n-space justify="center" style="margin-top: 12px;">
+                    <n-button v-if="form.submitText" :disabled="formData._disabled" size="large" type="primary" @click="toSubmit">{{form.submitText}}</n-button>
+                    <n-button v-for="btn in form.buttons" :type="btn.theme" size="large" @click="onExtraBtn(btn)">{{btn.text}} </n-button>
+                </n-space>
             </n-message-provider>
         </n-form>
     </div>
@@ -33,8 +23,9 @@
 <script setup>
     import { ref, toRaw, unref, onMounted, nextTick, reactive, watch } from 'vue'
 
-    import { buildComponent } from '@grid-form/common'
     import { default as RenderMixin, RenderEvent, RenderProps } from '@grid-form/common/render.mixin'
+
+    import Container from './container.vue'
 
     const emits = defineEmits(RenderEvent)
     const props = defineProps(RenderProps)

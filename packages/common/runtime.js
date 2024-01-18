@@ -1,7 +1,28 @@
+const onLoadTemplate = `
+/**
+ * 表单加载完成后触发，参数：
+ *  form - 当前表单值（Object），可以修改对应值
+ *  items - 表单定义（Array），支持动态修改表单项（如下拉框的选项内容）
+ */
+console.debug("表单值", form)
+// 更新 _uuid 为 type 的下拉框选项
+items.find(v=>v._uuid=='type').options = '个人,企业'
+`
+const onSubmitTemplate = `
+/**
+ * 表单提交前触发（Promise形式）
+ */
+console.debug("表单值", form)
+//继续提交
+resolve(true)
+`
+const onChangeTemplate = `
+`
+
 export const lifeCycles = [
-    { name:"onLoad", text:"加载完成时", summary:"表单加载完成后调用，参数格式为：function onLoad(form, items)", promise:false},
-    { name:"onSubmit", text:"表单提交前", summary:"表单提交前触发，以 Promise 形式返回，当报错或者返回非 true 时中断提交，参数：form, items", promise:true},
-    { name:"onChange", text:"表单值变动时", summary:"表单值变动时出发，参数格式为：function onChange(form, agent, items)", promise: false },
+    { name:"onLoad", text:"加载完成时", summary:"表单加载完成后调用，参数格式为：function onLoad(form, items)", promise:false, template: onLoadTemplate },
+    { name:"onSubmit", text:"表单提交前", summary:"表单提交前触发，以 Promise 形式返回，当报错或者返回非 true 时中断提交，参数：form, items", promise:true, template: onSubmitTemplate },
+    { name:"onChange", text:"表单值变动时", summary:"表单值变动时出发，参数格式为：function onChange(form, agent, items)", promise: false, template: onChangeTemplate },
     { name:"afterSubmit", text:"表单提交后", summary:"表单成功提交后触发，参数格式为：function afterSubmit(form)", promise:false},
 ]
 
@@ -27,9 +48,9 @@ function _triggerWithoutPromise(body, eventName, paramsNames, params){
 
 /**
  * 表单初始化后调用
- * @param {*} body
- * @param {*} form
- * @param {*} items
+ * @param {String} body
+ * @param {Object} form
+ * @param {Array} items
  * @returns
  */
 export function triggerLoaded(body, form, items){
@@ -38,9 +59,9 @@ export function triggerLoaded(body, form, items){
 
 /**
  * 返回 Promise 对象，可以捕获异常继而中断提交
- * @param {*} body
- * @param {*} form
- * @param {*} items
+ * @param {String} body
+ * @param {Object} form
+ * @param {Array} items
  * @returns
  */
 export function triggerBeforeSubmit(body, form, items){
@@ -49,9 +70,9 @@ export function triggerBeforeSubmit(body, form, items){
 
 /**
  *
- * @param {*} body
- * @param {*} form
- * @param {*} agent
+ * @param {String} body
+ * @param {Object} form
+ * @param {Array} agent
  * @returns
  */
 export function triggerChanged(body, form, agent, items){
@@ -60,8 +81,8 @@ export function triggerChanged(body, form, agent, items){
 
 /**
  * 表单提交后触发
- * @param {*} body
- * @param {*} form
+ * @param {String} body
+ * @param {Object} form
  */
 export function triggerAfterSubmit(body, form){
     // return new Function("form", buildFuncBody(body, false))(form)

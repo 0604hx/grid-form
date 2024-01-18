@@ -1,6 +1,19 @@
 import { h } from 'vue'
 import { NIcon } from 'naive-ui'
-import { TextWidth, Font, Percent, FolderRegular, MinusSquareRegular, CalendarAlt, Tasks, ToggleOff, CheckSquareRegular, BellRegular, Divide, Star, CheckCircleRegular, Palette, Tags } from '@vicons/fa'
+import { TextWidth, Font, Percent, FolderRegular, CalendarAlt, Tasks, ToggleOff, CheckSquareRegular, BellRegular, Divide, Star, CheckCircleRegular, Palette, Tags, SquareRegular } from '@vicons/fa'
+
+/**
+ * @typedef {Object} Attribute
+ * @property {String} label - 属性名称
+ */
+
+/**
+ * @typedef {Object} Container - 组件容器
+ * @property {Function} add - 添加组件，参数：item（组件对象）、position（位置，默认-1）
+ * @property {Function} copy - 复制组件，参数：index
+ * @property {Function} remove - 删除组件，参数：index
+ */
+
 
 /**
  * 表单属性编辑器的控件类型，尽可能简单
@@ -13,7 +26,9 @@ const Types = {
     SELECT  : "SELECT",
 }
 
-const buildBasicProperty = (cnName="标签", value, valueLabel="默认值")=>{
+const BASIC = "basic"
+
+const basicProperty = (cnName="标签", value, valueLabel="默认值")=>{
     let items = [ { label:"表单编号", id:"_uuid", summary:"表单提交时的参数名称", widget: Types.INPUT, value:"" }]
     if(!!cnName) items.push({ label:"中文名称", id:"_text", widget: cnName===false? undefined: Types.INPUT, value: cnName })
     items.push(
@@ -29,10 +44,20 @@ const buildBasicProperty = (cnName="标签", value, valueLabel="默认值")=>{
             { label:"回显文案", id:"_message", widget: Types.INPUT, value: "", summary:"当校验失败时提示的内容（仅限勾选必填）" }
         )
     }
-    return { id:"basic", label:"基本信息", items }
+    return { id: BASIC, label:"基本信息", items }
 }
 
-const buildProperty = (items, id="special", label="控件属性")=> ({ id, label, items })
+/**
+ * 构建简单的【基本信息】面板属性
+ * @param {Array<Attribute>} extra
+ * @returns
+ */
+const basicSimpleProperty = (...extra)=>({
+    id: BASIC, label:"基本信息",
+    items:[ COL(), ...extra ]
+})
+
+const specialProperty = (items, id="special", label="控件属性")=> ({ id, label, items })
 
 const COL           = ()=> ({ label:"所占列数", id:"_col", widget: Types.NUMBER, min:0, max: 24, suffix:"列", value: 1 })
 const TEXTAREA      = (label="内容", value="文本内容", rows=3)=> ({ label, id:"_value", widget: Types.INPUT, value, rows })
@@ -59,22 +84,22 @@ const USE_HTML      = (label="HTML渲染")=> ({ id:"_html", label, widget:Types.
 const _INPUT = {
     id:"INPUT", label:"文本输入", icon:TextWidth, value:"",
     items:[
-        buildBasicProperty("文本框"),
-        buildProperty([PLACEHOLDER(), CLEARABLE(), PREFIX(), SUFFIX(), SHOW_COUNT(), MIN_LENGTH(), MAX_LENGTH(), ROWS()])
+        basicProperty("文本框"),
+        specialProperty([PLACEHOLDER(), CLEARABLE(), PREFIX(), SUFFIX(), SHOW_COUNT(), MIN_LENGTH(), MAX_LENGTH(), ROWS()])
     ]
 }
 const _NUMBER = {
     id:"NUMBER", label:"数值输入", icon:Percent,
     items:[
-        buildBasicProperty("数字框"),
-        buildProperty([PLACEHOLDER(), CLEARABLE(), PREFIX(), SUFFIX(), MIN(), MAX()])
+        basicProperty("数字框"),
+        specialProperty([PLACEHOLDER(), CLEARABLE(), PREFIX(), SUFFIX(), MIN(), MAX()])
     ]
 }
 const _TAGS = {
     id:"TAGS", label:"动态标签", icon: Tags,
     items:[
-        buildBasicProperty(),
-        buildProperty([
+        basicProperty(),
+        specialProperty([
             CLOSABLE(true), MAX(undefined, "最大标签数"), TYPE(),
             { id:"round", label:"使用圆角", widget:Types.SWITCH, value: false, summary:"标签圆角显示" }
         ])
@@ -83,8 +108,8 @@ const _TAGS = {
 const _DATE = {
     id:"DATE", label:"日期选择", icon: CalendarAlt,
     items: [
-        buildBasicProperty("日期选择"),
-        buildProperty([
+        basicProperty("日期选择"),
+        specialProperty([
             PLACEHOLDER(), CLEARABLE(),
             { id:"type", label:"日期类型", widget:Types.SELECT, value:"date", options:["date|日期（年月日）", "datetime|日期时间", "month|仅月份", "year|仅年份", "quarter|年份和季度"] },
             { id:"format", label:"格式化", widget:Types.INPUT, value:"yyyy-MM-dd", summary:"日期显示格式，默认为 yyyy-MM-dd（示例 2023-01-01）"}
@@ -94,8 +119,8 @@ const _DATE = {
 const _SELECT = {
     id:"SELECT", label:"下拉选择", icon: Tasks,
     items:[
-        buildBasicProperty(),
-        buildProperty([
+        basicProperty(),
+        specialProperty([
             PLACEHOLDER(), CLEARABLE(), FILTERABLE(),
             { id:"multiple", label:"可多选", widget:Types.SWITCH, value: false },
             { id:"options", label:"选项值", widget:Types.INPUT, value:"", rows: 3 }
@@ -105,8 +130,8 @@ const _SELECT = {
 const _SWITCH = {
     id:"SWITCH", label:"开关项框", icon: ToggleOff,
     items:[
-        buildBasicProperty(),
-        buildProperty([
+        basicProperty(),
+        specialProperty([
             { id:"round", label:"圆形按钮", widget:Types.SWITCH, value: true, summary:"不勾选时显示为方形" }
         ])
     ]
@@ -114,8 +139,8 @@ const _SWITCH = {
 const _RADIO = {
     id:"RADIO", label:"单选项框", icon: CheckCircleRegular,
     items: [
-        buildBasicProperty(),
-        buildProperty([
+        basicProperty(),
+        specialProperty([
             { id:"button", label:"按钮模式", widget:Types.SWITCH, value:false, summary:"使用按钮组展示，显得更优雅一点"},
             OPTIONS()
         ])
@@ -124,15 +149,15 @@ const _RADIO = {
 const _CHECK_BOX = {
     id:"CHECKBOX", label:"多选项框", icon: CheckSquareRegular,
     items:[
-        buildBasicProperty(),
-        buildProperty([ OPTIONS(), MIN(undefined, "最小选择数"), MAX(undefined, "最大选择数") ])
+        basicProperty(),
+        specialProperty([ OPTIONS(), MIN(undefined, "最小选择数"), MAX(undefined, "最大选择数") ])
     ]
 }
 const _RATE = {
     id:"RATE", label:"星级评分", icon:Star,
     items:[
-        buildBasicProperty(),
-        buildProperty([
+        basicProperty(),
+        specialProperty([
             CLEARABLE(),
             { id:"count",label:"星星个数", widget:Types.NUMBER, value:5, min:1, max:10, summary:"显示的星星格式（1-10之间）" },
             { id:"allow-half",label:"允许半个",widget:Types.SWITCH, value:false, summary:"允许只激活一半图标（如 4.5 ）" }
@@ -142,24 +167,18 @@ const _RATE = {
 const _COLOR = {
     id:"COLOR", label:"颜色选择", icon: Palette,
     items:[
-        buildBasicProperty(),
-        buildProperty([
+        basicProperty(),
+        specialProperty([
             CLEARABLE(),
             { id:"swatches", label:"预设颜色", widget:Types.INPUT, rows:4, summary:"一行一个颜色，支持 RGB、RGBA、HEX 格式" }
         ])
     ]
 }
 const _TEXT = {
-    id:"TEXT", label:"静态文本", icon: Font,
+    id:"TEXT", label:"静态文本", icon: Font, hideLabel: true,
     items: [
-        {
-            id:"basic", label:"基本信息",
-            items:[
-                COL(),
-                TEXTAREA()
-            ]
-        },
-        buildProperty([
+        basicSimpleProperty( TEXTAREA() ),
+        specialProperty([
             TYPE(), USE_HTML(),
             { id:"strong", label:"加粗", widget:Types.SWITCH, value:false },
             { id:"underline", label:"下划线", widget:Types.SWITCH, value:false },
@@ -169,26 +188,17 @@ const _TEXT = {
     ]
 }
 const _ALERT = {
-    id:"ALERT", label:"提示信息", icon: BellRegular,
+    id:"ALERT", label:"提示信息", icon: BellRegular, hideLabel: true,
     items:[
-        {
-            id:"basic", label:"基本信息",
-            items:[ COL() ]
-        },
-        buildProperty([TITLE(), CONTENT("提示内容"),USE_HTML(), TYPE("info"), BORDERED(), CLOSABLE()])
+        basicSimpleProperty(),
+        specialProperty([TITLE(), CONTENT("提示内容"),USE_HTML(), TYPE("info"), BORDERED(), CLOSABLE()])
     ]
 }
 const _DIVIDER = {
-    id:"DIVIDER", label:"分割直线", icon: Divide, //MinusSquareRegular
+    id:"DIVIDER", label:"分割直线", icon: Divide, hideLabel: true, //MinusSquareRegular
     items:[
-        {
-            id:"basic", label:"基本信息",
-            items:[
-                COL(),
-                TEXTAREA("内容", "我是分割线", 1)
-            ]
-        },
-        buildProperty([
+        basicSimpleProperty( TEXTAREA("内容", "我是分割线", 1) ),
+        specialProperty([
             { id:"dashed", label:"使用虚线", widget:Types.SWITCH, value:false },
             { id:"title-placement", label:"标题位置", widget:Types.RADIO, value:"center", options:"left|靠左,center|居中,right|靠右" }
         ])
@@ -198,8 +208,8 @@ const _DIVIDER = {
 const _FILE = {
     id:"FILE", label:"文件上传", icon: FolderRegular,
     items: [
-        buildBasicProperty(),
-        buildProperty([
+        basicProperty(),
+        specialProperty([
             { id:"maxSize", label:"文件大小限制", widget:Types.NUMBER, min:1, max:50, value:2, suffix:"兆(MB)", summary:"超过该值的文件将不允许提交" },
             // 参考 https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept
             {
@@ -219,12 +229,28 @@ const _FILE = {
         ])
     ]
 }
+
+const _CARD = {
+    id:"CARD", label:"卡片", icon: SquareRegular, container: true, hideLabel: true,
+    items:[
+        basicSimpleProperty( TITLE("卡片"), BORDERED()),
+        specialProperty([
+            { id:"width", label:"容器宽度", widget: Types.INPUT, value:"100%" },
+            { id:"size", label:"组件尺寸", widget: Types.RADIO, value:'medium', options:"small|小号,medium|中等,large|大号" },
+            { id:"grid", label:"容器列数", widget: Types.NUMBER, value: 3, min:1, max: 12, suffix:"列" },
+            { id:"labelShow", label:"显示标签", widget: Types.SWITCH, value: true, summary:"是否显示内部表单项的标签" },
+            { id:"labelPlacement", label:"标签位置", widget:Types.RADIO, value:"top", options:"top|在顶部,left|在左边" },
+            { id:"labelAlign", label:"标签对齐", widget:Types.RADIO, value:"left", options:"left|左对齐,right|右对齐" },
+            { id:"labelWidth", label:"标签宽度", widget: Types.INPUT, value:"120px" }
+        ])
+    ]
+}
 // ----------------------------- END 控件清单 END -----------------------------
 
 export default [
     { label:"输入组件", items: [ _INPUT, _NUMBER, _TAGS ] },
     { label:"选择组件", items: [ _DATE, _SELECT, _RADIO, _CHECK_BOX, _SWITCH, _RATE, _COLOR, _FILE ]},
-    { label:"展示组件", items: [ _TEXT, _ALERT, _DIVIDER] },
+    { label:"展示组件", items: [ _TEXT, _ALERT, _DIVIDER, _CARD ] },
 ]
 
 export const buildIcon= (icon, ps={})=> ()=> h(NIcon, Object.assign({component: icon}, ps))

@@ -1,7 +1,6 @@
 <template>
     <div style="margin:0px auto; width:920px;">
         <div style="text-align:center;">
-            <div style="height: 40px;"></div>
             <img src="/logo.svg" />
         </div>
         <n-divider>GRID-FORM 栅栏（格子）表单</n-divider>
@@ -40,7 +39,7 @@
                 </n-button>
                 实现的表单渲染器
             </n-step>
-            <n-step status="wait" title="渲染器（Vant 4）">
+            <n-step status="finish" title="渲染器（Vant 4）">
                 基于
                 <n-button text type="info" tag="a" target="_blank" href="https://vant-ui.github.io">
                     <template #icon>

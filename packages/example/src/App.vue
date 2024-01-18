@@ -1,5 +1,5 @@
 <template>
-    <n-config-provider :theme="theme" :locale="zhCN" :date-locale="dateZhCN" :hljs="hljs">
+    <n-config-provider :theme="theme" :locale="zhCN" :date-locale="dateZhCN" :theme-overrides="customVars" :hljs="hljs">
         <n-dialog-provider>
             <n-message-provider>
                 <div style="min-height: 100%;">
@@ -30,4 +30,29 @@
 
         return _theme
     })
+
+    /**
+     * @type import('naive-ui').GlobalThemeOverrides
+     */
+    let customVars  = {
+        // common: {
+        //     primaryColor: '#1677ff',
+        //     primaryColorHover: '#40a9ff',
+        //     primaryColorPressed: '#0050b3',
+        //     primaryColorSuppl: '#1677ff'
+        // }
+    }
 </script>
+
+<style>
+    html, body {
+        padding:0px;
+        margin:0px;
+        height: 100%;
+    }
+
+    body.dark {
+        background-color: rgb(16, 16, 20);
+        color: rgba(255, 255, 255, 0.82);
+    }
+</style>

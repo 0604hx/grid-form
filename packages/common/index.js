@@ -1,11 +1,26 @@
 import { h, toRaw, unref } from 'vue'
 
 /**
- * 创建 Form 数据对象
- * @param {*} ps
- * @returns
+ * @typedef {Object} Widget
+ * @property {String} id - 组件ID
+ * @property {String} label - 组件名称
+ * @property {String} icon - 组件图标
+ * @property {Array<Object>} items - 组件属性
+ * @property {*} value - 组件默认值
+ * @property {Boolean} container - 是否为容器组件（能够装载表单项），默认为 false
+ * @property {Boolean} hideLabel - 是否在渲染时隐藏表单标签，默认为 false
  */
-export function createForm(ps={}){
+
+/**
+ * @typedef {Object} FormItem
+ * @property {String} _widget - 组件类型编号
+ * @property {String} _uuid - 表单项UUID
+ * @property {String} _text - 表单项标签
+ * @property {String} _value - 表单项默认值
+ */
+
+
+export function createFormBean(ps={}){
     return Object.assign({
         size:"medium",                          //整体表单尺寸，可选值：small、medium、large
         width: "100%",
@@ -14,29 +29,41 @@ export function createForm(ps={}){
         labelShow: true,
         labelPlacement:"top",                   //标签位置，可选值：top（顶部）、left 左边
         labelAlign: "left",                     //标签对齐方式：left、right
-        submitText:"提交数据",
-        url:"",
-        okText:"",
-        onLoad:"",
-        onSubmit:"",
-        onChange:"",
-        afterSubmit:"",
-        hides:[],                               //表单默认值（隐藏项），包含`id`、`value`两个属性
         items: [],
-        buttons:[]                              //额外按钮，Object类型，属性包含：text（显示文本）、type（事件类型，post、download、script）、theme（配色）、code（脚本）
     }, ps)
+}
+/**
+ * 创建 Form 数据对象
+ * @param {*} ps
+ * @returns
+ */
+export function createForm(ps={}){
+    return createFormBean(
+        Object.assign({
+            submitText:"提交数据",
+            url:"",
+            okText:"",
+            onLoad:"",
+            onSubmit:"",
+            onChange:"",
+            afterSubmit:"",
+            hides:[],                           //表单默认值（隐藏项），包含`id`、`value`两个属性
+            buttons:[]                          //额外按钮，Object类型，属性包含：text（显示文本）、type（事件类型，post、download、script）、theme（配色）、code（脚本）
+        }, ps)
+    )
 }
 
 let ID_COUNTER = 1
 /**
  * 构建新表单项
- * @param {*} widget
+ * @param {Widget} widget
+ * @returns {FormItem}
  */
 export function createFormItem(widget) {
     let _widget = widget.id
     if(!_widget)    throw Error(`参数 widget 的 id 不能为空`)
 
-    let item = { _widget }
+    let item = { _widget, ...(widget.container === true? createFormBean():{}) }
     if(Array.isArray(widget.items)) {
         for(let i of widget.items){
             if(Array.isArray(i.items)){
@@ -54,6 +81,12 @@ export function createFormItem(widget) {
 
     // 赋予默认值
     if(item._value == undefined) item._value = widget.value
+    // 容器组件，设置其 childs
+    if(widget.container === true) {
+        item.items = []
+        item._container = true
+    }
+    if(widget.hideLabel === true)   item._hideLabel = true
     return item
 }
 
@@ -113,7 +146,9 @@ export function buildOptions(text, valueField="value", labelField="label") {
 
 /**
  *
- * @param {*} item
+ * @param {FormItem} item
+ * @param {Object|Function} widget - 渲染函数或者组件
+ * @param {Boolean} track - 是否显示debug信息
  * @returns
  */
 export function buildComponent(item, widget, track=true){
@@ -125,10 +160,6 @@ export function buildComponent(item, widget, track=true){
     let attrs = {}
     //组件 props
     let _props = {}
-    // if(arguments.length >= 3){
-    //     _props.modelValue = item._value
-    //     _props["on-update:modelValue"] = v=> {console.debug("更新", v)}
-    // }
 
     for(let key in item){
         if(key[0]=="_"){
@@ -164,5 +195,28 @@ export function formatFileSize(mem, fixed=2){
                 : mem + 'B'
 }
 
-export * from './runtime'
+/**
+ * 将指定数据写入到系统粘贴板
+ * @param {Object|String} obj   如果为非字符串，事先进行 JSON 转换
+ * @returns
+ */
+export const copyText = (obj, pretty=false)=> {
+    let text = typeof(obj)=='string'? obj: JSON.stringify(obj, null, pretty?4:0)
+    // 仅在 localhost 或者 https 环境下才能使用该 API
+    if(navigator.clipboard)
+        navigator.clipboard.writeText(text)
+    else {
+        const textarea = document.createElement('textarea')
+        textarea.addEventListener('focusin', (event) => event.stopPropagation())
+        textarea.value = text
+        textarea.setAttribute('readonly', '')
+        textarea.style.cssText =  'position:fixed; pointer-events:none; z-index:-9999; opacity:0;'
 
+        document.body.appendChild(textarea)
+        textarea.select()
+        document.execCommand('copy')
+        document.body.removeChild(textarea)
+    }
+}
+
+export * from './runtime'

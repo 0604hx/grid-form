@@ -138,9 +138,9 @@
 
     <n-modal v-model:show="hooker.show" preset="card" :style="{width: '1000px'}" :mask-closable="false">
         <template #header>
-            <n-icon :component="Bolt" />
             <n-tag v-if="hooker.func.promise" type="info" class="ml-3" :bordered="false">PROMISE</n-tag>
             {{hooker.func.text}}
+            <n-button size="tiny" type="primary" title="在编辑区插入示例代码" tertiary @click="addTplCode" v-if="hooker.func.template">示例代码</n-button>
         </template>
 
         <n-alert :title="hooker.func.summary" type="info" :bordered="false"/>
@@ -149,7 +149,6 @@
 
     <n-modal v-model:show="btner.show" preset="card" :style="{width: '1000px'}" :title="'⌈'+btner.item.text+'⌋的脚本'" :mask-closable="false">
         <template #header>
-            <n-icon :component="Bolt" />
             ⌈{{btner.item.text}}⌋的脚本
         </template>
 
@@ -183,13 +182,15 @@
 
 <script setup>
     import { ref,reactive, createVNode } from 'vue'
-    import { NIcon } from 'naive-ui'
-    import { Bolt, Plus, Edit, Cog, Code, Trash } from "@vicons/fa"
+    import { NIcon, useMessage } from 'naive-ui'
+    import { Plus, Edit, Cog, Code, Trash } from "@vicons/fa"
 
     import CodeEditor from "./components/editor.code.vue"
     import { buildIcon } from "./component"
 
     import { buildOptions, lifeCycles, createExtraButton, createHideItem } from '@grid-form/common'
+
+    const message = useMessage()
 
     const props = defineProps({
         form: {type:Object},
@@ -221,6 +222,13 @@
     const toHook = item => {
         hooker.func = item
         hooker.show = true
+    }
+    const addTplCode = ()=>{
+        let { name, template } = hooker.func
+        if(!!props.form[name])  return message.warning(`请先清空代码`)
+
+        props.form[name] = template.trim()
+        console.debug(name, template, props.form)
     }
 
     const _toAdd = (e, name, provider=createExtraButton)=>{

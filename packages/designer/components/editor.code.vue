@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-    import { ref,onMounted } from 'vue'
+    import { ref,watch } from 'vue'
 
     import { Codemirror } from 'vue-codemirror'
     import { javascript } from '@codemirror/lang-javascript'
@@ -35,6 +35,5 @@
 
     let code = ref(props.value)
 
-    onMounted(() => {
-    })
+    watch(()=>props.value, ()=> code.value=props.value)
 </script>

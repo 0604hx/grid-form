@@ -40,7 +40,7 @@
         }))
     }))
 
-    const menu = reactive({x:0, y:0, show:false, index:-1})
+    const menu = reactive({x:0, y:0, show:false, index:-1, container: undefined})
     const menuOptions = [
         { label:"复制", key:"copy", icon:buildIcon(CopyRegular, {color:"#2080f0"}) },
         { label:"粘贴（前方）", key:"paste", icon:buildIcon(Paste, {color:"#2080f0"}) },
@@ -49,11 +49,19 @@
         {  label:"在前插入", key: PREFIX, icon: buildIcon(PlusCircle, {color:"#18a058"}), children: createItemMenuOpts(PREFIX) },
         {  label:"在后追加", key: SUFFIX, icon: buildIcon(PlusCircle, {color:"#18a058"}), children: createItemMenuOpts(SUFFIX) },
         { type:"divider" },
-        { label:"删除", icon: buildIcon(Trash, {color:"#d03050"}), key:"delete" }
+        { label:"删除", key:"delete", icon: buildIcon(Trash, {color:"#d03050"}) }
     ]
 
-    const show = (e, index)=>{
+
+    /**
+     * @param {Event} e
+     * @param {Number} index - 组件序号
+     * @param {Container} container - 组件容器
+     */
+    const show = (e, index, container)=>{
         e.preventDefault()
+
+        menu.container = container
         menu.x      = e.clientX
         menu.y      = e.clientY
         menu.index  = index
@@ -63,12 +71,13 @@
     const onMenuSelect = (key, opt)=>{
         if(key.indexOf(LINK) > 0){
             let ids = key.split(LINK)
-            emits("select", ids[0], menu.index + (ids[0]==PREFIX?0:1), findWidget(ids[1]))
+            emits("select", ids[0], menu.index + (ids[0]==PREFIX?0:1), findWidget(ids[1]), menu.container)
         }
         else
-            emits("select", key, menu.index)
+            emits("select", key, menu.index, undefined, menu.container)
 
         nextTick(()=>{
+            menu.container = null
             menu.index = -1
             menu.show = false
         })
