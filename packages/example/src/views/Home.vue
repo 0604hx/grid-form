@@ -61,7 +61,7 @@
     const router = useRouter()
 
     let jump = name=> {
-        if(name==='vant')   return window.open("/render-vant.html")
+        if(name==='vant')   return window.open("/vant.html")
         router.push({name})
     }
 </script>

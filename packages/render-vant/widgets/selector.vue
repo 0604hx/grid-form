@@ -1,7 +1,7 @@
 <!--弹出选择器-->
 <template>
     <template v-if="multiple===false">
-        <van-field v-model="shadow" :disabled="disabled" is-link readonly name="picker" :label="label" :placeholder="placeholder" @click="show = true" />
+        <van-field v-model="shadow" :disabled="disabled" :required="required" is-link readonly name="picker" :label="label" :placeholder="placeholder" @click="show = true" />
         <van-popup v-model:show="show" position="bottom">
             <van-picker :title="label" :columns="options" @confirm="onConfirm" @cancel="close" />
         </van-popup>
@@ -38,8 +38,11 @@
         placeholder: {type:String, default:"请选择"},
         disabled:{type:Boolean, default: false},
         options:{type:[String, Array, Object]},
-        multiple:{type:Boolean, default: false}
+        multiple:{type:Boolean, default: false},
+        required:{type:Boolean, default: false}
     })
+
+    console.debug(props)
 
     const buildShadow = v=> Array.isArray(v)? v.join(",") : v
 

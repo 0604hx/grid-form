@@ -1,18 +1,16 @@
 <template>
-    <van-form :label-width="form.labelWidth" :label-align="form.labelAlign">
+    <!-- <van-form :label-width="form.labelWidth" :label-align="form.labelPlacement">
         <van-cell-group inset>
-            <template v-for="(item, index) in form.items">
-                <component v-if="item._hide!=true" v-model="formData[item._uuid]" :is="buildComponent(item, renders[item._widget], false)" />
-            </template>
-            <!-- <template v-for="(item, index) in items">
-                <component v-model="formData[item._uuid]" :is="buildComponent(item, renders[item._widget], false)" />
-            </template> -->
+            <Container :form="form" :formData="formData" :renders="renders" />
         </van-cell-group>
-        <van-space direction="vertical" fill style="margin: 16px;">
-            <van-button v-if="form.submitText" block type="primary" native-type="submit" @click="toSubmit">{{form.submitText}}</van-button>
-            <van-button v-for="btn in form.buttons" block :type="toTheme(btn.theme)" @click="onExtraBtn(btn)">{{btn.text}} </van-button>
-        </van-space>
-    </van-form>
+    </van-form> -->
+
+    <Container :form="form" :formData="formData" :renders="renders" />
+
+    <van-space direction="vertical" fill style="margin: 16px;">
+        <van-button v-if="form.submitText" block type="primary" native-type="submit" @click="toSubmit">{{form.submitText}}</van-button>
+        <van-button v-for="btn in form.buttons" block :type="toTheme(btn.theme)" @click="onExtraBtn(btn)">{{btn.text}} </van-button>
+    </van-space>
 </template>
 
 <script setup>
@@ -20,6 +18,8 @@
 
     import { buildComponent, buildOptions } from '@grid-form/common'
     import { default as RenderMixin, RenderEvent, RenderProps } from '@grid-form/common/render.mixin'
+
+    import Container from './container.vue'
 
     const emits = defineEmits(RenderEvent)
     const props = defineProps(RenderProps)

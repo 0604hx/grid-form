@@ -186,18 +186,31 @@
 
             let idMap = {}
             let items = props.form.items
-            //判断字段合法性
-            for (let i = 0; i < items.length; i++) {
-                const item = items[i]
+            let count = 0
+            /**
+             * 判断字段合法性
+             * @param {Array} targets - 表单项数组
+             */
+            const _check = targets=>{
+                for (let i = 0; i < targets.length; i++) {
+                    const item = targets[i]
 
-                if(("_uuid" in item && !item._uuid) || ("_text" in item && !item._text))
-                    _error(`第${i+1}个表单项的编号及中文名不能为空`)
+                    if("_uuid" in item){
+                        count ++
+                        if(!item._uuid || ("_text" in item && !item._text))
+                            _error(`第${count}个表单项的编号及中文名不能为空`)
 
-                if(item._uuid){
-                    idMap[item._uuid] = (idMap[item._uuid] || 0) + 1
+                        if(item._uuid)
+                            idMap[item._uuid] = (idMap[item._uuid] || 0) + 1
+                    }
+
+                    if(Array.isArray(item.items))
+                        _check(item.items)
                 }
             }
+            _check(items)
 
+            if(props.debug) track(`表单项ID合集：`, idMap)
             let repeatId = Object.keys(idMap).filter(v=>idMap[v]>1).join("、")
             if(!!repeatId)  _error(`存在重复表单项ID ⌈ ${repeatId} ⌋`)
         }

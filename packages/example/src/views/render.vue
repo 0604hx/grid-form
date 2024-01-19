@@ -7,7 +7,7 @@
                         <FormRender :renders="RenderFuncs" :form="form" @submit="onSubmit" @failed="onFailed" @inited="onInited" debug />
                     </n-card>
 
-                    <n-divider title-placement="center">表单反馈输出</n-divider>
+                    <div style="font-size: 16px; font-weight: bold;margin: 10px 0 10px 0;border-bottom: 1px solid #a3a3a3;">表单反馈输出</div>
                     <div v-if="result.title">
                         <n-tag :type="result.type">{{result.title}}</n-tag>
                         {{result.data}}

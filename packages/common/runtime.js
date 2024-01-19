@@ -6,11 +6,13 @@ const onLoadTemplate = `
  */
 console.debug("表单值", form)
 // 更新 _uuid 为 type 的下拉框选项
-items.find(v=>v._uuid=='type').options = '个人,企业'
+items.$('type').options = '个人,企业'
 `
 const onSubmitTemplate = `
 /**
- * 表单提交前触发（Promise形式）
+ * 表单提交前触发（Promise形式），参数：
+ *  form - 当前表单值（Object），可以修改对应值
+ *  items - 表单定义（Array）
  */
 console.debug("表单值", form)
 //继续提交

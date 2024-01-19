@@ -17,6 +17,9 @@ import { h, toRaw, unref } from 'vue'
  * @property {String} _uuid - 表单项UUID
  * @property {String} _text - 表单项标签
  * @property {String} _value - 表单项默认值
+ * @property {Boolean} _watch - 是否监听变化
+ * @property {Boolean} _container - 是否为容器
+ * @property {Boolean} _required - 是否为必填项目
  */
 
 

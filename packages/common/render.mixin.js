@@ -150,6 +150,28 @@ export default (props, emits, suffix="")=>{
         }
     }
 
+    /**
+     * 递归计算表单初始值
+     * @param {Array<import('.').FormItem>} items
+     */
+    const _initFormValue = async items=>{
+        if(Array.isArray(items)){
+            for (const v of items) {
+                if(!!v._uuid){
+                    formData[v._uuid] = await _computeValue(v._value, v._uuid)
+
+                    if(v._required === true){
+                        formRequired[v._uuid] = { regex: v._regex, msg: v._message, label: v._text }
+                    }
+                    if(v._watch === true)
+                        watchFields.add(v._uuid)
+                }
+                if(v._container===true)
+                    await _initFormValue(v.items)
+            }
+        }
+    }
+
     const initForm = async ()=>{
         let { items, hides } = props.form
 
@@ -162,23 +184,28 @@ export default (props, emits, suffix="")=>{
             }
         }
 
-        if(Array.isArray(items)){
-            for (const v of items) {
-                if(!!v._uuid){
-                    formData[v._uuid] = await _computeValue(v._value, v._uuid)
-
-                    if(v._required === true){
-                        formRequired[v._uuid] = { regex: v._regex, msg: v._message, label: v._text }
-                    }
-                    if(v._watch === true)
-                        watchFields.add(v._uuid)
-                }
-            }
-        }
+        await _initFormValue(items)
 
         if(props.debug) track("表单值", formData)
 
         _setupWatchForChange()
+
+        /**
+         * 给 items 注入 $ 方法，便于按 _uuid 递归找到表单项，用法：
+         *  items.$("name")                     //找到编号为 name 的表单项
+         *  items.$("name").disabled = true     //禁用编号为 name 的表单项
+         * @param {String} uuid
+         * @returns
+         */
+        items.$ = function(uuid){
+            const queue = [...this]
+            while(queue.length){
+                const t = queue.shift()
+                if(t._uuid == uuid) return t
+                if(t._container === true && Array.isArray(t.items))
+                    queue.push(...t.items)
+            }
+        }
 
         nextTick(()=>{
             if(props.form.onLoad){

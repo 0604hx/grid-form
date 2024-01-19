@@ -8,7 +8,10 @@ let resolve = dir=>path.join(__dirname, dir)
 const config = {
 	context: __dirname,
 	devtool: false,
-	entry: "./src/main.js",
+	entry: {
+        main: "./src/main.js",
+        vant: "./src/vant.js"
+    },
     devServer:{
         host:"localhost",
         port: 8080,
@@ -34,10 +37,16 @@ const config = {
         new VueLoaderPlugin(),
         new HtmlRspackPlugin({
             template:"./index.html",
+            chunks:["main"]
             // templateParameters: {
             //     //配置模板参数，通过 <%= 变量名 %> 使用，此处模拟 vue-cli 中的前缀目录
             // },
             // minify: false
+        }),
+        new HtmlRspackPlugin({
+            template:"./index.html",
+            filename:"vant.html",
+            chunks:["vant"]
         }),
         //如果需要拷贝静态资源，请使用下方配置
         new CopyRspackPlugin({patterns:[{from:"public", to:""}]}),

@@ -2,7 +2,7 @@ import { h } from 'vue'
 
 import { buildOptions  } from '@grid-form/common'
 
-import { Field, Divider } from 'vant'
+import { Field, Divider, CellGroup } from 'vant'
 
 import SelectorDate from "./widgets/selector-date.vue"
 import SelectorImage from "./widgets/selector-img.vue"
@@ -64,7 +64,8 @@ const RenderFuncs = {
     "ALERT"     : (props, attrs)=> h(Alert, {title:props.title, type:props.type, closeable:props.closeable }, {
         default: ()=> attrs._html===true?h('div', {innerHTML:props.content}): props.content
     }),
-    "DIVIDER"   : (props, attrs)=> h(Divider, {dashed: props.dashed, "content-position":props['title-placement']}, ()=>attrs._value)
+    "DIVIDER"   : (props, attrs)=> h(Divider, {dashed: props.dashed, "content-position":props['title-placement']}, ()=>attrs._value),
+    "CARD"      : (props)=> h(CellGroup, { title: props.title, inset: true, border: props.bordered } )
 }
 
 export { FormRender, RenderFuncs }

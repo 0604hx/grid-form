@@ -7,9 +7,9 @@
                 </div>
             </slot>
         </template>
-        <n-form v-else :size="form.size||'medium'" :label-width="form.labelWidth" :label-placement="form.labelPlacement" :label-align="form.labelAlign" :show-label="form.labelShow">
+        <n-form v-else :size="form.size||'medium'" :label-width="form.labelWidth" :show-label="form.labelShow">
             <n-message-provider>
-                <Container :gridGap="gridGap" :renders="renders" :form="form" :formData="formData" />
+                <Container :gridGap="gridGap" :renders="renders" :form="form" :formData="formData" :labelPlacement="form.labelPlacement" :labelAlign="form.labelAlign"/>
 
                 <n-space justify="center" style="margin-top: 12px;">
                     <n-button v-if="form.submitText" :disabled="formData._disabled" size="large" type="primary" @click="toSubmit">{{form.submitText}}</n-button>

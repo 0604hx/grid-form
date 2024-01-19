@@ -1,8 +1,10 @@
 <template>
     <div style="padding: 10px; margin:0px auto; width: 500px;">
-        <VantRender style="border: 1px solid #dadada; border-radius: 4px;" :renders="VantRenderFuncs" :form="form" @submit="onSubmit" @failed="onFailed" @inited="onInited" debug />
+        <div style="border: 1px solid #dadada; border-radius: 4px;">
+            <VantRender :renders="VantRenderFuncs" :form="form" @submit="onSubmit" @failed="onFailed" @inited="onInited" debug />
+        </div>
 
-        <van-divider title-placement="center">表单反馈输出</van-divider>
+        <div style="font-size: 16px; font-weight: bold;margin: 10px 0 10px 0;border-bottom: 1px solid #a3a3a3;">表单反馈输出</div>
         <div v-if="result.title">
             <div>
                 <van-tag :type="type">
