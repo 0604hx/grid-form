@@ -1,0 +1,10 @@
+html, body {
+    padding:0px;
+    margin:0px;
+    height: 100%;
+}
+
+body.dark {
+    background-color: rgb(16, 16, 20);
+    color: rgba(255, 255, 255, 0.82);
+}

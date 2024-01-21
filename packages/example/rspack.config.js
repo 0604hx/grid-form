@@ -9,8 +9,9 @@ const config = {
 	context: __dirname,
 	devtool: false,
 	entry: {
-        main: "./src/main.js",
-        vant: "./src/vant.js"
+        main:       "./src/main.js",
+        vant:       "./src/vant.js",
+        element:    "./src/element.js"
     },
     devServer:{
         host:"localhost",
@@ -43,11 +44,8 @@ const config = {
             // },
             // minify: false
         }),
-        new HtmlRspackPlugin({
-            template:"./index.html",
-            filename:"vant.html",
-            chunks:["vant"]
-        }),
+        new HtmlRspackPlugin({ template:"./index.html", filename:"vant.html", chunks:["vant"] }),
+        new HtmlRspackPlugin({ template:"./index.html", filename:"element.html", chunks:["element"] }),
         //如果需要拷贝静态资源，请使用下方配置
         new CopyRspackPlugin({patterns:[{from:"public", to:""}]}),
         new DefinePlugin({

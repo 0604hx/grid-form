@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 
+import "./common.css"
 import Page from './views/render-vant.vue'
 
 const app = createApp(Page)

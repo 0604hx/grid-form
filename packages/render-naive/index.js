@@ -2,7 +2,7 @@ import { h } from 'vue'
 import {
     NInput, NTag, NInputNumber, NDatePicker, NSwitch, NSelect, NText, NRadioGroup, NRadio,
     NRadioButton, NAlert, NDivider, NRate, NCheckboxGroup, NCheckbox, NColorPicker, NDynamicTags,
-    NCard
+    NCard, NButton
 } from 'naive-ui'
 
 import { buildOptions  } from '@grid-form/common'
@@ -38,6 +38,12 @@ const RenderFuncs = {
     },
     "TAGS"      : (props)=>{
         return h(NDynamicTags, props)
+    },
+    "BUTTON"    : props=>{
+        buildWidthFull(props)
+        console.debug(props)
+        if(props.tip)   props.title = props.tip
+        return h(NButton, props, ()=> props.label)
     },
 
     "SWITCH"    : NSwitch,

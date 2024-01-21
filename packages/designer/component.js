@@ -1,6 +1,6 @@
 import { h } from 'vue'
 import { NIcon } from 'naive-ui'
-import { TextWidth, Font, Percent, FolderRegular, CalendarAlt, Tasks, ToggleOff, CheckSquareRegular, BellRegular, Divide, Star, CheckCircleRegular, Palette, Tags, SquareRegular } from '@vicons/fa'
+import { TextWidth, Font, Percent, FolderRegular, CalendarAlt, Tasks, ToggleOff, CheckSquareRegular, BellRegular, Divide, Star, CheckCircleRegular, Palette, Tags, SquareRegular, Square } from '@vicons/fa'
 
 /**
  * @typedef {Object} Attribute
@@ -37,7 +37,7 @@ const basicProperty = (cnName="标签", value, valueLabel="默认值")=>{
     )
     if(!!cnName){
         items.push(
-            { label:"是否禁用", id:"disabled", widget: Types.SWITCH, value: false, summary:"勾选后改组件无法被编辑" },
+            DISABLED(),
             { label:"监听值变动", id:"_watch", widget: Types.SWITCH, value: false, summary:"当该项的值变动时触发表单的 onChange 事件（需预先填写代码）" },
             { label:"是否必填", id:"_required", widget: Types.SWITCH, value: false },
             { label:"校验正则", id:"_regex", widget: Types.INPUT, value: "", summary:"请填写正则表达式（仅限勾选必填）" },
@@ -59,6 +59,7 @@ const basicSimpleProperty = (...extra)=>({
 
 const specialProperty = (items, id="special", label="控件属性")=> ({ id, label, items })
 
+const DISABLED      = ()=>({ label:"是否禁用", id:"disabled", widget: Types.SWITCH, value: false, summary:"勾选后改组件无法操作" })
 const COL           = ()=> ({ label:"所占列数", id:"_col", widget: Types.NUMBER, min:0, max: 24, suffix:"列", value: 1 })
 const TEXTAREA      = (label="内容", value="文本内容", rows=3)=> ({ label, id:"_value", widget: Types.INPUT, value, rows })
 const PLACEHOLDER   = (value="请输入")=> ({ label:"提示信息", id:"placeholder", widget:Types.INPUT, value})
@@ -72,13 +73,15 @@ const MIN_LENGTH    = (value)=> ({ label:"最小字数", id:"minlength", widget:
 const MAX_LENGTH    = (value)=> ({ label:"最大字数", id:"maxlength", widget:Types.NUMBER, value })
 const FILTERABLE    = (value=false)=> ({ label:"可过滤", id:"filterable", widget:Types.SWITCH, value, summary:"是否可以输入关键字进行选项过滤" })
 const SHOW_COUNT    = (value=false)=> ({ label:"显示字数", id:"show-count", widget:Types.SWITCH, value, summary:"是否在尾部显示已输入的字数统计" })
-const TYPE          = (value, label="配色")=> ({ label:"配色", id:"type", widget:Types.SELECT, value, options:["default|DEFAULT-默认", "success|SUCCESS-成功", "info|INFO-信息", "warning|WARN-警告", "error|ERROR-错误"] })
+const TYPE          = (value, label="配色")=> ({ label, id:"type", widget:Types.SELECT, value, options:["default|DEFAULT-默认", "success|SUCCESS-成功", "info|INFO-信息", "warning|WARN-警告", "error|ERROR-错误"] })
 const ROWS          = (value=1)=> ({ label:"显示行数", id:"rows", widget:Types.NUMBER, value, summary:"当行数大于 1 时显示 TEXTAREA 样式" })
-const TITLE         = (value="提示信息")=> ({ label:"标题", id:"title", widget:Types.INPUT, value })
+const TITLE         = (value="提示信息", label="标题")=> ({ label, id:"title", widget:Types.INPUT, value })
 const CONTENT       = (value="")=> ({ label:"内容", id:"content", widget:Types.INPUT, rows: 3, value })
 const BORDERED      = (value=true)=> ({ label:"显示边框", id:"bordered", widget:Types.SWITCH, value })
 const OPTIONS       = (value="1|选项一,2|选项二", rows=2, label="选项值")=> ({ id:"options", label, widget:Types.INPUT, value, rows })
 const USE_HTML      = (label="HTML渲染")=> ({ id:"_html", label, widget:Types.SWITCH, value: false, summary:"以 HTML 格式渲染" })
+const TIP           = (label="提示信息")=> ({id:"tip", label, widget:Types.INPUT, summary:"鼠标移动到上方后显示的信息"})
+const SCRIPT        = (label="脚本代码", value="")=> ({id:"script", label, widget:Types.INPUT, rows:4, value})
 
 // ----------------------------- START 控件清单 START -----------------------------
 const _INPUT = {
@@ -105,6 +108,23 @@ const _TAGS = {
         ])
     ]
 }
+const _BUTTON = {
+    id:"BUTTON", label:"交互按钮", icon: Square, hideLabel: true,
+    items: [
+        basicSimpleProperty(
+            { label:"显示文本", id:"label", widget: Types.INPUT, value: "交互按钮" },
+            TIP(),
+            DISABLED()
+        ),
+        specialProperty([
+            TYPE(),
+            { id:"text", widget:Types.SWITCH, value: false, label:"纯文本样式" },
+            { id:"round", widget:Types.SWITCH, value: false, label:"启用圆角" },
+            SCRIPT()
+        ])
+    ]
+}
+
 const _DATE = {
     id:"DATE", label:"日期选择", icon: CalendarAlt,
     items: [
@@ -231,7 +251,7 @@ const _FILE = {
 }
 
 const _CARD = {
-    id:"CARD", label:"卡片", icon: SquareRegular, container: true, hideLabel: true,
+    id:"CARD", label:"卡片容器", icon: SquareRegular, container: true, hideLabel: true,
     items:[
         basicSimpleProperty( TITLE("卡片"), BORDERED()),
         specialProperty([
@@ -248,7 +268,7 @@ const _CARD = {
 // ----------------------------- END 控件清单 END -----------------------------
 
 export default [
-    { label:"输入组件", items: [ _INPUT, _NUMBER, _TAGS ] },
+    { label:"输入组件", items: [ _INPUT, _NUMBER, _TAGS, _BUTTON ] },
     { label:"选择组件", items: [ _DATE, _SELECT, _RADIO, _CHECK_BOX, _SWITCH, _RATE, _COLOR, _FILE ]},
     { label:"展示组件", items: [ _TEXT, _ALERT, _DIVIDER, _CARD ] },
 ]

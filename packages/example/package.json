@@ -10,10 +10,12 @@
         "@grid-form/common": "workspace:*",
         "@grid-form/designer": "workspace:*",
         "@grid-form/render-data": "workspace:*",
+        "@grid-form/render-element": "workspace:*",
         "@grid-form/render-naive": "workspace:*",
         "@grid-form/render-vant": "workspace:*",
         "@vicons/fa": "^0.12.0",
         "dayjs": "^1.11.10",
+        "element-plus": "^2.5.2",
         "highlight.js": "^11.9.0",
         "naive-ui": "^2.37.3",
         "vant": "^4.8.2",
@@ -22,6 +24,7 @@
     "devDependencies": {
         "@rspack/cli": "0.5.0",
         "@rspack/core": "0.5.0",
+        "less-loader": "^12.0.0",
         "vue-loader": "^17.4.2"
     }
 }

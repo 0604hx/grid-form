@@ -7,9 +7,18 @@
 
         <n-space justify="center">
             <n-button type="primary" secondary size="large" @click="jump('designer')"><template #icon><n-icon :component="Table" /></template> 可视化设计器</n-button>
-            <n-button type="primary" secondary size="large" @click="jump('render')"> <template #icon><n-icon :component="Eye" /></template>渲染器 · NAIVE-UI</n-button>
-            <n-button type="primary" secondary size="large" @click="jump('element')" disabled> <template #icon><n-icon :component="Eye" /></template>渲染器 · Element Plus</n-button>
-            <n-button type="primary" secondary size="large" @click="jump('vant')"> <template #icon><n-icon :component="Eye" /></template>渲染器 · Vant</n-button>
+            <n-button type="primary" secondary size="large" @click="jump('render')">
+                <template #icon><n-icon><img src="/naive-ui.svg" width="20" /></n-icon></template>
+                渲染器 · NAIVE-UI
+            </n-button>
+            <n-button type="primary" secondary size="large" @click="jump('element')">
+                <template #icon><n-icon><img src="/element-plus.svg" width="20" /></n-icon></template>
+                渲染器 · Element Plus
+            </n-button>
+            <n-button type="primary" secondary size="large" @click="jump('vant')">
+                <template #icon><n-icon><img src="/vant.png" width="20" /></n-icon></template>
+                渲染器 · Vant
+            </n-button>
             <n-button type="primary" secondary size="large" tag="a" target="_blank" href="https://github.com/0604hx/grid-form">
                 <template #icon><n-icon :component="Github" /></template> 查看源码
             </n-button>
@@ -61,7 +70,7 @@
     const router = useRouter()
 
     let jump = name=> {
-        if(name==='vant')   return window.open("/vant.html")
+        if(name==='vant' || name ==='element')   return window.open(`/${name}.html`)
         router.push({name})
     }
 </script>
