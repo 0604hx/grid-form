@@ -74,7 +74,7 @@
     import { Bolt, Plus, CheckCircle, Download, FileDownload, Copy, HandPointLeftRegular,HandPointRightRegular, Eye } from "@vicons/fa"
     import { useMessage, useDialog } from "naive-ui"
 
-    import { createFormItem, buildOptions, buildComponent, withHtmlNode, showLabel, copyText } from '@grid-form/common'
+    import { createFormItem, buildOptions, buildComponent, withHtmlNode, showLabel, copyText, triggerLoaded, extendFormItems } from '@grid-form/common'
 
     import Selector from "./components/selector.vue"
     import AttributeEditor from "./form-attribute.vue"
@@ -128,15 +128,7 @@
                 message.warning(`请先复制再进行粘贴`)
         }
         else if(key == 'delete'){
-            let item = props.form.items[index]
-            console.debug(item)
-            item && dialog.warning({
-                title:`删除组件`,
-                content: `确定删除表单项⌈${item._text}⌋吗？`,
-                positiveText: "确定",
-                negativeText: "我再想想",
-                onPositiveClick: () => container.remove(index)
-            })
+            container.remove(index)
         }
         else {
             container.add(createFormItem(com), index)
@@ -251,6 +243,16 @@
         }
     }
 
+    if(props.renders){
+        props.renders.runScript = (code, formItem)=>{
+            if(props.debug) track(`脚本被触发`, code, unref(toRaw(formItem)))
+            triggerLoaded(code, {}, props.form.items)
+        }
+    }
+
+    // 扩展表单项数组对象，便于在交互脚本中与渲染器保持一致
+    extendFormItems(props.form.items)
+
     onMounted(()=> {
         let welcome = `欢迎使用 GRID-FROM 设计器`
         console.group(welcome)
@@ -262,6 +264,9 @@
 </script>
 
 <style>
+    .w-full {
+        width: 100%;
+    }
     .designer-content .cell {
         min-height: 50px;
         padding: 8px;

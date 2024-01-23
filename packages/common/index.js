@@ -1,5 +1,8 @@
 import { h, toRaw, unref } from 'vue'
 
+import ImageWidget from "./widgets/image.vue"
+import TableWidget from "./widgets/table.vue"
+
 /**
  * @typedef {Object} Widget
  * @property {String} id - 组件ID
@@ -22,6 +25,14 @@ import { h, toRaw, unref } from 'vue'
  * @property {Boolean} _required - 是否为必填项目
  */
 
+
+/**
+ * 内置组件（通用）
+ */
+const buitinWidgets = {
+    "IMAGE" : ImageWidget,
+    "TABLE" : TableWidget
+}
 
 export function createFormBean(ps={}){
     return Object.assign({
@@ -150,15 +161,12 @@ export function buildOptions(text, valueField="value", labelField="label") {
 /**
  *
  * @param {FormItem} item
- * @param {Object|Function} widget - 渲染函数或者组件
+ * @param {Object|Function} renders - 渲染函数或者组件提供者
  * @param {Boolean} track - 是否显示debug信息
  * @returns
  */
-export function buildComponent(item, widget, track=true){
+export function buildComponent(item, renders, track=true){
     if(!item._widget) return console.error(`[渲染组件] 必须存在 _widget 属性...`, item)
-    if(!widget) throw Error(`渲染组件 ${item._widget} 失败：无效的组件（请先注册相应的 Widgets）`)
-    if(track)   (typeof(track)==='function'? track:console.debug)("绘制组件", toRaw(unref(item)))
-
     //基础属性
     let attrs = {}
     //组件 props
@@ -172,6 +180,19 @@ export function buildComponent(item, widget, track=true){
         else
             _props[key] = item[key]
     }
+
+    if(!!_props.scriptTrigger && typeof(_props.script)==='string' && !!_props.script.trim()){
+        _props[_props.scriptTrigger === 'dblclick'?"onDblclick":"onClick"] = e => {
+            e.stopPropagation()
+            renders.runScript && renders.runScript(_props.script.trim(), item)
+        }
+        // delete _props.script
+    }
+
+    let widget = renders[item._widget] || buitinWidgets[item._widget]
+    if(!widget) throw Error(`渲染组件 ${item._widget} 失败：无效的组件（请先注册相应的 Widgets）`)
+    if(track)   (typeof(track)==='function'? track:console.debug)("绘制组件", toRaw(unref(item)), _props)
+
 
     if(typeof(widget)==='function')
         return widget(_props, attrs)
@@ -221,5 +242,40 @@ export const copyText = (obj, pretty=false)=> {
         document.body.removeChild(textarea)
     }
 }
+
+/**
+ * 使用原生 JS 选择文件
+ * @param {Object} props
+ * @returns {Promise}
+ */
+export const selectFile = (props)=> new Promise((resolve, reject)=>{
+    let input = document.createElement("input")
+    input.type = 'file'
+    input.accept = props.accept
+    input.click()
+    input.onchange = e=>{
+        let file = e.target.files[0]
+        if(!!file){
+            if(file.size >= (props.maxSize||2) * 1024 * 1024)  return reject(`${file.name}超出大小限制（${props.maxSize} MB）`)
+
+            if(props.dataType!=""){
+                let reader = new FileReader()
+                reader.onload = ee=>{
+                    let { result } = ee.target
+                    resolve({ name:file.name, result })
+                }
+
+                if(props.dataType == 'base64')
+                    reader.readAsDataURL(file)
+                else if(props.dataType === 'text')
+                    reader.readAsText(file)
+                else
+                    reader.readAsBinaryString(file)
+            }
+            else
+                resolve({ name: file.name, result: file })
+        }
+    }
+})
 
 export * from './runtime'

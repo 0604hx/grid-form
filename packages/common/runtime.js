@@ -19,6 +19,13 @@ console.debug("表单值", form)
 resolve(true)
 `
 const onChangeTemplate = `
+/**
+ * 表单值变动时触发（表单项需勾选监听变动），参数：
+ *  form - 当前表单值（Object），可以修改对应值
+ *  agent - 当前变动的表单项详情（key=表单项ID、from=旧值、to=新值）
+ *  items - 表单定义（Array）
+ */
+console.debug("表单值变动：", agent.key, "从 "+agent.from+" 变更为 "+agent.to)
 `
 
 export const lifeCycles = [
@@ -93,6 +100,29 @@ export function triggerAfterSubmit(body, form){
 
 export function triggerExtraButtonClick(body, form){
     return _triggerWithoutPromise(body, "extraBtnClick", ["form"], [form])
+}
+
+/**
+ * 扩展表单项数组
+ * @param {Array} items
+ */
+export const extendFormItems = items=>{
+    /**
+     * 给 items 注入 $ 方法，便于按 _uuid 递归找到表单项，用法：
+     *  items.$("name")                     //找到编号为 name 的表单项
+     *  items.$("name").disabled = true     //禁用编号为 name 的表单项
+     * @param {String} uuid
+     * @returns
+     */
+    items.$ = function(uuid){
+        const queue = [...this]
+        while(queue.length){
+            const t = queue.shift()
+            if(t._uuid == uuid) return t
+            if(t._container === true && Array.isArray(t.items))
+                queue.push(...t.items)
+        }
+    }
 }
 
 /**

@@ -16,6 +16,10 @@
     </div>
 </template>
 
+<script>
+    export default { inheritAttrs: false }
+</script>
+
 <script setup>
     import { ref, computed } from 'vue'
 

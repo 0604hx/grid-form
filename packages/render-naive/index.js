@@ -41,13 +41,12 @@ const RenderFuncs = {
     },
     "BUTTON"    : props=>{
         buildWidthFull(props)
-        console.debug(props)
         if(props.tip)   props.title = props.tip
         return h(NButton, props, ()=> props.label)
     },
 
     "SWITCH"    : NSwitch,
-    "SELECT"    : (props, attrs)=>{
+    "SELECT"    : (props)=>{
         props.options = buildOptions(props.options)
         return h(NSelect, props)
     },
@@ -57,16 +56,17 @@ const RenderFuncs = {
         props.value = attrs._value
         return h(NRadioGroup, props, ()=> options.map(o=> h(com, o)))
     },
-    "CHECKBOX"  : (props, attrs)=>{
+    "CHECKBOX"  : (props)=>{
         let options = buildOptions(props.options)
         let ps = {}
         if(!isNaN(props.min) && props.min>0) ps.min = props.min
         if(!isNaN(props.max) && props.max>0) ps.max = props.max
 
-        return h(NCheckboxGroup, ps, ()=> options.map(o=> h(NCheckbox, {value: o.value, label:o.label})))
+        return h(NCheckboxGroup, ps, ()=> options.map(o=> h(NCheckbox, o)))
     },
     "DATE"      : props=> {
         buildWidthFull(props)
+        props['value-format'] = props.format
         return h(NDatePicker, props)
     },
 
@@ -86,11 +86,11 @@ const RenderFuncs = {
     },
     "DIVIDER"   : (props, attrs)=>h(NDivider, props, ()=> attrs._value),
     "RATE"      : NRate,
-    "COLOR"     : (props, attrs)=>{
+    "COLOR"     : (props)=>{
         if(!!props.swatches) props.swatches = props.swatches.trim().split("\n")
         return h(NColorPicker, props)
     },
-    "CARD"      : (props, attrs)=>{
+    "CARD"      : (props)=>{
         return h(NCard, props)
     }
 }

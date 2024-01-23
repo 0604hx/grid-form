@@ -1,7 +1,7 @@
 <template>
     <van-field :label="label" :disabled="disabled">
         <template #input>
-            <van-checkbox-group v-model="shadow" @change="onChange">
+            <van-checkbox-group v-model="shadow" @change="onChange" :max="max">
                 <van-space wrap :direction="vertical?'vertical':'horizontal'">
                     <van-checkbox v-for="(op, opIndex) in options" :name="op.value" shape="square">{{op.label}}</van-checkbox>
                 </van-space>
@@ -10,8 +10,12 @@
     </van-field>
 </template>
 
+<script>
+    export default { inheritAttrs: false }
+</script>
+
 <script setup>
-    import { ref } from 'vue'
+    import { ref, watch } from 'vue'
 
     const emits = defineEmits(['update:modelValue', 'change'])
     const props = defineProps({
@@ -19,12 +23,11 @@
         label:{type:String, default:"复选框"},
         options:{type:Array},
         disabled:{type:Boolean, default: false},
-        vertical:{type:Boolean, default:false}
+        vertical:{type:Boolean, default:false},
+        max:{type:Number, default:0}
     })
 
     let shadow = ref(props.modelValue)
-
-    const onChange = names=> {
-        emits("update:modelValue", names)
-    }
+    watch(()=> props.modelValue, ()=> shadow.value = props.modelValue)
+    const onChange = names=> emits("update:modelValue", names)
 </script>

@@ -4,7 +4,7 @@
             <n-collapse-item v-for="(group, gIndex) in items" :key="gIndex" :title="group.label" :name="group.id">
                 <n-space vertical :size="compact?'small':'medium'">
                     <!-- <component v-for="item in group.items" :is="buildLine(item)" /> -->
-                    <AttrLine v-for="item in group.items" :label="item.label" v-model:value="bean[item.id]" :summary="item.summary"
+                    <AttrLine v-for="item in group.items" :label="item.label" v-model:value="bean[item.id]" :summary="item.summary" :placeholder="item.placeholder"
                         :widget="item.widget" :prefix="item.prefix" :suffix="item.suffix" :options="item.options" :rows="item.rows"
                     />
                 </n-space>

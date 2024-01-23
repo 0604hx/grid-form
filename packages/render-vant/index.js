@@ -12,6 +12,12 @@ import Checkbox from "./widgets/checkbox.vue"
 import Radio from "./widgets/radio.vue"
 import Switch from "./widgets/switch.vue"
 import FormRender from "./Render.vue"
+import { Button } from 'vant'
+import { Rate } from 'vant'
+
+const fixType = p=> {
+    if(p.type == 'error')   p.type = 'danger'
+}
 
 const inputField = (props, attrs)=>{
     let ps = {
@@ -35,8 +41,22 @@ const _toProps = (props, attrs, ps={})=>{
 const RenderFuncs = {
     "INPUT"     : inputField,
     "NUMBER"    : inputField,
+    //暂无对动态标签的实现
+    "TAGS"      : (props, attrs)=> undefined,
+    "BUTTON"    : props=>{
+        fixType(props)
+        if(!!props.tip){
+            props.title = props.tip
+            delete props.tip
+        }
+        props.plain = props.text === true
+        props.block = true
+        props.text = props.label
+        return h(Button, props)
+    },
+
     "SELECT"    : (props, attrs)=> h(Selector, _toProps(props, attrs, {placeholder:props.placeholder, multiple:props.multiple, options:buildOptions(props.options, "value", "text")})),
-    "CHECKBOX"  : (props, attrs)=> h(Checkbox, _toProps(props, attrs, {options:buildOptions(props.options)})),
+    "CHECKBOX"  : (props, attrs)=> h(Checkbox, _toProps(props, attrs, {options:buildOptions(props.options), max:props.max})),
     "RADIO"     : (props, attrs)=> h(Radio, _toProps(props, attrs, {options:buildOptions(props.options)})),
     "SWITCH"    : (props, attrs)=> h(Switch, _toProps(props, attrs)),
     "DATE"      : (props, attrs)=> {
@@ -46,14 +66,14 @@ const RenderFuncs = {
 
         return h(SelectorDate, ps)
     },
+    "RATE"      : props=>{
+        return h(Rate, props)
+    },
+    "COLOR"     : props=> undefined,
 
     "FILE"      : (props, attrs)=>{
         return h(SelectorImage, _toProps(props, attrs))
     },
-
-    //暂无对动态标签的实现
-    "TAGS"      : (props, attrs)=> undefined,
-
     "TEXT"      : (props, attrs)=> {
         let ps = {
             style:{padding:"10px"},

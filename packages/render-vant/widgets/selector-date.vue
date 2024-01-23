@@ -5,6 +5,10 @@
     </van-popup>
 </template>
 
+<script>
+    export default { inheritAttrs: false }
+</script>
+
 <script setup>
     import { ref } from 'vue'
 

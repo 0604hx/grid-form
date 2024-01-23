@@ -7,10 +7,11 @@
                     {{item._text}}<span v-if="item._required" style="color: red;"> *</span>
                 </template>
 
-                <component v-if="item._container && item.items" :is="buildComponent(item, renders[item._widget], false)">
+                <component v-if="item._container && item.items" :is="buildComponent(item, renders, false)">
                     <render-container :gridGap="gridGap" :renders="renders" :form="item" :formData="formData" :labelPlacement="item.labelPlacement" :labelAlign="item.labelAlign" />
                 </component>
-                <component v-else v-model:value="formData[item._uuid]" :is="buildComponent(item, renders[item._widget], false)" />
+                <component v-else-if="item._widget=='DATE'" v-model:formatted-value="formData[item._uuid]" :is="buildComponent(item, renders, false)" />
+                <component v-else v-model:value="formData[item._uuid]" :is="buildComponent(item, renders, false)" />
             </n-form-item-gi>
         </template>
     </n-grid>

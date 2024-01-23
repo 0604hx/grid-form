@@ -9,7 +9,7 @@
     import { ref, reactive, nextTick } from 'vue'
     import { Trash, CopyRegular, Paste, PlusCircle } from "@vicons/fa"
 
-    import { buildIcon } from "../component"
+    import { buildIcon, scriptColor } from "../component"
 
     const emits = defineEmits(['select'])
     const props = defineProps({
@@ -36,7 +36,7 @@
             label:  v.label,
             id:     v.id,
             key:    `${key}${LINK}${v.id}`,
-            icon:   buildIcon(v.icon)
+            icon:   buildIcon(v.icon, {color: v.script===true?scriptColor:undefined})
         }))
     }))
 

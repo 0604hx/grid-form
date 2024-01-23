@@ -2,7 +2,7 @@
     <n-grid :x-gap="gridGap" :y-gap="gridGap" :cols="form.grid" class="designer-content" :style="{width: form.width, margin:'0px auto' }">
         <n-form-item-gi v-for="(item, index) in form.items" :key="index" :span="item._col" :show-feedback="false"
             :show-label="!(item._hideLabel === true || !form.labelShow)"
-            @click.stop="bindClick(item)" class="cell" :class="{active:item._active === true}"  @contextmenu="e=>contextMenu && contextMenu.show(e, index, containerInstance)">
+            @click.stop="bindClick(item)" class="cell" :class="{active:item._active === true}"  @contextmenu.stop="e=>contextMenu && contextMenu.show(e, index, containerInstance)">
             <template #label>
                 {{item._text}}<span v-if="item._required" style="color: red;font-weight: 600;">*</span>
             </template>
@@ -13,12 +13,12 @@
                 删除 <n-text code>{{ item._uuid?`${item._uuid}/${item._text}`:`该组件（${item._widget}）` }}</n-text> 吗？
             </n-popconfirm>
 
-            <component v-if="item._container && item.items" :is="buildComponent(item, renders[item._widget], track)">
+            <component v-if="item._container && item.items" :is="buildComponent(item, renders, track)">
                 <!--内嵌的容器-->
                 <designer-container :form="item" :gridGap="gridGap" :contextMenu="contextMenu" :bindClick="bindClick" :renders="renders"
                     :components="components" :track="track" />
             </component>
-            <component v-else :is="buildComponent(item, renders[item._widget], track)" />
+            <component v-else :is="buildComponent(item, renders, track)" />
         </n-form-item-gi>
 
         <n-gi class="cell flex" style="align-items: center; justify-content: center;">
@@ -35,13 +35,14 @@
 <script setup>
     import { ref, reactive } from 'vue'
     import { Trash } from "@vicons/fa"
-    import { useMessage } from "naive-ui"
+    import { useMessage, useDialog } from "naive-ui"
 
     import { createFormItem, buildComponent } from '@grid-form/common'
 
     import Selector from "./components/selector.vue"
 
     const message = useMessage()
+    const dialog = useDialog()
 
     const props = defineProps({
         gridGap: {type:Number, default: 10},                    //栅栏间隔，单位 px
@@ -69,7 +70,16 @@
     const containerInstance = {
         add     : doAddComponent,
         copy    : index=> JSON.stringify(props.form.items[index]),
-        remove  : index=> props.form.items.splice(index, 1)
+        remove  : index=> {
+            let item = props.form.items[index]
+            item && dialog.warning({
+                title:`删除组件`,
+                content: `确定删除表单项⌈${item._text||item._widget}⌋吗？`,
+                positiveText: "确定",
+                negativeText: "我再想想",
+                onPositiveClick: () => props.form.items.splice(index, 1)
+            })
+        }
     }
 </script>
 

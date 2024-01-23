@@ -28,6 +28,10 @@
     </template>
 </template>
 
+<script>
+    export default { inheritAttrs: false }
+</script>
+
 <script setup>
     import { ref, onMounted, watch } from 'vue'
 
@@ -41,8 +45,6 @@
         multiple:{type:Boolean, default: false},
         required:{type:Boolean, default: false}
     })
-
-    console.debug(props)
 
     const buildShadow = v=> Array.isArray(v)? v.join(",") : v
 

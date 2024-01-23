@@ -2,10 +2,10 @@
     <van-form :label-width="form.labelWidth" :label-align="form.labelPlacement">
         <template v-for="(item, index) in form.items">
             <template v-if="item._hide != true">
-                <component v-if="item._container && item.items" :is="buildComponent(item, renders[item._widget], false)">
+                <component v-if="item._container && item.items" :is="buildComponent(item, renders, false)">
                     <render-container :renders="renders" :form="item" :formData="formData" />
                 </component>
-                <component v-else v-model="formData[item._uuid]" :is="buildComponent(item, renders[item._widget], false)" />
+                <component v-else v-model="formData[item._uuid]" :is="buildComponent(item, renders, false)" />
             </template>
         </template>
     </van-form>

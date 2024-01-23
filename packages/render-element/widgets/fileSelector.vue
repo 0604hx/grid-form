@@ -1,10 +1,10 @@
 <!--文件选择框-->
 <!--选择文件-->
 <template>
-    <n-input v-model:value="path" :disabled="disabled" :placeholder="placeholder" clearable readonly @click="toSelect" @clear="onClear">
-        <template #prefix> <n-tag size="small" type="default" :bordered="false">选择文件</n-tag> </template>
-        <template #suffix> <n-tag size="small" type="primary" :bordered="false">{{maxSize}}MB</n-tag> </template>
-    </n-input>
+    <el-input v-model="path" :disabled="disabled" :placeholder="placeholder" clearable readonly @click="toSelect" @clear="onClear">
+        <template #prefix> <el-tag size="small" type="info" :bordered="false">选择文件</el-tag> </template>
+        <template #suffix> <el-tag size="small" :bordered="false">{{maxSize}}MB</el-tag> </template>
+    </el-input>
 </template>
 
 <script>
@@ -13,15 +13,13 @@
 
 <script setup>
     import { ref } from 'vue'
-    import { useMessage } from "naive-ui"
+    import { ElMessage } from 'element-plus'
 
     import { selectFile  } from '@grid-form/common'
 
-    const message = useMessage()
-
-    const emits = defineEmits(['update:value', "select"])
+    const emits = defineEmits(['update:modelValue', "select"])
     const props = defineProps({
-        value:{type:[String, Object, File]},
+        modelValue:{type:[String, Object, File]},
         placeholder: {type:String, default:"请选择文件"},
         accept:{type:String, default:"image/*"},
         acceptCustom:{type:String, default:undefined},
@@ -34,17 +32,17 @@
 
     let selectDo = (name, v)=>{
         path.value = name
-        emits('update:value', v)
+        emits('update:modelValue', v)
     }
 
     let toSelect = ()=> {
         if(props.disabled === true) return
 
-        selectFile(props).then(({name, result})=> selectDo(name, result)).catch(msg=> message.warning(msg))
+        selectFile(props).then(({name, result})=> selectDo(name, result)).catch(msg=> ElMessage(msg))
     }
 
     let onClear = e=>{
         e.stopPropagation()
-        emits('update:value', "")
+        emits('update:modelValue', "")
     }
 </script>

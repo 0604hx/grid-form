@@ -228,7 +228,6 @@
         if(!!props.form[name])  return message.warning(`请先清空代码`)
 
         props.form[name] = template.trim()
-        console.debug(name, template, props.form)
     }
 
     const _toAdd = (e, name, provider=createExtraButton)=>{

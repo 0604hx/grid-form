@@ -7,6 +7,10 @@
     </van-field>
 </template>
 
+<script>
+    export default { inheritAttrs: false }
+</script>
+
 <script setup>
     import { ref } from 'vue'
     import { showDialog } from 'vant'

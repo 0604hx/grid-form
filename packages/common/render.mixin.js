@@ -1,6 +1,6 @@
 import { ref, reactive, toRaw, unref, onMounted, nextTick, watch } from 'vue'
 
-import { triggerLoaded, triggerBeforeSubmit, triggerChanged,  triggerExtraButtonClick, formValueProvider } from './runtime'
+import { triggerLoaded, triggerBeforeSubmit, triggerChanged,  triggerExtraButtonClick, formValueProvider, extendFormItems } from './runtime'
 
 const DEFAULT_ACTION = "post"
 
@@ -158,7 +158,15 @@ export default (props, emits, suffix="")=>{
         if(Array.isArray(items)){
             for (const v of items) {
                 if(!!v._uuid){
-                    formData[v._uuid] = await _computeValue(v._value, v._uuid)
+                    let itemV = await _computeValue(v._value, v._uuid)
+                    // 处理布尔型的默认值
+                    if(v._widget === "SWITCH" && typeof(itemV)!='boolean'){
+                        itemV = typeof(itemV)==='string'? itemV.toLowerCase()=='true': (typeof(itemV)==='number'? itemV != 0: !!itemV)
+                    }
+                    else if(v._widget === 'RATE'){
+                        itemV = Number(itemV)
+                    }
+                    formData[v._uuid] = itemV
 
                     if(v._required === true){
                         formRequired[v._uuid] = { regex: v._regex, msg: v._message, label: v._text }
@@ -190,22 +198,7 @@ export default (props, emits, suffix="")=>{
 
         _setupWatchForChange()
 
-        /**
-         * 给 items 注入 $ 方法，便于按 _uuid 递归找到表单项，用法：
-         *  items.$("name")                     //找到编号为 name 的表单项
-         *  items.$("name").disabled = true     //禁用编号为 name 的表单项
-         * @param {String} uuid
-         * @returns
-         */
-        items.$ = function(uuid){
-            const queue = [...this]
-            while(queue.length){
-                const t = queue.shift()
-                if(t._uuid == uuid) return t
-                if(t._container === true && Array.isArray(t.items))
-                    queue.push(...t.items)
-            }
-        }
+        extendFormItems(items)
 
         nextTick(()=>{
             if(props.form.onLoad){
@@ -228,6 +221,18 @@ export default (props, emits, suffix="")=>{
         }
 
         _submitDo(_raw(formData), btn.type)
+    }
+
+    //注册执行代码的回调函数
+    if(props.renders){
+        props.renders.runScript = itemOrScript =>{
+            let script = typeof(itemOrScript) === 'string'? itemOrScript:itemOrScript.script
+            if(props.debug) track(`执行组件脚本：`, script)
+
+            if(!!script){
+                triggerLoaded(script, formData, props.form.items)
+            }
+        }
     }
 
     onMounted( initForm )

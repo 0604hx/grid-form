@@ -8,8 +8,12 @@
     </van-field>
 </template>
 
+<script>
+    export default { inheritAttrs: false }
+</script>
+
 <script setup>
-    import { ref } from 'vue'
+    import { ref, watch } from 'vue'
 
     const emits = defineEmits(['update:modelValue', 'change'])
     const props = defineProps({
@@ -21,5 +25,6 @@
     })
 
     let shadow = ref(props.modelValue)
+    watch(()=> props.modelValue, ()=> shadow.value = props.modelValue)
     const onChange = v=> emits("update:modelValue", v)
 </script>

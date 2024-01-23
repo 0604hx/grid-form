@@ -8,12 +8,14 @@
                 <n-gi :span="3">{{item.label}}</n-gi>
                 <n-gi v-for="com in item.items">
                     <n-button secondary @click="onSelect(com)" class="w-full">
-                        <template #icon><n-icon :component="com.icon" /></template>
+                        <template #icon><n-icon :color="com.script?scriptColor:null" :component="com.icon" /></template>
                         {{com.label}}
                     </n-button>
                 </n-gi>
             </template>
         </n-grid>
+
+        <n-text depth="3">图标为<span :style="{color: scriptColor, fontSize: '1.25rem'}">■</span>的组件支持自定义脚本交互</n-text>
     </n-popover>
 </template>
 
@@ -21,9 +23,11 @@
     import { ref, h } from 'vue'
     import { Plus } from "@vicons/fa"
 
+    import { scriptColor } from "../component"
+
     const emits = defineEmits(['select'])
     const props = defineProps({
-        components:{type:Array}
+        components:{type:Array},
     })
 
     const popover = ref()

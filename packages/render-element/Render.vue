@@ -33,6 +33,9 @@
 
 <style>
     .grid-render .el-form-item__content {
-        line-height: 100%;
+        line-height: 100% !important;
+    }
+    .grid-render .el-row .el-col {
+        padding-top: 5px;
     }
 </style>

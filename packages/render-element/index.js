@@ -1,16 +1,23 @@
 import { h } from 'vue'
 
-import { ElInput, ElTag, ElAlert, ElCard, ElInputNumber } from "element-plus"
+import { ElInput, ElTag, ElAlert, ElCard, ElInputNumber, ElSwitch, ElSelect, ElOption, ElRadioGroup, ElRadioButton, ElRadio, ElCheckboxGroup, ElCheckbox, ElDatePicker, ElText, ElButton, ElRate, ElColorPicker, ElDivider } from "element-plus"
 import { buildOptions  } from '@grid-form/common'
 
+import Tags from "./widgets/tags.vue"
+import FileSelector from "./widgets/fileSelector.vue"
 import FormRender from "./Render.vue"
 
-const buildTag = text=> ()=>h(ElTag, {type:"primary", size:"small"}, text)
+const buildTag = text=> ()=>h(ElTag, {type:"", size:"small"}, ()=>text)
 
 const buildSlotWithPrefixAndSuffix = props=>{
+    let _prefix = props.prefix
+    let _suffix = props.suffix
+
+    delete props.prefix
+    delete props.suffix
     return {
-        prefix: props.prefix? buildTag(props.prefix): undefined,
-        suffix: props.suffix? buildTag(props.suffix): undefined
+        prefix: _prefix? buildTag(_prefix): undefined,
+        suffix: _suffix? buildTag(_suffix): undefined
     }
 }
 
@@ -34,41 +41,57 @@ const RenderFuncs = {
         buildWidthFull(props)
         return h(ElInputNumber, props)
     },
-    // "TAGS"      : (props)=>{
-    //     return h(NDynamicTags, props)
-    // },
+    "TAGS"      : (props)=>h(Tags, props),
+    "BUTTON"    : props=>{
+        buildWidthFull(props)
+        if(props.tip)   props.title = props.tip
+        return h(ElButton, props, ()=> props.label)
+    },
 
-    // "SWITCH"    : NSwitch,
-    // "SELECT"    : (props, attrs)=>{
-    //     props.options = buildOptions(props.options)
-    //     return h(NSelect, props)
-    // },
-    // "RADIO"     : (props, attrs)=>{
-    //     let options = buildOptions(props.options)
-    //     let com = props.button===true? NRadioButton:NRadio
-    //     props.value = attrs._value
-    //     return h(NRadioGroup, props, ()=> options.map(o=> h(com, o)))
-    // },
-    // "CHECKBOX"  : (props, attrs)=>{
-    //     let options = buildOptions(props.options)
-    //     let ps = {}
-    //     if(!isNaN(props.min) && props.min>0) ps.min = props.min
-    //     if(!isNaN(props.max) && props.max>0) ps.max = props.max
+    "SWITCH"    : ElSwitch,
+    "SELECT"    : (props)=>{
+        return h(ElSelect, props, ()=> buildOptions(props.options).map(o=> h(ElOption, o)))
+    },
+    "RADIO"     : (props)=>{
+        let options = buildOptions(props.options)
+        let com = props.button===true? ElRadioButton:ElRadio
+        // props.value = attrs._value
+        return h(ElRadioGroup, props, ()=> options.map(o=> h(com, o)))
+    },
+    "CHECKBOX"  : (props)=>{
+        let options = buildOptions(props.options)
+        let ps = {}
+        if(!isNaN(props.min) && props.min>0) ps.min = props.min
+        if(!isNaN(props.max) && props.max>0) ps.max = props.max
 
-    //     return h(NCheckboxGroup, ps, ()=> options.map(o=> h(NCheckbox, {value: o.value, label:o.label})))
-    // },
-    // "DATE"      : props=> {
-    //     buildWidthFull(props)
-    //     return h(NDatePicker, props)
-    // },
+        return h(ElCheckboxGroup, ps, ()=> options.map(o=> h(ElCheckbox, {label: o.value}, ()=>o.label)))
+    },
+    "DATE"      : props=> {
+        buildWidthFull(props)
+        if(props.format.indexOf("yyyy")>=0) props.format = props.format.toUpperCase()
+        props.valueFormat = props.format
+        return h(ElDatePicker, props)
+    },
+    "FILE"      : FileSelector,
+    "RATE"      : props=>{
+        props.max = props.count
+        return h(ElRate, props)
+    },
+    "COLOR"     : (props, attrs)=>{
+        if(!!props.swatches) {
+            props.predefine = props.swatches.trim().split("\n")
+            delete props.swatches
+        }
+        return h(ElColorPicker, props)
+    },
 
-    // "TEXT"      : (props, attrs)=>{
-    //     props.style = { fontSize: props['font-size']+"px"}
-    //     return h(NText, props, ()=> {
-    //         return attrs._html===true? h('div', {innerHTML: attrs._value}) : attrs._value
-    //     })
-    // },
-    // "FILE"      : FileSelector,
+    "TEXT"      : (props, attrs)=>{
+        props.style = { fontSize: props['font-size']+"px"}
+        return h(ElText, props, ()=> {
+            return attrs._html===true? h('div', {innerHTML: attrs._value}) : attrs._value
+        })
+    },
+
     "ALERT"     : (props, attrs)=>{
         buildWidthFull(props)
 
@@ -77,15 +100,13 @@ const RenderFuncs = {
         delete props.content
         buildClosable(props)
 
-        console.debug(props)
         return h(ElAlert, props, ()=> attrs._html===true? h('div', {innerHTML: content}) : content)
     },
-    // "DIVIDER"   : (props, attrs)=>h(NDivider, props, ()=> attrs._value),
-    // "RATE"      : NRate,
-    // "COLOR"     : (props, attrs)=>{
-    //     if(!!props.swatches) props.swatches = props.swatches.trim().split("\n")
-    //     return h(NColorPicker, props)
-    // },
+    "DIVIDER"   : (props, attrs)=>{
+        if(props.dashed==true)  props['border-style'] ="dashed"
+        props['content-position'] = props['title-placement']
+        return h(ElDivider, props, ()=> attrs._value)
+    },
     "CARD"      : props=> h(ElCard, { header: props.title, style:{ width:"100%"} })
 }
 

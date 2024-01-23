@@ -9,7 +9,7 @@
         </template>
 
         <n-space v-if="widget=='INPUT'" vertical size="small" style="width:100%">
-            <n-input v-model:value="shadow" placeholder="请输入" @blur="onChange" :rows="rows" :size="isTextarea?'small':'medium'" :type="isTextarea?'textarea':'text'" :show-count="isTextarea">
+            <n-input v-model:value="shadow" :placeholder="placeholder" @blur="onChange" :rows="rows" :size="isTextarea?'small':'medium'" :type="isTextarea?'textarea':'text'" :show-count="isTextarea">
                 <template v-if="prefix" #prefix>{{prefix}}</template>
                 <template v-if="suffix" #suffix>{{suffix}}</template>
             </n-input>
@@ -39,6 +39,7 @@
     const props = defineProps({
         label:{type:String},
         summary:{type:String},
+        placeholder:{type:String, default:"请输入"},
         value:{ type:[String, Object, Array, Number, Boolean] },
         widget: {type: String, default:"INPUT"},
         prefix: {type:String},
@@ -81,6 +82,7 @@
                 {
                     size:"small",
                     rows:20,
+                    placeholder: props.placeholder,
                     showCount:true,
                     type:"textarea",
                     defaultValue: shadow.value,

@@ -1,26 +1,16 @@
 <template>
-    <el-form :size="form.size||'default'" :label-width="form.labelWidth" class="grid-render" :label-position="position">
+    <!--element-plus 表单在只有一个输入框时，按下回车会自动提交表单，添加 @submit.prevent 阻止此行为-->
+    <el-form :size="computeSize" :label-width="form.labelWidth" class="grid-render" :label-position="position" @submit.prevent>
         <el-row :gutter="gridGap" :style="{width: form.width, margin:'0px auto' }">
             <template v-for="(item, index) in form.items" :key="index">
                 <el-col :span="computeSpan(item._col)">
                     <el-form-item :label-width="!(item._hideLabel === true || !form.labelShow)? form.labelWidth : '0px'" :label="item._text" :required="item._required">
-                        <component v-if="item._container && item.items" :is="buildComponent(item, renders[item._widget], false)">
+                        <component v-if="item._container && item.items" :is="buildComponent(item, renders, false)">
                             <render-container :gridGap="gridGap" :renders="renders" :form="item" :formData="formData" />
                         </component>
-                        <component v-else v-model="formData[item._uuid]" :is="buildComponent(item, renders[item._widget], false)" />
+                        <component v-else v-model="formData[item._uuid]" :is="buildComponent(item, renders, false)" />
                     </el-form-item>
                 </el-col>
-                <!-- <n-form-item-gi v-if="item._hide!=true" :span="item._col" :show-feedback="false" :show-label="!(item._hideLabel === true || !form.labelShow)"
-                    :label-placement="labelPlacement" :label-align="labelAlign">
-                    <template #label>
-                        {{item._text}}<span v-if="item._required" style="color: red;"> *</span>
-                    </template>
-
-                    <component v-if="item._container && item.items" :is="buildComponent(item, renders[item._widget], false)">
-                        <render-container :gridGap="gridGap" :renders="renders" :form="item" :formData="formData" :labelPlacement="item.labelPlacement" :labelAlign="item.labelAlign" />
-                    </component>
-                    <component v-else v-model:value="formData[item._uuid]" :is="buildComponent(item, renders[item._widget], false)" />
-                </n-form-item-gi> -->
             </template>
         </el-row>
     </el-form>
@@ -44,6 +34,7 @@
     })
 
     const computeSpan = col=> 24*col/props.form.grid
+    const computeSize = computed(()=> !props.form.size || props.form.size=='medium'?"default": props.form.size)
 
     /**
      * naive使用 labelPlacement、labelAlign 两个属性限定表单标签的位置、对齐方式
