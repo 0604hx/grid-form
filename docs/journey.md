@@ -22,9 +22,9 @@ pnpm add designer@* -F site
 
 ```shell
 # 发布前需要检查：
-# ① npm 的镜像是否为官方地址（https://registry.npmmirror.com/）
+# ① npm 的镜像是否为官方地址（https://registry.npmjs.org/）
 # npm config get registry
-# 如果不是官方，则通过命令 npm config set registry https://registry.npmmirror.com/
+# 如果不是官方，则通过命令 npm config set registry https://registry.npmjs.org/
 # ② 是否已经设置了用户
 # npm adduser
 ```
@@ -39,7 +39,7 @@ pnpm add designer@* -F site
 }
 ```
 
-![记录下首次提交](first-publish.png)
+![记录下首次提交](image/first-publish.png)
 
 ## 参考资料
 
