@@ -61,6 +61,9 @@
             props.track(`添加表单项 ${item._widget} `, item)
         }
 
+        // 对于子容器，默认占满整行
+        if(item._container===true)  item._col = props.form.grid
+
         if(position<=-1)
             props.form.items.push(item)
         else

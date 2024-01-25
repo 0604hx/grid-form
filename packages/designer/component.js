@@ -29,7 +29,7 @@ const Types = {
 const BASIC = "basic"
 
 const basicProperty = (cnName="标签", value, valueLabel="默认值")=>{
-    let items = [ { label:"表单编号", id:"_uuid", summary:"表单提交时的参数名称", widget: Types.INPUT, value:"" }]
+    let items = [ UUID() ]
     if(!!cnName) items.push({ label:"中文名称", id:"_text", widget: cnName===false? undefined: Types.INPUT, value: cnName })
     items.push(
         COL(),
@@ -59,6 +59,7 @@ const basicSimpleProperty = (...extra)=>({
 
 const specialProperty = (items, label="控件属性", id="special")=> ({ id, label, items })
 
+const UUID          = (label="表单编号")=>({ label, id:"_uuid", summary:"表单提交时的参数名称", widget: Types.INPUT, value:"" })
 const DISABLED      = ()=>({ label:"是否禁用", id:"disabled", widget: Types.SWITCH, value: false, summary:"勾选后改组件无法操作" })
 const COL           = ()=> ({ label:"所占列数", id:"_col", widget: Types.NUMBER, min:0, max: 24, suffix:"列", value: 1 })
 const TEXTAREA      = (label="内容", value="文本内容", rows=3)=> ({ label, id:"_value", widget: Types.INPUT, value, rows })
@@ -264,21 +265,6 @@ const _IMAGE = {
         specialProperty([ SCRIPT_TRIGGER(), SCRIPT() ], "事件交互")
     ]
 }
-const _CARD = {
-    id:"CARD", label:"卡片容器", icon: SquareRegular, container: true, hideLabel: true,
-    items:[
-        basicSimpleProperty( TITLE("卡片"), BORDERED()),
-        specialProperty([
-            { id:"width", label:"容器宽度", widget: Types.INPUT, value:"100%" },
-            { id:"size", label:"组件尺寸", widget: Types.RADIO, value:'medium', options:"small|小号,medium|中等,large|大号" },
-            { id:"grid", label:"容器列数", widget: Types.NUMBER, value: 3, min:1, max: 12, suffix:"列" },
-            { id:"labelShow", label:"显示标签", widget: Types.SWITCH, value: true, summary:"是否显示内部表单项的标签" },
-            { id:"labelPlacement", label:"标签位置", widget:Types.RADIO, value:"top", options:"top|在顶部,left|在左边" },
-            { id:"labelAlign", label:"标签对齐", widget:Types.RADIO, value:"left", options:"left|左对齐,right|右对齐" },
-            { id:"labelWidth", label:"标签宽度", widget: Types.INPUT, value:"120px" }
-        ])
-    ]
-}
 const _TABLE = {
     id:"TABLE", label:"静态表格", icon: Table, hideLabel: true,
     items:[
@@ -289,6 +275,28 @@ const _TABLE = {
             TEXT_ALIGN(),
             CONTENT("列A,列B,列C")
         ),
+    ]
+}
+const _CARD = {
+    id:"CARD", label:"卡片容器", icon: SquareRegular, container: true, hideLabel: true,
+    items:[
+        basicSimpleProperty(
+            UUID(),
+            TITLE("卡片"),
+            { id:"category", label:"子表单类型", value:"simple", widget:Types.RADIO, options:"simple|布局,single|单个,multiple|多行", summary:"不同类型将影响子字段的归属方式" },
+            // { id:"min", label:"数据录入下限", value:undefined, widget:Types.NUMBER, summary:"多行类型下至少能够录入的数据量（0或者不填则不限制）" },
+            { id:"max", label:"数据录入上限", value:undefined, widget:Types.NUMBER, summary:"仅对多行类型有效，控制可录入的数据行数（0或者不填则不限制）" },
+            BORDERED()
+        ),
+        specialProperty([
+            { id:"width", label:"容器宽度", widget: Types.INPUT, value:"100%" },
+            { id:"size", label:"组件尺寸", widget: Types.RADIO, value:'medium', options:"small|小号,medium|中等,large|大号" },
+            { id:"grid", label:"容器列数", widget: Types.NUMBER, value: 3, min:1, max: 12, suffix:"列" },
+            { id:"labelShow", label:"显示标签", widget: Types.SWITCH, value: true, summary:"是否显示内部表单项的标签" },
+            { id:"labelPlacement", label:"标签位置", widget:Types.RADIO, value:"top", options:"top|在顶部,left|在左边" },
+            { id:"labelAlign", label:"标签对齐", widget:Types.RADIO, value:"left", options:"left|左对齐,right|右对齐" },
+            { id:"labelWidth", label:"标签宽度", widget: Types.INPUT, value:"120px" }
+        ])
     ]
 }
 // ----------------------------- END 控件清单 END -----------------------------

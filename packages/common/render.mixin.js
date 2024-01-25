@@ -1,4 +1,4 @@
-import { ref, reactive, toRaw, unref, onMounted, nextTick, watch } from 'vue'
+import { ref, reactive, toRaw, unref, onMounted, computed, nextTick, watch } from 'vue'
 
 import { triggerLoaded, triggerBeforeSubmit, triggerChanged,  triggerExtraButtonClick, formValueProvider, extendFormItems } from './runtime'
 
@@ -19,6 +19,7 @@ export const RenderEvent = ["submit", "failed", "inited"]
 export default (props, emits, suffix="")=>{
     let inited = ref(false)
     const formData = reactive({ _disabled:false })
+
     /**
      * 当表单项设置为必填时，会向该对象赋值
      */
@@ -154,7 +155,7 @@ export default (props, emits, suffix="")=>{
      * 递归计算表单初始值
      * @param {Array<import('.').FormItem>} items
      */
-    const _initFormValue = async items=>{
+    const _initFormValue = async (items, bean)=>{
         if(Array.isArray(items)){
             for (const v of items) {
                 if(!!v._uuid){
@@ -163,10 +164,10 @@ export default (props, emits, suffix="")=>{
                     if(v._widget === "SWITCH" && typeof(itemV)!='boolean'){
                         itemV = typeof(itemV)==='string'? itemV.toLowerCase()=='true': (typeof(itemV)==='number'? itemV != 0: !!itemV)
                     }
-                    else if(v._widget === 'RATE'){
+                    else if((v._widget === 'RATE' || v._widget === 'NUMBER') && !isNaN(itemV)){
                         itemV = Number(itemV)
                     }
-                    formData[v._uuid] = itemV
+                    bean[v._uuid] = itemV
 
                     if(v._required === true){
                         formRequired[v._uuid] = { regex: v._regex, msg: v._message, label: v._text }
@@ -174,8 +175,15 @@ export default (props, emits, suffix="")=>{
                     if(v._watch === true)
                         watchFields.add(v._uuid)
                 }
-                if(v._container===true)
-                    await _initFormValue(v.items)
+                if(v._container===true){
+                    //默认为简单布局容器
+                    v.category = v.category||"simple"
+                    if(v.category == 'single')          bean[v._uuid] = {}
+                    //对于多行表单，赋予初始值
+                    else if(v.category == 'multiple')   bean[v._uuid] = []
+
+                    await _initFormValue(v.items, v.category == 'simple'? bean: bean[v._uuid])
+                }
             }
         }
     }
@@ -192,9 +200,10 @@ export default (props, emits, suffix="")=>{
             }
         }
 
-        await _initFormValue(items)
+        if(props.debug) track("开始计算表单值", formData)
+        await _initFormValue(items, formData)
 
-        if(props.debug) track("表单值", formData)
+        if(props.debug) track("完成计算表单值", formData)
 
         _setupWatchForChange()
 
@@ -235,7 +244,11 @@ export default (props, emits, suffix="")=>{
         }
     }
 
-    onMounted( initForm )
+    onMounted(initForm)
+
+    // setTimeout(()=>{
+    //     if(inited.value === false)  initForm()
+    // }, 1000)
 
     return {
         _raw, track,
@@ -244,3 +257,42 @@ export default (props, emits, suffix="")=>{
     }
 }
 
+/**
+ * 渲染容器的通用入口参数
+ */
+export const ContainerProps = {
+    renders:{type:Object},
+    form: {type:Object},
+    gridGap: {type:Number, default: 10},
+    formData: {type:Object}
+}
+
+/**
+ * 渲染容器通用方法
+ * @param {Object} props
+ * @returns
+ */
+export const ContainerMixin = props=>{
+    const isMultiple = computed(()=> props.form._container === true && props.form.category === "multiple")
+
+    const canAdd = computed(()=> {
+        if(!isMultiple.value)    return false
+        let { max } = props.form
+        return (isNaN(max) || max == 0 || props.formData.length < max)
+    })
+
+    const childForm = item=>{
+        return !item.category || item.category == 'simple'? props.formData : props.formData[item._uuid]
+    }
+
+    const onAddRow = ()=>{
+        if(!isMultiple) throw Error(`暂不支持添加新数据行`)
+
+        const keys = Object.keys(props.formData).slice(props.formData.length)
+        let row = {}
+        keys.forEach(k=> row[k] = props.formData[k])
+        props.formData.push(row)
+    }
+
+    return { isMultiple, canAdd, childForm, onAddRow }
+}

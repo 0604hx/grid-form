@@ -1,0 +1,11 @@
+.gf-render-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.gf-render-table td,th {
+    border-bottom:1px solid #ebeef5;
+    padding: 4px;
+}
+.gf-render-table .striped {
+    background: #fafafa;
+}

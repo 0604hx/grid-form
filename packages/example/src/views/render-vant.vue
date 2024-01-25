@@ -12,9 +12,9 @@
                 <span v-if="data['提交类型']" style="margin-left: 10px;">提交类型={{data['提交类型']}}</span>
             </div>
 
-            <van-cell-group v-if="data['表单数据']">
-                <van-cell v-for="(value, key) in data['表单数据']" :title="key" :value="value" />
-            </van-cell-group>
+            <template v-if="data['表单数据']">
+                {{data['表单数据']}}
+            </template>
             <template v-else>{{data}}</template>
         </template>
     </Basic>

@@ -1,16 +1,15 @@
 <template>
-    <!-- <van-form :label-width="form.labelWidth" :label-align="form.labelPlacement">
-        <van-cell-group inset>
-            <Container :form="form" :formData="formData" :renders="renders" />
-        </van-cell-group>
-    </van-form> -->
+    <div v-if="!inited" style="text-align: center;">
+        <van-loading vertical>表单渲染中...</van-loading>
+    </div>
+    <template v-else>
+        <Container :form="form" :formData="formData" :renders="renders" />
 
-    <Container :form="form" :formData="formData" :renders="renders" />
-
-    <van-space direction="vertical" fill style="margin: 16px;">
-        <van-button v-if="form.submitText" block type="primary" native-type="submit" @click="toSubmit">{{form.submitText}}</van-button>
-        <van-button v-for="btn in form.buttons" block :type="toTheme(btn.theme)" @click="onExtraBtn(btn)">{{btn.text}} </van-button>
-    </van-space>
+        <van-space direction="vertical" fill style="margin: 16px;">
+            <van-button v-if="form.submitText" block type="primary" native-type="submit" @click="toSubmit">{{form.submitText}}</van-button>
+            <van-button v-for="btn in form.buttons" block :type="toTheme(btn.theme)" @click="onExtraBtn(btn)">{{btn.text}} </van-button>
+        </van-space>
+    </template>
 </template>
 
 <script setup>

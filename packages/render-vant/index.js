@@ -2,8 +2,9 @@ import { h } from 'vue'
 
 import { buildOptions  } from '@grid-form/common'
 
-import { Field, Divider, CellGroup } from 'vant'
+import { Field, Divider, CellGroup, Button, Rate } from 'vant'
 
+import Input from "./widgets/input.vue"
 import SelectorDate from "./widgets/selector-date.vue"
 import SelectorImage from "./widgets/selector-img.vue"
 import Selector from "./widgets/selector.vue"
@@ -12,8 +13,6 @@ import Checkbox from "./widgets/checkbox.vue"
 import Radio from "./widgets/radio.vue"
 import Switch from "./widgets/switch.vue"
 import FormRender from "./Render.vue"
-import { Button } from 'vant'
-import { Rate } from 'vant'
 
 const fixType = p=> {
     if(p.type == 'error')   p.type = 'danger'
@@ -24,14 +23,15 @@ const inputField = (props, attrs)=>{
         label               : attrs._text,
         required            : attrs._required,
         placeholder         : props.placeholder,
-        "show-word-limit"   : props["show-count"],
+        showWordLimit       : props["show-count"],
         clearable           : props.clearable,
         disabled            : props.disabled,
         rows                : props.rows,
         maxlength           : props.maxlength,
         type                : attrs._widget=='NUMBER'?"number":"text"
     }
-    return h(Field, ps)
+    // return h(Field, ps)
+    return h(Input, ps)
 }
 
 const _toProps = (props, attrs, ps={})=>{
