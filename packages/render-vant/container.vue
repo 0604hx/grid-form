@@ -5,7 +5,7 @@
                 <template v-for="(item, index) in form.items">
                     <template v-if="item._hide != true">
                         <component v-if="item._container && item.items" :is="buildComponent(item, renders, false)">
-                            <render-container :renders="renders" :form="item" :formData="childForm(item)" />
+                            <render-container :renders="renders" :form="item" :formData="childForm(item)" :lockLabelPlacement="lockLabelPlacement" />
                         </component>
                         <component v-else v-model="rowData[item._uuid]" :is="buildComponent(item, renders, false)" />
                     </template>
@@ -23,7 +23,7 @@
         <template v-for="(item, index) in form.items">
             <template v-if="item._hide != true">
                 <component v-if="item._container && item.items" :is="buildComponent(item, renders, false)">
-                    <render-container :renders="renders" :form="item" :formData="childForm(item)" />
+                    <render-container :renders="renders" :form="item" :formData="childForm(item)" :lockLabelPlacement="lockLabelPlacement"/>
                 </component>
                 <component v-else v-model="formData[item._uuid]" :is="buildComponent(item, renders, false)" />
             </template>
@@ -47,6 +47,8 @@
      * vant4 则只使用 label-align （top、left、right），此处进行一个转换
      */
     const position = computed(()=> {
+        if(!!props.lockLabelPlacement)  return props.lockLabelPlacement
+
         let { labelPlacement, labelAlign } = props.form
         return labelPlacement === 'top'? labelPlacement : labelAlign
     })

@@ -23,7 +23,7 @@
     let osTheme     = useOsTheme()
     let theme = computed(()=> {
         let h = new Date().getHours()
-        let _theme =  osTheme.value === 'dark'? darkTheme : (h>=18||h<=8? darkTheme: null)
+        let _theme =  osTheme.value === 'dark'? darkTheme : (h>=16||h<=8? darkTheme: null)
 
         if(_theme != null)
             document.querySelector("body").classList.add("dark")

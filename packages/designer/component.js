@@ -113,7 +113,7 @@ const _TAGS = {
     ]
 }
 const _BUTTON = {
-    id:"BUTTON", label:"交互按钮", icon: Square, hideLabel: true, script:true,
+    id:"BUTTON", label:"交互按钮", icon: Square, hideLabel: true, script:true, summary:"支持自定义脚本",
     items: [
         basicSimpleProperty(
             { label:"显示文本", id:"label", widget: Types.INPUT, value: "交互按钮" },
@@ -235,7 +235,7 @@ const _TEXT = {
     ]
 }
 const _ALERT = {
-    id:"ALERT", label:"提示信息", icon: BellRegular, hideLabel: true,
+    id:"ALERT", label:"提示信息", icon: BellRegular, hideLabel: true, summary:"具有标题、正文的消息框",
     items:[
         basicSimpleProperty(),
         specialProperty([TITLE(), CONTENT("提示内容"),USE_HTML(), TYPE("info"), BORDERED(), CLOSABLE()])
@@ -253,7 +253,7 @@ const _DIVIDER = {
 }
 //图片组件，支持事件交互，其实在 TEXT、ALERT 组件，启用 html 也能进行图片渲染 😄
 const _IMAGE = {
-    id:"IMAGE", label:"单张图片", icon:Image, hideLabel: true, script:true,
+    id:"IMAGE", label:"单张图片", icon:Image, hideLabel: true, script:true, summary:"显示一张远程或者BASE64编码图片，可定义宽度与高度，支持自定义脚本",
     items:[
         basicSimpleProperty(
             TIP(),
@@ -266,7 +266,7 @@ const _IMAGE = {
     ]
 }
 const _TABLE = {
-    id:"TABLE", label:"静态表格", icon: Table, hideLabel: true,
+    id:"TABLE", label:"静态表格", icon: Table, hideLabel: true, summary:"用于显示静态二维数据的表格",
     items:[
         basicSimpleProperty(
             BORDERED(),
@@ -278,7 +278,7 @@ const _TABLE = {
     ]
 }
 const _CARD = {
-    id:"CARD", label:"卡片容器", icon: SquareRegular, container: true, hideLabel: true,
+    id:"CARD", label:"嵌套表单", icon: SquareRegular, container: true, hideLabel: true, summary:"插入一个带标题的容器，可定义子表单（多行数据录入）",
     items:[
         basicSimpleProperty(
             UUID(),

@@ -7,11 +7,12 @@ const DEFAULT_ACTION = "post"
 export const RenderProps = {
     renders:{type:Object},
     form: {type:Object},
-    gridGap: {type:Number, default: 10},            //栅栏间隔，单位 px
-    debug: {type:Boolean, default: false},          //开启debug 模式后，会在控制台输入各种信息
-    review: {type:Boolean, default: true},          //是否做表单项检验
-    placeholder: {type:String, default:"^\\${(.*)}$"},//默认值的占位符检测正则表达式，符合该表达式的默认值将进行运算
-    valueProvider:{type:Object, default:formValueProvider }
+    gridGap: {type:Number, default: 10},                    //栅栏间隔，单位 px
+    debug: {type:Boolean, default: false},                  //开启debug 模式后，会在控制台输入各种信息
+    review: {type:Boolean, default: true},                  //是否做表单项检验
+    placeholder: {type:String, default:"^\\${(.*)}$"},      //默认值的占位符检测正则表达式，符合该表达式的默认值将进行运算
+    valueProvider:{type:Object, default:formValueProvider },
+    lockLabelPlacement:{type:String},                       //限定标签位置；顶部标签在手机上视觉效果不佳，可通过此限定标签位于左侧
 }
 
 export const RenderEvent = ["submit", "failed", "inited"]
@@ -264,7 +265,8 @@ export const ContainerProps = {
     renders:{type:Object},
     form: {type:Object},
     gridGap: {type:Number, default: 10},
-    formData: {type:Object}
+    formData: {type:Object},
+    lockLabelPlacement: {type:String}
 }
 
 /**

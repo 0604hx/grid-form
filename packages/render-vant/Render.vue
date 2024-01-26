@@ -3,7 +3,7 @@
         <van-loading vertical>表单渲染中...</van-loading>
     </div>
     <template v-else>
-        <Container :form="form" :formData="formData" :renders="renders" />
+        <Container :form="form" :formData="formData" :renders="renders" :lockLabelPlacement="lockLabelPlacement" />
 
         <van-space direction="vertical" fill style="margin: 16px;">
             <van-button v-if="form.submitText" block type="primary" native-type="submit" @click="toSubmit">{{form.submitText}}</van-button>

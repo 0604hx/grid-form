@@ -8,7 +8,7 @@
             </slot>
         </template>
         <template v-else>
-            <Container :gridGap="gridGap" :renders="renders" :form="form" :formData="formData" :labelPlacement="form.labelPlacement" :labelAlign="form.labelAlign"/>
+            <Container :gridGap="gridGap" :renders="renders" :form="form" :formData="formData" />
 
             <el-space wrap style="margin-top: 12px;justify-content: center;width: 100%;">
                 <el-button v-if="form.submitText" :disabled="formData._disabled" size="large" type="primary" @click="toSubmit">{{form.submitText}}</el-button>

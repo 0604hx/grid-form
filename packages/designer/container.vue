@@ -1,7 +1,7 @@
 <template>
     <n-grid :x-gap="gridGap" :y-gap="gridGap" :cols="form.grid" class="designer-content" :style="{width: form.width, margin:'0px auto' }">
         <n-form-item-gi v-for="(item, index) in form.items" :key="index" :span="item._col" :show-feedback="false"
-            :show-label="!(item._hideLabel === true || !form.labelShow)"
+            :show-label="!(item._hideLabel === true || !form.labelShow)" :label-placement="form.labelPlacement" :label-align="form.labelAlign"
             @click.stop="bindClick(item)" class="cell" :class="{active:item._active === true}"  @contextmenu.stop="e=>contextMenu && contextMenu.show(e, index, containerInstance)">
             <template #label>
                 {{item._text}}<span v-if="item._required" style="color: red;font-weight: 600;">*</span>
@@ -10,19 +10,28 @@
                 <template #trigger>
                     <n-button class="remove" secondary type="error" size="tiny" circle> <template #icon> <n-icon :component="Trash" /> </template> </n-button>
                 </template>
-                删除 <n-text code>{{ item._uuid?`${item._uuid}/${item._text}`:`该组件（${item._widget}）` }}</n-text> 吗？
+                删除 <n-text code>{{ item._uuid?`${item._uuid}/${item._text||item.title}`:`该组件（${item._widget}）` }}</n-text> 吗？
             </n-popconfirm>
 
             <component v-if="item._container && item.items" :is="buildComponent(item, renders, track)">
                 <!--内嵌的容器-->
                 <designer-container :form="item" :gridGap="gridGap" :contextMenu="contextMenu" :bindClick="bindClick" :renders="renders"
                     :components="components" :track="track" />
+
+                <div v-if="item.category === 'multiple'" style="margin-top: 10px; text-align: center;">
+                    <n-popover trigger="hover">
+                        <template #trigger>
+                            <n-button size="small" circle>+</n-button>
+                        </template>
+                        点此可添加新的数据行（按本容器的组件配置），可设置数据行上限
+                    </n-popover>
+                </div>
             </component>
             <component v-else :is="buildComponent(item, renders, track)" />
         </n-form-item-gi>
 
-        <n-gi class="cell flex" style="align-items: center; justify-content: center;">
-            <Selector @select="onAddComponent" :components="components" />
+        <n-gi class="cell flex" :class="{top}" style="align-items: center; justify-content: center;">
+            <Selector @select="onAddComponent" :components="components" :top="top" />
         </n-gi>
     </n-grid>
 </template>
@@ -45,6 +54,7 @@
     const dialog = useDialog()
 
     const props = defineProps({
+        top:{type:Boolean, default: false},                     //是否为顶层容器
         gridGap: {type:Number, default: 10},                    //栅栏间隔，单位 px
         renders:{type:Object},                                  //具体的组件渲染函数
         components:{type:Array, default:[]},                    //可选的组件

@@ -31,7 +31,7 @@
                             <n-layout :native-scrollbar="false" content-style="padding: 10px 20px 10px 20px;">
                                 <n-form :label-width="form.labelWidth" :size="form.size" :label-placement="form.labelPlacement" :label-align="form.labelAlign">
                                     <Container :form="form" :gridGap="gridGap" :contextMenu="menu" :bindClick="toActice"
-                                        :renders="renders" :components="components"
+                                        :renders="renders" :components="components" top
                                         :track="debug?track:null" />
 
                                     <div style="text-align: center; margin-top: 12px;">
@@ -63,8 +63,6 @@
         </n-dialog-provider>
 
         <!--右键菜单-->
-        <!-- <n-dropdown v-if="contextMenu" placement="bottom-start" trigger="manual" :x="menu.x" :y="menu.y" :options="menuOptions" :show="menu.show"
-            :on-clickoutside="()=>menu.show=false" @select="onMenuSelect" /> -->
         <ContextMenu v-if="contextMenu" :components="components" ref="menu" @select="onMenuSelect" />
     </div>
 </template>
@@ -74,7 +72,7 @@
     import { Bolt, Plus, CheckCircle, Download, FileDownload, Copy, HandPointLeftRegular,HandPointRightRegular, Eye } from "@vicons/fa"
     import { useMessage, useDialog } from "naive-ui"
 
-    import { createFormItem, buildOptions, buildComponent, withHtmlNode, showLabel, copyText, triggerLoaded, extendFormItems } from '@grid-form/common'
+    import { createFormItem, buildOptions, buildComponent, withHtmlNode, copyText, triggerLoaded, extendFormItems } from '@grid-form/common'
 
     import Selector from "./components/selector.vue"
     import AttributeEditor from "./form-attribute.vue"
@@ -271,6 +269,9 @@
         min-height: 50px;
         padding: 8px;
         background: rgba(200, 200, 200, 0.1);
+    }
+    .designer-content .cell.top {
+        background: rgba(200, 200, 200, 0.15);
     }
 
     .designer-content .flex {

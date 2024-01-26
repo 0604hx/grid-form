@@ -9,11 +9,12 @@ export default {
     "labelPlacement":"top",
     "labelAlign":"left",
     "items":[
+        // {"_widget":"INPUT","_uuid":"summary","_text":"备注信息","_col":1},
         {
-            "_widget":"CARD","size":"medium","width":"100%","grid":4,"labelWidth":"120px","labelShow":true,"labelPlacement":"top","labelAlign":"left",
+            "_widget":"CARD","size":"medium","width":"100%","grid":4,"labelWidth":"120px","labelShow":true, labelPlacement:"top","labelAlign":"left",
             "_col":1,"title":"基本信息","bordered":true,"_container":true,"_hideLabel":true,
             "items":[
-                {"_widget":"IMAGE","_col":4,"height":"auto","maxHeight":"200px","full":true,"scriptTrigger":"click","script":"","_hideLabel":true,src },
+                {"_widget":"IMAGE","_col":4,"height":"auto","maxHeight":"160px","full":true,"scriptTrigger":"click","script":"","_hideLabel":true,src },
                 {"_widget":"INPUT","_uuid":"name","_text":"姓名","_col":1,"disabled":false,"_watch":false,"_required":false,"_regex":"","_message":"","placeholder":"请输入","clearable":false,"show-count":false,"rows":1,"_value":""},
                 {"_widget":"NUMBER","_uuid":"age","_text":"年龄","_col":1,"disabled":false,"_watch":false,"_required":false,"_regex":"","_message":"","placeholder":"请输入","clearable":false, "min": 5, "max": 120},
                 {"_widget":"INPUT","_uuid":"origin","_text":"籍贯","_col":1,"disabled":false,"_watch":false,"_required":false,"_regex":"","_message":"","placeholder":"请输入","clearable":false,"show-count":false,"rows":1,"_value":""},
@@ -22,7 +23,7 @@ export default {
             ]
         },
         {
-            "_widget":"CARD","size":"medium","width":"100%","grid":3,"labelWidth":"120px","labelShow":true,"labelPlacement":"top","labelAlign":"left",
+            "_widget":"CARD","size":"medium","width":"100%","grid":3,"labelWidth":"120px","labelShow":true, labelPlacement:"top","labelAlign":"left",
             "_col":1,"title":"专业信息","bordered":true,"_container":true,"_hideLabel":true, category:"single", "_uuid": "major",
             "items":[
                 {"_widget":"INPUT","_uuid":"name","_text":"专业名称"},
@@ -31,7 +32,7 @@ export default {
             ]
         },
         {
-            "_widget":"CARD","size":"medium","width":"100%","grid":6,"labelWidth":"120px","labelShow":true,"labelPlacement":"top","labelAlign":"left",
+            "_widget":"CARD","size":"medium","width":"100%","grid":6,"labelWidth":"120px","labelShow":true, labelPlacement:"top","labelAlign":"left",
             "_col":1,"title":"教育经历","bordered":true,"_container":true,"_hideLabel":true, category:"multiple", "_uuid": "educates", max:3,
             "items":[
                 {"_widget":"SELECT","_uuid":"type","_text":"类型", "_value":"小学", options:"小学,中学,高中"},
@@ -41,7 +42,7 @@ export default {
             ]
         }
     ],
-    "submitText":"保存信息",
+    "submitText":"保存学生信息",
     "url":"",
     "okText":"",
     "onLoad":"",

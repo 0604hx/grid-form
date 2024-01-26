@@ -14,7 +14,7 @@
                     <n-grid :x-gap="gridGap" :y-gap="gridGap" :cols="form.grid" :style="{width: form.width, margin:'0px auto' }">
                         <template v-for="(item, index) in form.items" :key="index">
                             <n-form-item-gi v-if="item._hide!=true" :span="item._col" :show-feedback="false" :show-label="!(item._hideLabel === true || !form.labelShow)"
-                                :label-placement="labelPlacement" :label-align="labelAlign">
+                                :label-placement="form.labelPlacement" :label-align="form.labelAlign" :label-width="form.labelWidth">
                                 <template #label>
                                     {{item._text}}<span v-if="item._required" style="color: red;"> *</span>
                                 </template>
@@ -34,10 +34,11 @@
             <n-button size="small" :disabled="!canAdd" circle @click.stop="onAddRow">+</n-button>
         </div>
     </template>
-    <n-grid v-else :x-gap="gridGap" :y-gap="gridGap" :cols="form.grid" :style="{width: form.width, margin:'0px auto' }">
+    <template v-else>
+        <n-grid :x-gap="gridGap" :y-gap="gridGap" :cols="form.grid" :style="{width: form.width, margin:'0px auto' }">
         <template v-for="(item, index) in form.items" :key="index">
             <n-form-item-gi v-if="item._hide!=true" :span="item._col" :show-feedback="false" :show-label="!(item._hideLabel === true || !form.labelShow)"
-                :label-placement="labelPlacement" :label-align="labelAlign">
+                :label-placement="form.labelPlacement" :label-align="form.labelAlign" :label-width="form.labelWidth">
                 <template #label>
                     {{item._text}}<span v-if="item._required" style="color: red;"> *</span>
                 </template>
@@ -50,10 +51,14 @@
             </n-form-item-gi>
         </template>
     </n-grid>
+    </template>
 </template>
 
 <script>
-    export default { name:"render-container" }
+    export default {
+        name:"render-container",
+        inheritAttrs: false
+    }
 </script>
 
 <script setup>
@@ -62,11 +67,7 @@
     import { ContainerProps, ContainerMixin } from '@grid-form/common/render.mixin'
     import { buildComponent } from '@grid-form/common'
 
-    const props = defineProps({
-        ...ContainerProps,
-        labelPlacement: {type:String, default:"left"},
-        labelAlign:{type:String, default:"left"}
-    })
+    const props = defineProps(ContainerProps)
 
     const { isMultiple, canAdd, childForm, onAddRow } = ContainerMixin(props)
 </script>

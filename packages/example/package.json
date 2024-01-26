@@ -3,8 +3,8 @@
     "private": true,
     "version": "1.0.0",
     "scripts": {
-        "dev": "rspack serve",
-        "build": "rspack build"
+        "dev": "vite",
+        "build": "vite build"
     },
     "dependencies": {
         "@grid-form/common": "workspace:*",
@@ -22,9 +22,8 @@
         "vue-router": "^4.2.5"
     },
     "devDependencies": {
-        "@rspack/cli": "^0.5.0",
-        "@rspack/core": "^0.5.0",
+        "@vitejs/plugin-vue": "^5.0.3",
         "less-loader": "^12.1.0",
-        "vue-loader": "^17.4.2"
+        "vite": "^5.0.12"
     }
 }

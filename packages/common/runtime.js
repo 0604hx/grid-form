@@ -107,18 +107,27 @@ export function triggerExtraButtonClick(body, form){
  * @param {Array} items
  */
 export const extendFormItems = items=>{
+
+    const isMatch = (t, condition)=>{
+        if(t._uuid == condition)    return true
+        //多值比对
+        return Object.keys(condition).every(v=> t[v]==condition[v])
+    }
+
     /**
-     * 给 items 注入 $ 方法，便于按 _uuid 递归找到表单项，用法：
-     *  items.$("name")                     //找到编号为 name 的表单项
-     *  items.$("name").disabled = true     //禁用编号为 name 的表单项
-     * @param {String} uuid
-     * @returns
+     * 给 items 注入 $ 方法，便于按 指定条件 递归找到表单项，用法：
+     *  items.$("name").disabled = true                             //找到编号为 name 的表单项，并禁用
+     *  items.$({_uuid:"name", "_text":"专业名称"}).disabled = true
+     *
+     * @param {String|Object} uuid - 编号或者Object
+     * @returns {import(".").FormItem}  只返回符合条件的第一个表单项
      */
     items.$ = function(uuid){
         const queue = [...this]
         while(queue.length){
             const t = queue.shift()
-            if(t._uuid == uuid) return t
+            if(isMatch(t, uuid)) return t
+
             if(t._container === true && Array.isArray(t.items))
                 queue.push(...t.items)
         }

@@ -69,7 +69,7 @@
             }
         }
         .editor {
-            height: calc(100vh - 65px); width: calc(100% - 5px);
+            height: calc(100vh - 70px); width: calc(100% - 5px);
         }
     }
 

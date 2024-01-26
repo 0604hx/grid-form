@@ -1,7 +1,7 @@
 <template>
     <Basic width="500px" title="表单渲染示例（Vant4）">
         <template #left="{ form, onSubmit, onFailed, onInited }">
-            <VantRender :renders="VantRenderFuncs" :form="form" @submit="onSubmit" @failed="onFailed" @inited="onInited" debug />
+            <VantRender :renders="VantRenderFuncs" :form="form" @submit="onSubmit" @failed="onFailed" @inited="onInited" debug lockLabelPlacement="left" />
         </template>
 
         <template #result="{ type, title, data }">
