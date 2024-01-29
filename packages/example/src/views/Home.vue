@@ -3,7 +3,7 @@
         <div style="text-align:center;">
             <img src="/logo.svg" />
         </div>
-        <n-divider>GRID-FORM 栅栏（格子）表单</n-divider>
+        <n-divider>格子表单 / GRID-FORM</n-divider>
 
         <n-space justify="center">
             <n-button type="primary" secondary size="large" @click="jump('designer')"><template #icon><n-icon :component="Table" /></template> 可视化设计器</n-button>

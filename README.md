@@ -19,6 +19,13 @@ render-naive|基于[Naive UI](https://www.naiveui.com)实现的渲染器|✅
 render-element|基于[Element Plus](https://element-plus.org/zh-CN/)实现的渲染器|✅
 render-vant|基于[Vant4](https://vant-ui.github.io)实现的渲染器|✅
 
+
+**相关博文**
+
+* [基于 VUE3 可视化低代码表单设计器](https://blog.csdn.net/ssrc0604hx/article/details/128825163)
+* [嵌套子表单与自定义脚本交互](https://blog.csdn.net/ssrc0604hx/article/details/135828101)
+
+
 ## 1. 总览 / OVERVIEW
 
 ![框架](docs/screenshot/overview.png)

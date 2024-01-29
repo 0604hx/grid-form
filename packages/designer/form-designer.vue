@@ -9,10 +9,10 @@
                                 <div style="font-size: 24px;">GRID-FORM 表单设计器 <template v-if="form.id">#{{form.id}}</template> </div>
                             </slot>
 
-                            <n-space>
+                            <n-space size="small">
                                 <!-- <n-button type="primary" secondary @click="toPreview"><template #icon><n-icon :component="Eye" /></template> 预览</n-button> -->
-                                <n-dropdown trigger="click" :options="buildOptions('oneLine|单行JSON,pretty|格式化JSON', 'key')" :show-arrow="true" @select="toExport">
-                                    <n-button type="primary" secondary><template #icon><n-icon :component="FileDownload" /></template> 导出表单</n-button>
+                                <n-dropdown trigger="click" :options="cogOptions" :show-arrow="true" @select="onFuncSelect">
+                                    <n-button type="primary" secondary><template #icon><n-icon :component="Cog" /></template></n-button>
                                 </n-dropdown>
 
                                 <n-button type="primary" @click="toSave" :loading="loading"><template #icon><n-icon :component="CheckCircle" /></template> 保存表单</n-button>
@@ -64,13 +64,20 @@
 
         <!--右键菜单-->
         <ContextMenu v-if="contextMenu" :components="components" ref="menu" @select="onMenuSelect" />
+
+        <n-modal v-model:show="importForm.show" preset="card" :style="{width: '1000px'}" :mask-closable="false" title="导入表单">
+            <CodeEditor v-model:value="importForm.code" height="calc(100vh - 180px)" style="margin-top: 8px;"/>
+            <n-space style="margin-top: 10px;" justify="center">
+                <n-button type="primary" @click="toImport">更新 JSON 数据到设计器</n-button>
+            </n-space>
+        </n-modal>
     </div>
 </template>
 
 <script setup>
-    import { ref, onMounted,onUnmounted, h, reactive, toRaw, unref } from 'vue'
-    import { Bolt, Plus, CheckCircle, Download, FileDownload, Copy, HandPointLeftRegular,HandPointRightRegular, Eye } from "@vicons/fa"
-    import { useMessage, useDialog } from "naive-ui"
+    import { ref, onMounted,onUnmounted, h, reactive, toRaw, unref, nextTick } from 'vue'
+    import { Bolt, Plus, CheckCircle, Download, FileDownload, Copy, HandPointLeftRegular,HandPointRightRegular, Eye, Cog, Code, Upload } from "@vicons/fa"
+    import { useMessage, useDialog, NIcon } from "naive-ui"
 
     import { createFormItem, buildOptions, buildComponent, withHtmlNode, copyText, triggerLoaded, extendFormItems } from '@grid-form/common'
 
@@ -79,6 +86,7 @@
     import FormSetting from "./form-setting.vue"
     import ContextMenu from "./components/context-menu.vue"
     import Container from "./container.vue"
+    import CodeEditor from "./components/editor.code.vue"
 
     const message = useMessage()
     const dialog = useDialog()
@@ -104,13 +112,20 @@
     const track = (...ps)=> console.debug("%c[GRID-FORM DESIGNER]", "background:#8c0776;padding:3px;color:white", ...ps)
 
     const collapsedWidth = 10
+    const cogOptions = [
+        { label:"编辑JSON数据", key:"edit", icon:()=> h(NIcon, null, ()=> h(Code)) },
+        { label:"导入JSON表单", key:"import", icon:()=> h(NIcon, null, ()=> h(Upload)) },
+        { type:"divider"},
+        { label:"导出（单行JSON）", key:"oneLine", icon:()=> h(NIcon, null, ()=> h(Download)) },
+        { label:"导出（格式化JSON）", key:"pretty", icon:()=> h(NIcon, null, ()=> h(Download)) }
+    ]
 
+    const importForm = reactive({show: false, code:""})
     let menu = ref()
     const attrEditor = reactive({ bean:{}, items:[] })
 
     let copied = ""
     const onMenuSelect = (key, index, com, container)=>{
-        console.debug(key, index, com, container)
         if(key == 'copy'){
             copied = container.copy(index)
             copyText(copied)
@@ -143,11 +158,12 @@
     }
 
     const toActice = item=> {
-        if(props.debug) track(`组件被点击：`, item)
         if(item._active === true)   return
 
         let items = getItemsByWidget(item._widget)
         if(!!items){
+            if(props.debug) track(`组件被点击：`, item)
+
             item._active = true
             if(!!attrEditor.bean)  attrEditor.bean._active = false
 
@@ -158,7 +174,6 @@
             message.warning(`注册的组件中找不到⌈${item._widget}⌋，请联系管理员`)
     }
 
-    // const toTestSubmit = ()=> alert(props.form.okText||`数据提交完成，感谢支持`)
     const toTestSubmit = ()=> dialog.create({
         type:"success",
         title: "数据提交成功",
@@ -170,32 +185,46 @@
         throw Error(msg)
     }
 
+    const _delProperty = (b, field="_active")=>{
+        if(b.items){
+            b.items.forEach(v=> {
+                delete v[field]
+                if(v._container===true && v.items)
+                    _delProperty(v, field)
+            })
+        }
+    }
+
     const _toSimpleObject = ()=>{
         if(props.review){
             if(!/^[0-9]+%$|px$/.test(props.form.width))  _error(`表单宽度填写不合法`)
 
-            let idMap = {}
             let items = props.form.items
+
+            let idMap = {}
             let count = 0
             /**
              * 判断字段合法性
              * @param {Array} targets - 表单项数组
              */
-            const _check = targets=>{
+            const _check = (targets, title="", prefix="")=>{
                 for (let i = 0; i < targets.length; i++) {
                     const item = targets[i]
 
                     if("_uuid" in item){
                         count ++
                         if(!item._uuid || ("_text" in item && !item._text))
-                            _error(`第${count}个表单项的编号及中文名不能为空`)
+                            _error(`${title}第${count}个表单项的编号及中文名不能为空`)
 
-                        if(item._uuid)
-                            idMap[item._uuid] = (idMap[item._uuid] || 0) + 1
+                        if(item._uuid){
+                            let key = prefix? `${prefix}/${item._uuid}`: item._uuid
+                            idMap[key] = (idMap[key] || 0) + 1
+                        }
                     }
 
-                    if(Array.isArray(item.items))
-                        _check(item.items)
+                    if(Array.isArray(item.items)){
+                        _check(item.items, `子表单⌈${item.title}⌋`, prefix+(!!item._uuid?`/${item._uuid}` : ""))
+                    }
                 }
             }
             _check(items)
@@ -206,9 +235,7 @@
         }
 
         let form = unref(toRaw(props.form))
-        if(form.items){
-            form.items.forEach(v=> delete v._active)
-        }
+        _delProperty(form)
 
         // 父类组件按需将 items、buttons 两个数组转换为 JSON 格式的字符串
         // form.items = JSON.stringify(form.items || "[]")
@@ -216,14 +243,40 @@
         return form
     }
 
-    const toSave = ()=>  emits("save", _toSimpleObject())
-
-    const toExport = type=>{
-        let json = JSON.stringify(_toSimpleObject(), null, type=='pretty'? 4 : undefined)
-        if(props.debug) track("表单导出", type, json)
-        copyText(json)
-        message.success(`表单数据已复制到粘贴板`)
+    const onFuncSelect = key=>{
+        if(key === 'edit'){
+            importForm.code = JSON.stringify(_toSimpleObject(), null, 4)
+            importForm.show = true
+        }
+        else if(key === 'import'){
+            importForm.code = ""
+            importForm.show = true
+        }
+        else{
+            let json = JSON.stringify(_toSimpleObject(), null, type=='pretty'? 4 : undefined)
+            if(props.debug) track("表单导出", type, json)
+            copyText(json)
+            message.success(`表单数据已复制到粘贴板`)
+        }
     }
+
+    const toImport = ()=>{
+        if(!importForm.code.trim()) return message.warning(`请填写JSON数据`)
+        try{
+            let bean = JSON.parse(importForm.code)
+            Object.assign(props.form, bean)
+            nextTick(()=>{
+                attrEditor.bean = {}
+                importForm.show = false
+                importForm.code = ""
+            })
+        }
+        catch(e){
+            _error("解析JSON出错："+e.message)
+        }
+    }
+
+    const toSave = ()=>  emits("save", _toSimpleObject())
 
     // const toPreview = ()=> {
     //     track("预览表单")
