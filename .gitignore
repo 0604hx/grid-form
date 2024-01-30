@@ -14,4 +14,4 @@ yarn-error.log*
 package-lock.json
 .DS_store
 
-packages/docs/.vitepress/cache
+packages/site/.vitepress/cache

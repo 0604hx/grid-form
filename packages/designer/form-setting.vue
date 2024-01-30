@@ -182,7 +182,10 @@
 
 <script setup>
     import { ref,reactive, createVNode } from 'vue'
-    import { NIcon, useMessage } from 'naive-ui'
+    import { NIcon, useMessage, NTable, NInput, NTooltip, NFormItem, NRadioButton, NRadioGroup, NInputNumber,
+        NSwitch,NSpace, NCollapse, NCollapseItem, NTag, NText,NList, NListItem,NButton, NPopselect, NDropdown,
+        NAlert, NForm, NModal
+    } from 'naive-ui'
     import { Plus, Edit, Cog, Code, Trash } from "@vicons/fa"
 
     import CodeEditor from "./components/editor.code.vue"

@@ -6,6 +6,7 @@
     "private": true,
     "scripts": {
         "dev": "pnpm -F example run dev",
+        "site": "pnpm -F site dev",
         "build:example": "pnpm -F example run build",
         "release": "pnpm publish -r"
     },

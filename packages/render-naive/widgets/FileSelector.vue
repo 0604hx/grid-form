@@ -1,5 +1,3 @@
-<!--文件选择框-->
-<!--选择文件-->
 <template>
     <n-input v-model:value="path" :disabled="disabled" :placeholder="placeholder" clearable readonly @click="toSelect" @clear="onClear">
         <template #prefix> <n-tag size="small" type="default" :bordered="false">选择文件</n-tag> </template>
@@ -13,7 +11,7 @@
 
 <script setup>
     import { ref } from 'vue'
-    import { useMessage } from "naive-ui"
+    import { useMessage, NInput, NTag } from "naive-ui"
 
     import { selectFile  } from '@grid-form/common'
 

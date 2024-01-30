@@ -1,6 +1,6 @@
 <template>
     <n-grid :x-gap="gridGap" :y-gap="gridGap" :cols="form.grid" class="designer-content" :style="{width: form.width, margin:'0px auto' }">
-        <n-form-item-gi v-for="(item, index) in form.items" :key="index" :span="item._col" :show-feedback="false"
+        <NFormItemGridItem v-for="(item, index) in form.items" :key="index" :span="item._col" :show-feedback="false"
             :show-label="!(item._hideLabel === true || !form.labelShow)" :label-placement="form.labelPlacement" :label-align="form.labelAlign"
             @click.stop="bindClick(item)" class="cell" :class="{active:item._active === true}"  @contextmenu.stop="e=>contextMenu && contextMenu.show(e, index, containerInstance)">
             <template #label>
@@ -28,11 +28,11 @@
                 </div>
             </component>
             <component v-else :is="buildComponent(item, renders, track)" />
-        </n-form-item-gi>
+        </NFormItemGridItem>
 
-        <n-gi class="cell flex" :class="{top}" style="align-items: center; justify-content: center;">
+        <NGridItem class="cell flex" :class="{top}" style="align-items: center; justify-content: center;">
             <Selector @select="onAddComponent" :components="components" :top="top" />
-        </n-gi>
+        </NGridItem>
     </n-grid>
 </template>
 
@@ -44,7 +44,7 @@
 <script setup>
     import { ref, reactive } from 'vue'
     import { Trash } from "@vicons/fa"
-    import { useMessage, useDialog } from "naive-ui"
+    import { useMessage, useDialog, NIcon, NButton, NText, NPopconfirm,NPopover, NFormItemGridItem, NGridItem, NGrid  } from "naive-ui"
 
     import { createFormItem, buildComponent } from '@grid-form/common'
 

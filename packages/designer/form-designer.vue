@@ -77,7 +77,7 @@
 <script setup>
     import { ref, onMounted,onUnmounted, h, reactive, toRaw, unref, nextTick } from 'vue'
     import { Bolt, Plus, CheckCircle, Download, FileDownload, Copy, HandPointLeftRegular,HandPointRightRegular, Eye, Cog, Code, Upload } from "@vicons/fa"
-    import { useMessage, useDialog, NIcon } from "naive-ui"
+    import { useMessage, useDialog, NIcon, NMessageProvider, NDialogProvider, NLayout, NDropdown, NButton, NLayoutHeader, NLayoutFooter, NLayoutSider, NSpace, NForm, NText, NModal } from "naive-ui"
 
     import { createFormItem, buildOptions, buildComponent, withHtmlNode, copyText, triggerLoaded, extendFormItems } from '@grid-form/common'
 

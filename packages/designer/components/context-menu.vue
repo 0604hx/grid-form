@@ -7,6 +7,7 @@
 
 <script setup>
     import { ref, reactive, nextTick } from 'vue'
+    import { NDropdown } from 'naive-ui'
     import { Trash, CopyRegular, Paste, PlusCircle } from "@vicons/fa"
 
     import { buildIcon, scriptColor } from "../component"

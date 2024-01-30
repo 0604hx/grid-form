@@ -11,13 +11,13 @@
 
 此工具仅适用于布局简单纯粹的表单场景 😄
 
-包名|说明|进度
--|-|-
-common|通用工具|✅
-designer|可视化设计器（基于 Naive UI）|✅
-render-naive|基于[Naive UI](https://www.naiveui.com)实现的渲染器|✅
-render-element|基于[Element Plus](https://element-plus.org/zh-CN/)实现的渲染器|✅
-render-vant|基于[Vant4](https://vant-ui.github.io)实现的渲染器|✅
+包名|说明|进度|版本
+-|-|-|-
+common|通用工具|✅|![common](https://img.shields.io/npm/v/%40grid-form%2Fcommon)
+designer|可视化设计器（基于 Naive UI）|✅|![designer](https://img.shields.io/npm/v/%40grid-form%2Fdesigner)
+render-naive|基于[Naive UI](https://www.naiveui.com)实现的渲染器|✅|![render-naive](https://img.shields.io/npm/v/%40grid-form%2Frender-naive?color=5fbc21)
+render-element|基于[Element Plus](https://element-plus.org/zh-CN/)实现的渲染器|✅|![render-element](https://img.shields.io/npm/v/%40grid-form%2Frender-element?color=49a2fe)
+render-vant|基于[Vant4](https://vant-ui.github.io)实现的渲染器|✅|![render-vant](https://img.shields.io/npm/v/%40grid-form%2Frender-vant?color=36d7b7)
 
 
 **相关博文**

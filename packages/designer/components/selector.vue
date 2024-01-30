@@ -5,13 +5,13 @@
         </template>
         <n-grid class="p-3" :cols="span" x-gap="6" y-gap="6">
             <template  v-for="item in components">
-                <n-gi :span="span">{{item.label}}</n-gi>
-                <n-gi v-for="com in item.items">
+                <NGridItem :span="span">{{item.label}}</NGridItem>
+                <NGridItem v-for="com in item.items">
                     <n-button secondary @click="onSelect(com)" class="w-full" :title="com.summary">
                         <template #icon><n-icon :color="com.script?scriptColor:null" :component="com.icon" /></template>
                         {{com.label}}
                     </n-button>
-                </n-gi>
+                </NGridItem>
             </template>
         </n-grid>
 
@@ -21,6 +21,7 @@
 
 <script setup>
     import { ref } from 'vue'
+    import { NIcon, NButton, NGridItem, NText, NGrid, NPopover } from 'naive-ui'
     import { Plus } from "@vicons/fa"
 
     import { scriptColor } from "../component"

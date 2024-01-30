@@ -19,6 +19,7 @@
 
 <script setup>
     import { ref, computed, watch, nextTick, h } from 'vue'
+    import { NSpace, NCollapse, NCollapseItem, NText, NSpin, NForm } from 'naive-ui'
 
     import AttrLine from "./components/attribute-line.vue"
 

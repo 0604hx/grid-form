@@ -31,7 +31,7 @@
 
 <script setup>
     import { ref, watch, toRaw, unref, h, nextTick } from 'vue'
-    import { useDialog, NInput, NSpace, NTag } from 'naive-ui'
+    import { useDialog, NInput, NSpace, NTag, NInputNumber, NTooltip, NButton, NSwitch, NSelect, NRadioGroup, NRadioButton, NForm, NFormItem  } from 'naive-ui'
 
     import { buildOptions } from '@grid-form/common'
 

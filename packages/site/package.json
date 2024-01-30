@@ -1,0 +1,25 @@
+{
+    "name": "site",
+    "private": true,
+    "version": "1.0.0",
+    "type": "module",
+    "scripts": {
+        "_init": "vitepress init",
+        "dev": "vitepress dev",
+        "build": "vitepress build",
+        "preview": "vitepress preview"
+    },
+    "devDependencies": {
+        "@grid-form/common": "workspace:*",
+        "@grid-form/designer": "workspace:*",
+        "@grid-form/render-data": "workspace:*",
+        "@grid-form/render-element": "workspace:*",
+        "@grid-form/render-naive": "workspace:*",
+        "@grid-form/render-vant": "workspace:*",
+        "dayjs": "^1.11.10",
+        "element-plus": "^2.5.3",
+        "naive-ui": "^2.37.3",
+        "vant": "^4.8.2",
+        "vitepress": "1.0.0-rc.40"
+    }
+}

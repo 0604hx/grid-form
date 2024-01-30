@@ -3,17 +3,17 @@
         <table class="gf-render-table">
             <tr v-for="(rowData, rowIndex) in formData" :class="{striped:rowIndex%2==1}">
                 <td width="40" class="c">
-                    <n-popconfirm :negative-text="null" @positive-click="formData.splice(rowIndex, 1)">
+                    <NPopconfirm :negative-text="null" @positive-click="formData.splice(rowIndex, 1)">
                         <template #trigger>
                             <n-button size="small" type="primary" tertiary circle>{{rowIndex+1}}</n-button>
                         </template>
                         删除第{{rowIndex+1}}行数据？
-                    </n-popconfirm>
+                    </NPopconfirm>
                 </td>
                 <td>
                     <n-grid :x-gap="gridGap" :y-gap="gridGap" :cols="form.grid" :style="{width: form.width, margin:'0px auto' }">
                         <template v-for="(item, index) in form.items" :key="index">
-                            <n-form-item-gi v-if="item._hide!=true" :span="item._col" :show-feedback="false" :show-label="!(item._hideLabel === true || !form.labelShow)"
+                            <NFormItemGridItem v-if="item._hide!=true" :span="item._col" :show-feedback="false" :show-label="!(item._hideLabel === true || !form.labelShow)"
                                 :label-placement="form.labelPlacement" :label-align="form.labelAlign" :label-width="form.labelWidth">
                                 <template #label>
                                     {{item._text}}<span v-if="item._required" style="color: red;"> *</span>
@@ -24,7 +24,7 @@
                                 </component>
                                 <component v-else-if="item._widget=='DATE'" v-model:formatted-value="rowData[item._uuid]" :is="buildComponent(item, renders, false)" />
                                 <component v-else v-model:value="rowData[item._uuid]" :is="buildComponent(item, renders, false)" />
-                            </n-form-item-gi>
+                            </NFormItemGridItem>
                         </template>
                     </n-grid>
                 </td>
@@ -37,7 +37,7 @@
     <template v-else>
         <n-grid :x-gap="gridGap" :y-gap="gridGap" :cols="form.grid" :style="{width: form.width, margin:'0px auto' }">
         <template v-for="(item, index) in form.items" :key="index">
-            <n-form-item-gi v-if="item._hide!=true" :span="item._col" :show-feedback="false" :show-label="!(item._hideLabel === true || !form.labelShow)"
+            <NFormItemGridItem v-if="item._hide!=true" :span="item._col" :show-feedback="false" :show-label="!(item._hideLabel === true || !form.labelShow)"
                 :label-placement="form.labelPlacement" :label-align="form.labelAlign" :label-width="form.labelWidth">
                 <template #label>
                     {{item._text}}<span v-if="item._required" style="color: red;"> *</span>
@@ -48,7 +48,7 @@
                 </component>
                 <component v-else-if="item._widget=='DATE'" v-model:formatted-value="formData[item._uuid]" :is="buildComponent(item, renders, false)" />
                 <component v-else v-model:value="formData[item._uuid]" :is="buildComponent(item, renders, false)" />
-            </n-form-item-gi>
+            </NFormItemGridItem>
         </template>
     </n-grid>
     </template>
@@ -63,6 +63,7 @@
 
 <script setup>
     import { ref, computed } from 'vue'
+    import { NPopconfirm, NButton, NGrid, NFormItemGridItem } from 'naive-ui'
 
     import { ContainerProps, ContainerMixin } from '@grid-form/common/render.mixin'
     import { buildComponent } from '@grid-form/common'
