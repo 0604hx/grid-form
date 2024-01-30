@@ -4,6 +4,8 @@
     const npmPkgs = '@grid-form/designer @grid-form/render-naive'
 </script>
 
+试试<a href="../demo/designer" target="_blank">在线表单设计器</a> 😄
+
 ## 安装依赖
 > 设计器需使用到`NaiveUI 渲染器`
 
