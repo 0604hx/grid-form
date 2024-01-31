@@ -85,7 +85,7 @@ const RenderFuncs = {
         default: ()=> attrs._html===true?h('div', {innerHTML:props.content}): props.content
     }),
     "DIVIDER"   : (props, attrs)=> h(Divider, {dashed: props.dashed, "content-position":props['title-placement']}, ()=>attrs._value),
-    "CARD"      : (props)=> h(CellGroup, { title: props.title, inset: true, border: props.bordered } )
+    "CARD"      : (props)=> h(CellGroup, { title: props.title, inset: true, border: props.bordered, style:{padding:'2px'} } )
 }
 
 export { FormRender, RenderFuncs }

@@ -14,6 +14,7 @@
 
 <script setup>
     import { ref, reactive, nextTick, computed } from 'vue'
+    import { ElTag, ElInput, ElButton, ElSpace } from 'element-plus'
 
     const emits = defineEmits(['update:modelValue'])
     const props = defineProps({

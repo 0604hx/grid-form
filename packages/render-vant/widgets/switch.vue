@@ -12,6 +12,7 @@
 
 <script setup>
     import { ref, watch } from 'vue'
+    import { Field as VanField, Switch as VanSwitch } from 'vant'
 
     const emits = defineEmits(['update:modelValue', 'change'])
     const props = defineProps({

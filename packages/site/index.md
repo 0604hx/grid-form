@@ -14,7 +14,7 @@ hero:
       link: /demo/designer
     - theme: alt
       text: 技术博文
-      link: https://blog.csdn.net/ssrc0604hx/article/details/135828101
+      link: https://blog.csdn.net/ssrc0604hx/category_12570844.html
   image:
       src: /designer.png
       alt: GRID-FORM

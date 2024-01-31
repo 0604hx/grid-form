@@ -16,3 +16,11 @@ placeholder|String|^\\${(.*)}$|默认值的占位符检测正则表达式，符�
 valueProvider|Object||表单默认值计算器
 lockLabelPlacement|String|-|限定标签位置；顶部标签在手机上视觉效果不佳，可通过此限定标签位于左侧
 debug|Boolean|false|开启debug 模式后，会在控制台输入各种信息
+
+## EMITS
+
+名称|参数|说明
+-|-|-
+inited|()|表单初始化完成后触发
+submit|(formObj:Object, action:String)|表单提交时触发，action默认为`post`，可自定义（见额外按钮）
+failed|(msgs:Array)|表单校验失败时触发

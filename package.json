@@ -5,9 +5,8 @@
     "repository": "https://github.com/0604hx/grid-form",
     "private": true,
     "scripts": {
-        "dev": "pnpm -F example run dev",
         "site": "pnpm -F site dev",
-        "build:example": "pnpm -F example run build",
+        "site:build": "pnpm -F site build",
         "release": "pnpm publish -r"
     },
     "keywords": ["GRID FORM", "表单设计器", "表单渲染器"],

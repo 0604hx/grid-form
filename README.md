@@ -227,8 +227,8 @@ git clone https://github.com/0604hx/grid-form
 # 安装依赖
 pnpm i
 
-# 运行示例
-pnpm dev
+# 运行示例（基于 VitePress）
+pnpm site
 
 # 执行成功后，浏览器访问 http://localhost:8080 即可访问首页
 # 即可体验可视化设计器以及各个组件库对应的渲染效果

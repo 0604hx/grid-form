@@ -10,7 +10,7 @@
         <template v-else>
             <Container :gridGap="gridGap" :renders="renders" :form="form" :formData="formData" />
 
-            <el-space wrap style="margin-top: 12px;justify-content: center;width: 100%;">
+            <el-space wrap style="justify-content: center;width: 100%;">
                 <el-button v-if="form.submitText" :disabled="formData._disabled" size="large" type="primary" @click="toSubmit">{{form.submitText}}</el-button>
                 <el-button v-for="btn in form.buttons" :type="btn.theme" size="large" @click="onExtraBtn(btn)">{{btn.text}} </el-button>
             </el-space>
@@ -20,6 +20,7 @@
 
 <script setup>
     import { ref, toRaw, unref, onMounted, nextTick, reactive, watch } from 'vue'
+    import { ElEmpty, ElSpace, ElButton } from 'element-plus'
 
     import { default as RenderMixin, RenderEvent, RenderProps } from '@grid-form/common/render.mixin'
 

@@ -10,7 +10,7 @@
 
 <script setup>
     import { ref, onMounted, computed, watch } from 'vue'
-    import { createDiscreteApi, NAlert, NCard } from 'naive-ui'
+    import { NAlert, NCard } from 'naive-ui'
 
     import { FormRender, RenderFuncs } from "@grid-form/render-naive"
 

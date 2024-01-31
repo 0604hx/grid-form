@@ -34,6 +34,10 @@
 
 <script setup>
     import { ref, onMounted, watch } from 'vue'
+    import {
+        Field as VanField, Popup as VanPopup, Picker as VanPicker, CheckboxGroup as VanCheckboxGroup, Space as VanSpace,
+        Checkbox as VanCheckbox, Cell as VanCell, CellGroup as VanCellGroup
+    } from 'vant'
 
     const emits = defineEmits(['update:modelValue', 'change'])
     const props = defineProps({

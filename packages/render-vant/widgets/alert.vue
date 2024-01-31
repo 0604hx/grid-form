@@ -22,6 +22,7 @@
 
 <script setup>
     import { ref, computed } from 'vue'
+    import { Icon as VanIcon } from 'vant'
 
     const props = defineProps({
         type:{type:String, default:"info"},

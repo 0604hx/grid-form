@@ -37,6 +37,8 @@
 
 <script setup>
     import { computed } from 'vue'
+    import { Form as VanForm, Button as VanButton } from 'vant'
+
     import { ContainerProps, ContainerMixin } from '@grid-form/common/render.mixin'
     import { buildComponent } from '@grid-form/common'
 

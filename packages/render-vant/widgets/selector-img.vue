@@ -13,7 +13,7 @@
 
 <script setup>
     import { ref } from 'vue'
-    import { showDialog } from 'vant'
+    import { Field as VanField, Uploader as VanUploader } from 'vant'
 
     const emits = defineEmits(['update:modelValue', 'change'])
     const props = defineProps({
@@ -28,16 +28,6 @@
 
     let show = ref(false)
     let shadow = ref(props.modelValue)
-
-    // let dealWithFile = (file, detail)=>{
-    //     return new Promise((ok, fail)=>{
-    //         if(file.size > props.maxSize){
-    //             showDialog({ title: `图片不能超过${formatFileSize(props.maxSize)}`, message:`当前选择图片 ${formatFileSize(file.size)}`})
-    //             return fail()
-    //         }
-    //         ok(file)
-    //     })
-    // }
 
     let onChange = d=> emits("update:modelValue", { data: d.content, name: d.file.name, size: d.file.size })
 </script>

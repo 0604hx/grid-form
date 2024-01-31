@@ -55,6 +55,7 @@
 
 <script setup>
     import { computed } from 'vue'
+    import { ElPopconfirm, ElForm, ElFormItem, ElRow, ElCol, ElButton } from 'element-plus'
 
     import { ContainerProps, ContainerMixin } from '@grid-form/common/render.mixin'
     import { buildComponent } from '@grid-form/common'
@@ -85,10 +86,10 @@
         text-align: center;
     }
     .gf-render-table td {
-        border-bottom:1px solid #ebeef5;
+        border-bottom:1px solid #ebeef580;
         padding: 8px;
     }
-    .gf-render-table .striped {
+    /* .gf-render-table .striped {
         background: #fafafa;
-    }
+    } */
 </style>

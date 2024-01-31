@@ -14,6 +14,7 @@
 
 <script setup>
     import { h, ref } from 'vue'
+    import { Loading as VanLoading, Space as VanSpace, Button as VanButton } from 'vant'
 
     import { buildComponent, buildOptions } from '@grid-form/common'
     import { default as RenderMixin, RenderEvent, RenderProps } from '@grid-form/common/render.mixin'

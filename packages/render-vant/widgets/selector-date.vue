@@ -11,6 +11,7 @@
 
 <script setup>
     import { ref } from 'vue'
+    import { Field as VanField, Popup as VanPopup, DatePicker as VanDatePicker } from 'vant'
 
     const emit = defineEmits(['update:modelValue', 'change'])
     const props = defineProps({

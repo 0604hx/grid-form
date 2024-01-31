@@ -33,30 +33,7 @@
     let mode = ref(-1)
     let names = ref(['basic'])
 
-    // let lines = [
-    //     {
-    //         label:"基本信息", key:"basic",
-    //         items:[
-    //             { label:"表单名称", key:"_uuid", widget:"TEXT" },
-    //             { label:"中文名称", key:"_text", widget:"TEXT" },
-    //             { label:"所占列数", key:"_col", widget:"NUMBER", min:1, max: 24, suffix:"列"},
-    //             { label:"提示信息", key:"placeholder", widget:"TEXT" },
-    //         ]
-    //     }
-    // ]
-
     let onClick = v=> names.value = v
-    // let buildLine = item=>{
-    //     console.debug(item, props.bean[item.id])
-    //     let ps = {
-    //         modelValue: props.bean[item.id]
-    //         // "onUpdate:modelValue":v=>{}
-    //     }
-    //     for(let k in item){
-    //         if(k!='id') ps[k] = item[k]
-    //     }
-    //     return h(AttrLine, Object.assign(ps, item) )
-    // }
 
     watch(()=> props.bean, v=>{
         mode.value = 0

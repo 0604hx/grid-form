@@ -14,6 +14,7 @@
 
 <script setup>
     import { ref, watch } from 'vue'
+    import { Field as VanField, RadioGroup as VanRadioGroup, Radio as VanRadio } from 'vant'
 
     const emits = defineEmits(['update:modelValue', 'change'])
     const props = defineProps({

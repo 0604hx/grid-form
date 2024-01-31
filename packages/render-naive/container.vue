@@ -82,10 +82,10 @@
         text-align: center;
     }
     .gf-render-table td {
-        border-bottom:1px solid #ebeef5;
+        border-bottom:1px solid #ebeef580;
         padding: 8px;
     }
-    .gf-render-table .striped {
+    /* .gf-render-table .striped {
         background: #fafafa;
-    }
+    } */
 </style>

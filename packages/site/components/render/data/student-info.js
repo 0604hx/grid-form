@@ -1,6 +1,5 @@
-import { src } from "./image"
-
 export default {
+    "id": "学生信息等级表",
     "size":"medium",
     "width":"100%",
     "grid":1,
@@ -13,7 +12,7 @@ export default {
             "_widget":"CARD","size":"medium","width":"100%","grid":4,"labelWidth":"120px","labelShow":true, "labelPlacement":"top","labelAlign":"left",
             "_col":1,"title":"基本信息","bordered":true,"_container":true,"_hideLabel":true,
             "items":[
-                {"_widget":"IMAGE","_col":4,"height":"auto","maxHeight":"160px","full":true,"scriptTrigger":"click","script":"","_hideLabel":true, "src": src },
+                {"_widget":"IMAGE","_col":4,"height":"auto","maxHeight":"160px","full":true,"scriptTrigger":"click","script":"","_hideLabel":true, "src": "" },
                 {"_widget":"INPUT","_uuid":"name","_text":"姓名","_col":1,"disabled":false,"_watch":false,"_required":false,"_regex":"","_message":"","placeholder":"请输入","clearable":false,"show-count":false,"rows":1,"_value":""},
                 {"_widget":"NUMBER","_uuid":"age","_text":"年龄","_col":1,"disabled":false,"_watch":false,"_required":false,"_regex":"","_message":"","placeholder":"请输入","clearable":false, "min": 5, "max": 120},
                 {"_widget":"INPUT","_uuid":"origin","_text":"籍贯","_col":1,"disabled":false,"_watch":false,"_required":false,"_regex":"","_message":"","placeholder":"请输入","clearable":false,"show-count":false,"rows":1,"_value":""},
