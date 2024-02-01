@@ -5,11 +5,10 @@
     const time = Date.now()
 </script>
 
-:::tip 🪝回调函数 / HOOK
-表单回调函数帮助用户在不同的时间节点处理业务逻辑，若无特殊注明，回调均采用非 `Promise` 形式执行。
-:::
+## 🪝 回调函数 / HOOK
+> 表单回调函数帮助用户在不同的时间节点处理业务逻辑，若无特殊注明，回调均采用非 `Promise` 形式执行。
 
-## 初始化 / onLoad
+### 初始化 / onLoad
 在表单加载完成后触发，参数：
 * `form` 当前表单值（Object，响应式），可以修改对应值
 * `items` 表单定义（Array），支持动态修改表单项（如下拉框的选项内容）
@@ -20,7 +19,7 @@ console.debug("表单值", form)
 items.$('type').options = '个人,企业'
 ```
 
-## 提交时 / onSubmit <Badge>Promise</Badge>
+### 提交时 / onSubmit <Badge>Promise</Badge>
 表单提交前触发，以 **Promise** 形式调用，一旦定义了此回调，若不返回`true`则会中断表单的提交，参数：
 
 * `form` 当前表单值（Object，响应式）
@@ -36,7 +35,7 @@ if(!form.name || form.name.length < 2)  return reject(`用户名长度必须大�
 resolve(true)
 ```
 
-## 提交后 / afterSubmit
+### 提交后 / afterSubmit
 表单成功提交后触发，参数：
 * `form` 当前表单值（Object，响应式）
 
@@ -65,7 +64,7 @@ resolve(true)
 </script>
 ```
 
-## 数据变化时 / onChange
+### 数据变化时 / onChange
 表单值变动时触发（表单项需勾选`监听变动`），参数：
 * `form` 当前表单值（Object，响应式）
 * `agent` 当前变动的表单项详情（key=表单项ID、from=旧值、to=新值）
@@ -76,7 +75,9 @@ resolve(true)
 console.debug("表单值变动：", agent.key, "从 "+agent.from+" 变更为 "+agent.to)
 ```
 
-## 表单隐藏值
+## 😎 表单进阶玩法
+
+### 隐藏值
 
 表单的`hides`属性（Array）为隐藏值，在初始化时将注入到表单对象
 
@@ -92,14 +93,14 @@ console.debug("表单值变动：", agent.key, "从 "+agent.from+" 变更为 "+a
 { token: "123", expire: {{ time }} }
 ```
 
-## 额外的按钮
+### 额外的按钮
 > 排布在`提交按钮`后的普通按钮，支持脚本交互
 
 ![](/extra-btns.png)
 
 属性详见：[额外按钮](./data-structure.md#额外按钮)
 
-## 数据联动
+### 数据联动
 
 要启用联动需要满足以下条件：
 
@@ -126,10 +127,10 @@ if(agent.key=='企业类型'){
 其实常规的做法是在`输入类表单项`增加事件（如 onChange、onBlur、onFocus 等），但是这样操（实）作（现）繁（困）琐（难）😂😂，我的做法只需要填写一处代码（直观）
 :::
 
-## 辅助函数
+## 🏳️‍🌈 辅助函数
 > 为方便用户定义回调函数，我们封装一些常用的方法
 
-### 表单项寻找：$
+### 表单项寻找:$
 
 ```js
 // items 扩展 $ 方法，便于按指定条件递归找到表单项

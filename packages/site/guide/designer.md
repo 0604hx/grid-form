@@ -56,7 +56,7 @@ app.use(naive)
 ![设计器](/designer.png)
 
 
-## 设计器 PROPS
+## PROPS
 
 名称|类型|默认值|说明
 -|-|-|-
@@ -74,7 +74,7 @@ contextMenu|Boolean|false|是否启用右键菜单（方便操控表单项）<Ba
 enableCtrlS|Boolean|false|是否启用 CTRL+S 保存快捷键 <Badge>0.0.8</Badge>
 debug|Boolean|false|开启debug 模式后，会在控制台输入各种信息
 
-## 设计器 SLOTS
+## SLOTS
 
 名称|参数|说明
 -|-|-

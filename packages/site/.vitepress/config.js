@@ -3,21 +3,41 @@ import { join, resolve } from 'path'
 import { defineConfig } from 'vitepress'
 import { DEMO_DESIGNER, DEMO_RENDER, GUIDE_DESIGNER, GUIDE_RENDER, GUIDE_STARTED, csdnSvg } from './resource'
 
-let demo = (suffix = "") => join(__dirname, "../demo", suffix) + '/'
+const isProd = process.env.npm_lifecycle_event==='build'
+
+const base = isProd ? "/grid-form/":"/"
+const head = [ ['link', { rel: 'icon', href: `${base}logo.svg` }] ]
+
+if(isProd){
+    console.log(`➕ 百度统计代码...`)
+    //增加百度统计
+    head.push([
+        'script',
+        {},
+        `
+        window._hmt = window._hmt || [];
+        (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?2011a384a05d083dddbac20462902ad2";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+        })();
+        `
+    ])
+}
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+    base,
     title: "格子表单/GRID-FORM",
     description: "基于 GRID 布局的简单表单工具（包含可视化设计器、渲染器）",
     lastUpdated: false,
-    // cleanUrls: true,
+    cleanUrls: true,            // Github Pages 支持简洁 URL
 
     markdown: { lineNumbers: false, image:{ lazyLoading: true } },
-    head: [
-        ['link', { rel: 'icon', href: '/logo.svg' }]
-    ],
+    head,
     themeConfig: {
-        logo: "/logo.svg",
+        logo: '/logo.svg',
         // https://vitepress.dev/reference/default-theme-config
         nav: [
             { text: '首页', link: '/' },
@@ -41,8 +61,18 @@ export default defineConfig({
                     { text: '事件及数据联动', link: '/guide/advance' },
                     { text: '自定义组件', link:"/guide/custom" }
                 ]
+            },
+            {
+                text: "其他",
+                items: [
+                    { text: '更新日志', link: '/guide/changelog' }
+                ]
             }
         ],
+        outline:{
+            level: [2,4],
+            label: '目录'
+        },
         footer: {
             message: '基于<a href="https://github.com/0604hx/grid-form/LICENSE"> MIT</a> 许可发布',
             copyright: '版权所有 © 2023-至今 <a href="https://github.com/0604hx">0604hx/集成显卡</a>'
