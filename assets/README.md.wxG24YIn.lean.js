@@ -1,1 +1,0 @@
-import{_ as e,G as a,E as t,ac as r}from"./chunks/framework.040mz0Gi.js";const u=JSON.parse('{"title":"基于 VitePress 的项目文档","description":"","frontmatter":{},"headers":[],"relativePath":"README.md","filePath":"README.md"}'),s={name:"README.md"},i=r("",4),l=[i];function o(n,c,_,d,h,p){return t(),a("div",null,l)}const m=e(s,[["render",o]]);export{u as __pageData,m as default};
