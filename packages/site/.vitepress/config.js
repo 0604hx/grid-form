@@ -1,7 +1,5 @@
-import { join, resolve } from 'path'
-
 import { defineConfig } from 'vitepress'
-import { DEMO_DESIGNER, DEMO_RENDER, GUIDE_DESIGNER, GUIDE_RENDER, GUIDE_STARTED, csdnSvg } from './resource'
+import { DEMO_DESIGNER, DEMO_RENDER, GUIDE_DESIGNER, GUIDE_RENDER, GUIDE_STARTED, csdnSvg, giteeSvg } from './resource'
 
 const isProd = process.env.npm_lifecycle_event==='build'
 
@@ -79,6 +77,7 @@ export default defineConfig({
         },
         socialLinks: [
             { icon: 'github', link: 'https://github.com/0604hx/grid-form' },
+            { icon: {svg: giteeSvg }, link:"https://gitee.com/0604hx/grid-form"},
             { icon: 'npm', link: 'https://www.npmjs.com/~0604hx' },
             { icon:{ svg: csdnSvg }, link:"https://blog.csdn.net/ssrc0604hx?type=blog" }
         ],
