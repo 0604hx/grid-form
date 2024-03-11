@@ -22,7 +22,11 @@ import TableWidget from "./widgets/table.vue"
  * @property {String} _value - 表单项默认值
  * @property {Boolean} _watch - 是否监听变化
  * @property {Boolean} _container - 是否为容器
+ * @property {String} category - 容器类型
+ * @property {Array<FormItem>} items - 子表单项
  * @property {Boolean} _required - 是否为必填项目
+ * @property {String} _regex - 请填写正则表达式（仅限勾选必填）
+ * @property {String} _message - 当校验失败时提示的内容（仅限勾选必填）
  */
 
 
@@ -145,7 +149,7 @@ export function buildOptions(text, valueField="value", labelField="label") {
         throw Error(`${text} 不是有效的 options 数据内容，请参考文档进行配置`)
 
     return options.map(o=> {
-        // if(typeof(o) === 'object')  return o
+        if(typeof(o) === 'object')  return o
 
         let i = o.indexOf("|")
         let obj = {}

@@ -2,7 +2,12 @@ import { ref, reactive, toRaw, unref, onMounted, computed, nextTick, watch } fro
 
 import { triggerLoaded, triggerBeforeSubmit, triggerChanged,  triggerExtraButtonClick, formValueProvider, extendFormItems } from './runtime'
 
-const DEFAULT_ACTION = "post"
+const DEFAULT_ACTION= "post"
+const MULTIPLE      = "multiple"
+const SIMPLE        = "simple"
+const SINGLE        = "single"
+
+const buildPrefix   = (p,name)=> Array.of(p, name).filter(v=>!!v).join(".")
 
 export const RenderProps = {
     renders:{type:Object},
@@ -21,10 +26,6 @@ export default (props, emits, suffix="")=>{
     let inited = ref(false)
     const formData = reactive({ _disabled:false })
 
-    /**
-     * 当表单项设置为必填时，会向该对象赋值
-     */
-    const formRequired = {}
     const watchFields  = new Set()
 
     /**
@@ -56,33 +57,63 @@ export default (props, emits, suffix="")=>{
     //     track("表单数据更新", formData, v)
     // })
 
-    const _checkRequire = formObj=>{
-        if(props.review){
-            //进行表单项校验
-            let fails = []
-            Object.keys(formRequired).forEach(key=>{
-                let { regex, msg, label } = formRequired[key]
-                if(!formObj[key])   fails.push(`${label}（${key}）未填写`)
-                else{
-                    if(!!regex && !RegExp(regex).test(formObj[key])) {
-                        fails.push(msg||`${label}（${key}）校验未通过`)
-                    }
+    /**
+     * 检测必填项
+     * 子表单（非 SIMPLE）必填无法正常检测
+     *      https://github.com/0604hx/grid-form/issues/3
+     *
+     * @param {Array<import('.').FormItem>} items - 表单定义项
+     * @param {Object} bean - 与 items 对应的数据对象
+     * @param {Array<String>} fails - 错误清单
+     * @param {String} prefix - 前缀文本
+     */
+    const _checkRequire = (items, bean, fails, prefix="")=>{
+        for(const item of items){
+            if(item._container === true){
+                switch(item.category){
+                    case SINGLE:
+                        _checkRequire(item.items, bean[item._uuid]||{}, fails)
+                        break
+                    case MULTIPLE:
+                        const rows = bean[item._uuid]
+                        if(Array.isArray(rows)){
+                            for (let i = 0; i < rows.length; i++) {
+                                const row = rows[i]
+                                _checkRequire(item.items, row, fails, `[${item._text||item.title}的第${i+1}条]`)
+                            }
+                        }
+                        break
+                    default:
+                        _checkRequire(item.items, bean, fails)
                 }
-            })
-
-            if(fails.length){
-                props.debug && track(`[表单检查]`, fails)
-                return emits("failed", fails)
+            }
+            else if(item._required == true){
+                //检查必填表单项是否符合预期
+                if(!bean[item._uuid])
+                    fails.push(`${prefix}${item._text}（${item._uuid}）未填写`)
+                else{
+                    if(!!item._regex && !RegExp(item._regex).text(bean[item._uuid]))
+                        fails.push(prefix+(item._message || `${item._text}（${item._uuid}）校验未通过：${item._regex}`))
+                }
             }
         }
-        return true
     }
 
     const _submitDo = (formObj, action=DEFAULT_ACTION) =>{
         delete formObj['_disabled']
 
-        if(_checkRequire(formObj) === true)
-            emits("submit", formObj, action)
+        const fails = []
+
+        //校验错误字段
+        if(props.review == true)
+            _checkRequire(props.form.items, formObj, fails)
+
+        if(fails.length){
+            props.debug && track(`[表单检查]`, fails)
+            return emits("failed", fails)
+        }
+
+        emits("submit", formObj, action)
     }
 
     /**
@@ -156,7 +187,7 @@ export default (props, emits, suffix="")=>{
      * 递归计算表单初始值
      * @param {Array<import('.').FormItem>} items
      */
-    const _initFormValue = async (items, bean)=>{
+    const _initFormValue = async (items, bean, prefix="")=>{
         if(Array.isArray(items)){
             for (const v of items) {
                 if(!!v._uuid){
@@ -170,20 +201,17 @@ export default (props, emits, suffix="")=>{
                     }
                     bean[v._uuid] = itemV
 
-                    if(v._required === true){
-                        formRequired[v._uuid] = { regex: v._regex, msg: v._message, label: v._text }
-                    }
                     if(v._watch === true)
                         watchFields.add(v._uuid)
                 }
                 if(v._container===true){
                     //默认为简单布局容器
-                    v.category = v.category||"simple"
-                    if(v.category == 'single')          bean[v._uuid] = {}
+                    v.category = v.category||SIMPLE
+                    if(v.category == SINGLE)          bean[v._uuid] = {}
                     //对于多行表单，赋予初始值
-                    else if(v.category == 'multiple')   bean[v._uuid] = []
+                    else if(v.category == MULTIPLE)   bean[v._uuid] = []
 
-                    await _initFormValue(v.items, v.category == 'simple'? bean: bean[v._uuid])
+                    await _initFormValue(v.items, v.category == SIMPLE? bean: bean[v._uuid], )
                 }
             }
         }
@@ -253,7 +281,7 @@ export default (props, emits, suffix="")=>{
 
     return {
         _raw, track,
-        inited, formData, formRequired,
+        inited, formData,
         toSubmit, onExtraBtn
     }
 }
@@ -275,7 +303,7 @@ export const ContainerProps = {
  * @returns
  */
 export const ContainerMixin = props=>{
-    const isMultiple = computed(()=> props.form._container === true && props.form.category === "multiple")
+    const isMultiple = computed(()=> props.form._container === true && props.form.category === MULTIPLE)
 
     const canAdd = computed(()=> {
         if(!isMultiple.value)    return false
@@ -284,7 +312,7 @@ export const ContainerMixin = props=>{
     })
 
     const childForm = item=>{
-        return !item.category || item.category == 'simple'? props.formData : props.formData[item._uuid]
+        return !item.category || item.category == SIMPLE? props.formData : props.formData[item._uuid]
     }
 
     const onAddRow = ()=>{

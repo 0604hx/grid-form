@@ -13,8 +13,6 @@
 
     import { useData } from 'vitepress'
 
-    import { RenderDemo } from "."
-
     const { isDark } = useData()
 
     const props = defineProps({

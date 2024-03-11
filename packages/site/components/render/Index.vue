@@ -43,6 +43,7 @@
 
     import { createForm } from "@grid-form/common"
 
+    import "."
     import StudentInfo from './data/student-info.js'
 
     import NaiveRender from './naiveui.vue'

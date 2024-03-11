@@ -9,8 +9,6 @@
 
     import { FormRender, RenderFuncs } from "@grid-form/render-element"
 
-    import { RenderDemo } from "."
-
     const props = defineProps({
         form: {type:Object, default:{}},
         onSubmit: {type:Function},

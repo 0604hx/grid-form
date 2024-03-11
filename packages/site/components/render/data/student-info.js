@@ -36,7 +36,7 @@ export default {
                 {"_widget":"SELECT","_uuid":"type","_text":"类型", "_value":"小学", "options":"小学,中学,高中"},
                 {"_widget":"INPUT","_uuid":"from","_text":"开始日期"},
                 {"_widget":"INPUT","_uuid":"to","_text":"结束日期"},
-                {"_widget":"INPUT","_uuid":"school","_col":3,"_text":"学校名称"}
+                {"_widget":"INPUT","_uuid":"school","_col":3,"_text":"学校名称", "_required":true }
             ]
         }
     ],
