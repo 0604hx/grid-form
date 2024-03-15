@@ -13,11 +13,11 @@
         "access": "public"
     },
     "dependencies": {
-        "@codemirror/lang-javascript": "^6.1.2",
+        "@codemirror/lang-javascript": "^6.2.2",
         "@grid-form/common": "workspace:*",
         "@vicons/fa": "^0.12.0",
         "codemirror": "^6.0.1",
-        "naive-ui": "^2.35.0",
+        "naive-ui": "^2.38.1",
         "vue-codemirror": "^6.1.1"
     }
 }

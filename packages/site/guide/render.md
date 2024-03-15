@@ -10,6 +10,7 @@
 -|-|-|-
 renders|Object|{}|组件渲染函数
 form|Object|{}|表单数据对象
+initValue|Object||外部的表单初始值
 gridGap|Number|10|栅栏间隔，单位 px <Badge>NaiveUI</Badge><Badge>ElementPlus</Badge>
 review|Boolean|true|是否做表单项检验
 placeholder|String|^\\${(.*)}$|默认值的占位符检测正则表达式，符合该表达式的默认值将进行运算

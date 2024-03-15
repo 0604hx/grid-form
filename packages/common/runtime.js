@@ -48,6 +48,8 @@ function buildFuncBody(body, usePromise=true){
 
 function _triggerWithoutPromise(body, eventName, paramsNames, params){
     try{
+        if(typeof(body) === 'function')
+            return body(...params)
         return new Function(...paramsNames, buildFuncBody(body, false))(...params)
     }
     catch(e){
@@ -74,6 +76,10 @@ export function triggerLoaded(body, form, items){
  * @returns
  */
 export function triggerBeforeSubmit(body, form, items){
+    if(typeof(body) === 'function'){
+        return new Promise((resolve)=> Promise.resolve(body(form, items)).then(v=> resolve(v)) )
+    }
+
     return new Function("form", "items", buildFuncBody(body))(form, items).catch(e=> _showError(e, "onSubmit"))
 }
 
@@ -94,7 +100,6 @@ export function triggerChanged(body, form, agent, items){
  * @param {Object} form
  */
 export function triggerAfterSubmit(body, form){
-    // return new Function("form", buildFuncBody(body, false))(form)
     return _triggerWithoutPromise(body, "afterSubmit", ["form"], [form])
 }
 

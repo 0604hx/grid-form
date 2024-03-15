@@ -7,11 +7,10 @@ const MULTIPLE      = "multiple"
 const SIMPLE        = "simple"
 const SINGLE        = "single"
 
-const buildPrefix   = (p,name)=> Array.of(p, name).filter(v=>!!v).join(".")
-
 export const RenderProps = {
     renders:{type:Object},
     form: {type:Object},
+    initValue: {type:Object},                               //外部的表单初始值
     gridGap: {type:Number, default: 10},                    //栅栏间隔，单位 px
     debug: {type:Boolean, default: false},                  //开启debug 模式后，会在控制台输入各种信息
     review: {type:Boolean, default: true},                  //是否做表单项检验
@@ -124,13 +123,12 @@ export default (props, emits, suffix="")=>{
         let { onSubmit } = props.form
         let formObj = _raw(formData)
         if(!!onSubmit && typeof(onSubmit==='string')){
-            if(_checkRequire(formObj) != true) return
 
             triggerBeforeSubmit(onSubmit, formData, _raw(props.form.items)).then(obj=>{
                 if(props.debug) track("<onSubmit> 回调函数返回（仅当返回布尔 true 方能继续提交表单）", obj)
                 if(obj === true){
-                    // _submitDo(typeof(obj) === 'object'? obj: _raw(formData))
-                    emits("submit", _raw(formData), DEFAULT_ACTION)
+                    // emits("submit", _raw(formData), DEFAULT_ACTION)
+                    _submitDo(_raw(formData))
                 }
                 else{
                     if(props.debug) track(`<onSubmit> 回调函数返回非 true ，中断表单提交`)
@@ -187,19 +185,22 @@ export default (props, emits, suffix="")=>{
      * 递归计算表单初始值
      * @param {Array<import('.').FormItem>} items
      */
-    const _initFormValue = async (items, bean, prefix="")=>{
+    const _initFormValue = async (items, bean)=>{
         if(Array.isArray(items)){
             for (const v of items) {
                 if(!!v._uuid){
-                    let itemV = await _computeValue(v._value, v._uuid)
-                    // 处理布尔型的默认值
-                    if(v._widget === "SWITCH" && typeof(itemV)!='boolean'){
-                        itemV = typeof(itemV)==='string'? itemV.toLowerCase()=='true': (typeof(itemV)==='number'? itemV != 0: !!itemV)
+                    // 如果没有初始值，则尝试自动计算
+                    if(bean[v._uuid] == undefined){
+                        let itemV = await _computeValue(v._value, v._uuid)
+                        // 处理布尔型的默认值
+                        if(v._widget === "SWITCH" && typeof(itemV)!='boolean'){
+                            itemV = typeof(itemV)==='string'? itemV.toLowerCase()=='true': (typeof(itemV)==='number'? itemV != 0: !!itemV)
+                        }
+                        else if((v._widget === 'RATE' || v._widget === 'NUMBER') && !isNaN(itemV)){
+                            itemV = Number(itemV)
+                        }
+                        bean[v._uuid] = itemV
                     }
-                    else if((v._widget === 'RATE' || v._widget === 'NUMBER') && !isNaN(itemV)){
-                        itemV = Number(itemV)
-                    }
-                    bean[v._uuid] = itemV
 
                     if(v._watch === true)
                         watchFields.add(v._uuid)
@@ -207,11 +208,15 @@ export default (props, emits, suffix="")=>{
                 if(v._container===true){
                     //默认为简单布局容器
                     v.category = v.category||SIMPLE
-                    if(v.category == SINGLE)          bean[v._uuid] = {}
-                    //对于多行表单，赋予初始值
-                    else if(v.category == MULTIPLE)   bean[v._uuid] = []
 
-                    await _initFormValue(v.items, v.category == SIMPLE? bean: bean[v._uuid], )
+                    if(v.category == SINGLE && typeof(bean[v._uuid]) != 'object')
+                        bean[v._uuid] = {}
+
+                    //对于多行表单，赋予初始值
+                    else if(v.category == MULTIPLE && !Array.isArray(bean[v._uuid]))
+                        bean[v._uuid] = []
+
+                    await _initFormValue(v.items, v.category == SIMPLE? bean: bean[v._uuid])
                 }
             }
         }
@@ -228,10 +233,12 @@ export default (props, emits, suffix="")=>{
                 }
             }
         }
+        //处理外部默认值，add on 2024-03-15
+        if(props.initValue)
+            Object.assign(formData, props.initValue)
 
         if(props.debug) track("开始计算表单值", formData)
         await _initFormValue(items, formData)
-
         if(props.debug) track("完成计算表单值", formData)
 
         _setupWatchForChange()

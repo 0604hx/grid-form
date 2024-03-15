@@ -1,16 +1,12 @@
 <template>
-    <FormRender :renders="RenderFuncs" :form @submit="onSubmit" @failed="onFailed" @inited="onInited" debug />
+    <FormRender :renders="RenderFuncs" :form :initValue @submit="onSubmit" @failed="onFailed" @inited="onInited" debug />
 </template>
 
 <script setup>
     import { ref } from 'vue'
 
     import { FormRender, RenderFuncs } from "@grid-form/render-naive"
+    import { renderProps } from "."
 
-    const props = defineProps({
-        form: {type:Object, default:{}},
-        onSubmit: {type:Function},
-        onInited: {type:Function},
-        onFailed: {type:Function}
-    })
+    const props = defineProps(renderProps)
 </script>

@@ -1,3 +1,14 @@
+/**
+ * 表单加载完成后调用，可以修改表单值
+ * @param {Object} form - 已完成初始化后的表单对象
+ */
+const onLoad = (form)=>{
+    console.debug("表单渲染完成，当前以 Function 方式回调", JSON.stringify(form))
+    // 修改年龄为 20
+    if(!form.name && form.age == undefined)
+        form.age = 20
+}
+
 export default {
     "id": "学生信息等级表",
     "size":"medium",
@@ -43,7 +54,7 @@ export default {
     "submitText":"保存学生信息",
     "url":"",
     "okText":"",
-    "onLoad":"",
+    "onLoad": onLoad,
     "onSubmit":"",
     "onChange":"",
     "afterSubmit":"",

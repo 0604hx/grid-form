@@ -1,6 +1,6 @@
 <template>
     <config-provider :theme="isDark?'dark':''">
-        <FormRender :renders="RenderFuncs" :form @submit="onSubmit" @failed="onFailed" @inited="onInited" debug lockLabelPlacement="left"/>
+        <FormRender :renders="RenderFuncs" :form :initValue @submit="onSubmit" @failed="onFailed" @inited="onInited" debug lockLabelPlacement="left"/>
     </config-provider>
 </template>
 
@@ -13,12 +13,9 @@
 
     import { useData } from 'vitepress'
 
+    import { renderProps } from "."
+
     const { isDark } = useData()
 
-    const props = defineProps({
-        form: {type:Object, default:{}},
-        onSubmit: {type:Function},
-        onInited: {type:Function},
-        onFailed: {type:Function}
-    })
+    const props = defineProps(renderProps)
 </script>

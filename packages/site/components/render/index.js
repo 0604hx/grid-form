@@ -30,3 +30,11 @@ export function RenderDemo(originFormBean={}){
 
     return { form, onInited, onFailed, onSubmit, result }
 }
+
+export const renderProps = {
+    form: {type:Object, default:{}},
+    initValue:{type:Object},
+    onSubmit: {type:Function},
+    onInited: {type:Function},
+    onFailed: {type:Function}
+}

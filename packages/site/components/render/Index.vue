@@ -6,13 +6,13 @@
                     <n-tabs type="line" animated>
                         <n-tab-pane tab="NaiveUI" name="naive" display-directive="if">
                             <!-- <div style="height: 800px; background: magenta;"></div> -->
-                            <NaiveRender class="p10" :form :onInited :onSubmit :onFailed />
+                            <NaiveRender class="p10" :form :initValue :onInited :onSubmit :onFailed />
                         </n-tab-pane>
                         <n-tab-pane tab="Element Plus" name="element" display-directive="if">
-                            <ElementRender class="p10" :form :onInited :onSubmit :onFailed />
+                            <ElementRender class="p10" :form :initValue :onInited :onSubmit :onFailed />
                         </n-tab-pane>
                         <n-tab-pane tab="Vant4（移动端）" name="vant" display-directive="if">
-                            <VantRender :form :onInited :onSubmit :onFailed />
+                            <VantRender :form :initValue :onInited :onSubmit :onFailed />
                         </n-tab-pane>
                     </n-tabs>
                 </template>
@@ -51,6 +51,18 @@
     import VantRender from './vant4.vue'
 
     const message = useMessage()
+
+    // 给表单项增加 onSubmit ，赋值函数（也可以是 代码字符串）
+    StudentInfo.onSubmit = (form)=>{
+        if(!form.name || form.age<18){
+            message.warning(`姓名不能为空或者年龄不能小于 18`)
+            return false
+        }
+
+        return true
+    }
+
+    const initValue = { origin:"中国" } //educates:[{type:"小学", from:"", to:"", school:"广西大学附属小学"}]
 
     // 如需扩展 RenderFuncs、Components ，请自行扩写
     let form = reactive(StudentInfo)

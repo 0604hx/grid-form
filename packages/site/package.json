@@ -17,9 +17,9 @@
         "@grid-form/render-naive": "workspace:*",
         "@grid-form/render-vant": "workspace:*",
         "dayjs": "^1.11.10",
-        "element-plus": "^2.5.3",
-        "naive-ui": "^2.37.3",
-        "vant": "^4.8.2",
+        "element-plus": "^2.6.1",
+        "naive-ui": "^2.38.1",
+        "vant": "^4.8.5",
         "vitepress": "1.0.0-rc.40"
     }
 }

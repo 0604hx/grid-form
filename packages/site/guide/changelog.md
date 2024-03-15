@@ -1,5 +1,12 @@
 # 更新日志
 
+### 0.1.3 <Badge>24.3.15</Badge>
+* 🪝HOOK 支持`函数对象`
+* 渲染器新增表单初始化功能
+
+🐛 修复
+- 必填表单项校验 [#3](https://github.com/0604hx/grid-form/commit/6f431a5d7bb3cd142485d0d384fa06d1fe51faea)
+
 ### 0.1.2 <Badge>24.2.1</Badge>
 
 * 支持`嵌套容器（子表单）`

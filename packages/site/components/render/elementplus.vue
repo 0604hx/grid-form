@@ -1,5 +1,5 @@
 <template>
-    <FormRender :renders="RenderFuncs" :form @submit="onSubmit" @failed="onFailed" @inited="onInited" debug />
+    <FormRender :renders="RenderFuncs" :form :initValue @submit="onSubmit" @failed="onFailed" @inited="onInited" debug />
 </template>
 
 <script setup>
@@ -9,10 +9,7 @@
 
     import { FormRender, RenderFuncs } from "@grid-form/render-element"
 
-    const props = defineProps({
-        form: {type:Object, default:{}},
-        onSubmit: {type:Function},
-        onInited: {type:Function},
-        onFailed: {type:Function}
-    })
+    import { renderProps } from "."
+
+    const props = defineProps(renderProps)
 </script>

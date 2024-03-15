@@ -16,6 +16,6 @@
         "@grid-form/common": "workspace:*"
     },
     "devDependencies": {
-        "vant": "^4.8.2"
+        "vant": "^4.8.5"
     }
 }

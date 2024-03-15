@@ -3,7 +3,7 @@ layout: false
 ---
 
 <script setup>
-import Com from '../components/render/index.vue'
+import Com from '../components/render/Index.vue'
 </script>
 
 <ClientOnly>
