@@ -16,6 +16,6 @@
         "@grid-form/common": "workspace:*"
     },
     "devDependencies": {
-        "element-plus": "^2.6.1"
+        "element-plus": "^2.6.3"
     }
 }

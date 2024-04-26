@@ -1,5 +1,12 @@
 # 更新日志
 
+### 0.1.4 <Badge>建设中...</Badge>
+* 新增[`Varlet（Material 风格移动端组件库）`](https://varlet.gitee.io/varlet-ui/)渲染器
+* 新增`树形/Tree`极简渲染器（Web Components）
+
+🐛 修复
+- 完善全部禁用功能
+
 ### 0.1.3 <Badge>24.3.15</Badge>
 * 🪝HOOK 支持`函数对象`
 * 渲染器新增表单初始化功能

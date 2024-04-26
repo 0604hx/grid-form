@@ -16,7 +16,7 @@ hero:
       text: 博客专栏
       link: https://blog.csdn.net/ssrc0604hx/category_12570844.html
   image:
-      src: /designer.png
+      src: /designer.webp
       alt: GRID-FORM
 
 features:

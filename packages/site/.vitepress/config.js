@@ -41,7 +41,13 @@ export default defineConfig({
             { text: '首页', link: '/' },
             { text: '文档', link: GUIDE_STARTED },
             { text: '在线设计器', link: DEMO_DESIGNER, target:"_blank" },
-            { text: '在线渲染器', link: DEMO_RENDER, target:"_blank" }
+            {
+                text: '在线渲染器',
+                items:[
+                    { text: '汇总展示', link: DEMO_RENDER, target:"_blank" },
+                    { text: 'Varlet3（Material 风格）', link: '/demo/render-varlet', target:"_blank" }
+                ]
+            }
         ],
         sidebar: [
             {
@@ -49,6 +55,7 @@ export default defineConfig({
                 items: [
                     { text: '快速开始', link: GUIDE_STARTED },
                     { text: '可视化设计器', link: GUIDE_DESIGNER },
+                    { text: '内置组件', link:'/guide/component' },
                     { text: '渲染器', link: GUIDE_RENDER },
                     { text: '数据结构', link: '/guide/data-structure' }
                 ]
@@ -81,13 +88,14 @@ export default defineConfig({
             { icon: 'npm', link: 'https://www.npmjs.com/~0604hx' },
             { icon:{ svg: csdnSvg }, link:"https://blog.csdn.net/ssrc0604hx?type=blog" }
         ],
-        lastUpdated: {
-            text: '更新于',
-            formatOptions: {
-                dateStyle: 'full',
-                timeStyle: 'medium'
-            }
-        }
+        lastUpdated : true
+        // lastUpdated: {
+        //     text: '更新于',
+        //     formatOptions: {
+        //         dateStyle: 'full',
+        //         timeStyle: 'medium'
+        //     }
+        // }
     },
     vite:{
         server: {

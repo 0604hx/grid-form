@@ -14,7 +14,7 @@
     import { ref, watch } from 'vue'
     import { Field as VanField, Switch as VanSwitch } from 'vant'
 
-    const emits = defineEmits(['update:modelValue', 'change'])
+    const emits = defineEmits(['update:modelValue'])
     const props = defineProps({
         modelValue:{type: Boolean, default:undefined},
         disabled:{type:Boolean, default: false},

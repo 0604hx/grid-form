@@ -9,10 +9,16 @@
         "site:build": "pnpm -F site build",
         "release": "pnpm publish -r"
     },
-    "keywords": ["GRID FORM", "表单设计器", "表单渲染器"],
+    "keywords": [
+        "GRID FORM",
+        "表单设计器",
+        "表单渲染器"
+    ],
     "author": "0604hx <zxingming@foxmail.com>",
     "license": "MIT",
-    "dependencies": {
-        "vue": "^3.4.10"
+    "devDependencies": {
+        "@vitejs/plugin-vue": "^5.0.4",
+        "vite": "^5.2.8",
+        "vue": "^3.4.21"
     }
 }

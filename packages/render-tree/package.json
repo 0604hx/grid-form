@@ -1,21 +1,24 @@
 {
-    "name": "@grid-form/render-vant",
-    "version": "0.1.4",
-    "description": "基于 vant4 的渲染器",
+    "name": "@grid-form/render-tree",
+    "version": "0.1.3",
+    "description": "基于树形结构的渲染器（Web Components）",
     "homepage": "https://github.com/0604hx/grid-form",
     "repository": "https://github.com/0604hx/grid-form",
     "main": "index.js",
-    "scripts": {},
     "keywords": [],
     "author": "0604hx <zxingming@foxmail.com>",
     "license": "MIT",
+    "private": true,
+    "type": "module",
     "publishConfig": {
         "access": "public"
+    },
+    "scripts": {
+        "build": "vite build"
     },
     "dependencies": {
         "@grid-form/common": "workspace:*"
     },
     "devDependencies": {
-        "vant": "^4.8.10"
     }
 }

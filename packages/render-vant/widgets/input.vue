@@ -13,7 +13,7 @@
     import { ref, watch } from 'vue'
     import { Field as VanField } from 'vant'
 
-    const emits = defineEmits(['update:modelValue', 'change'])
+    const emits = defineEmits(['update:modelValue'])
     const props = defineProps({
         modelValue:{type: [Number, String], default:undefined},
         label:{type:String},

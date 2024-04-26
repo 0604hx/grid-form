@@ -2,7 +2,7 @@ import { h } from 'vue'
 
 import { buildOptions  } from '@grid-form/common'
 
-import { Field, Divider, CellGroup, Button, Rate } from 'vant'
+import { Divider, CellGroup, Button, Rate } from 'vant'
 
 import Input from "./widgets/input.vue"
 import SelectorDate from "./widgets/selector-date.vue"

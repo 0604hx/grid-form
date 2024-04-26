@@ -13,7 +13,7 @@
     import { ref } from 'vue'
     import { Field as VanField, Popup as VanPopup, DatePicker as VanDatePicker } from 'vant'
 
-    const emit = defineEmits(['update:modelValue', 'change'])
+    const emit = defineEmits(['update:modelValue'])
     const props = defineProps({
         modelValue:{type: String, default:undefined},
         label:{type:String, default:"下拉选择"},

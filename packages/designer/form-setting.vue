@@ -1,6 +1,6 @@
 <template>
     <n-form :show-feedback="false" :label-width="100" label-placement="left">
-        <n-collapse :default-expanded-names="['basic']">
+        <n-collapse :default-expanded-names="expandeds">
             <n-collapse-item title="表单基础设置" name="basic">
                 <n-space vertical :size="compact?'small':'medium'">
                     <n-form-item label-placement="left">
@@ -59,11 +59,11 @@
                 </n-space>
             </n-collapse-item>
 
-            <n-collapse-item title="回调函数（HOOK）" name="hook">
+            <n-collapse-item v-if="paneHook" title="回调函数（HOOK）" name="hook">
                 <n-list hoverable clickable :show-divider="false">
                     <n-list-item v-for="item in lifeCycles" @click="toHook(item)" style="padding: 6px 12px;">
                         <n-space justify="space-between">
-                            <n-tag :bordered="false" :type="form[item.name]?'success':'default'" size="small">
+                            <n-tag :bordered="false" :type="form[item.name]?'primary':'default'" size="small">
                                 {{item.name}}
                             </n-tag>
                             <n-text depth="3">{{item.text}}</n-text>
@@ -72,7 +72,7 @@
                 </n-list>
             </n-collapse-item>
 
-            <n-collapse-item title="表单默认值" name="hide">
+            <n-collapse-item v-if="paneHide" title="表单默认值" name="hide">
                 <template #header-extra>
                     <n-text depth="3">隐藏表单项</n-text>
                 </template>
@@ -98,7 +98,7 @@
                 </n-table>
             </n-collapse-item>
 
-            <n-collapse-item title="扩展按钮" name="button">
+            <n-collapse-item v-if="paneButton" title="扩展按钮" name="button">
                 <template #header-extra>
                     <n-button size="small" type="primary" secondary @click="addBtn">添加按钮</n-button>
                 </template>
@@ -197,9 +197,21 @@
 
     const props = defineProps({
         form: {type:Object},
-        compact: {type:Boolean, default:false }
+        compact: {type:Boolean, default:false },
+        paneHook: {type:Boolean, default: true},                //是否显示左侧的回调函数面板
+        paneHide: {type:Boolean, default: true},                //是否显示左侧的默认值面板
+        paneButton: {type: Boolean, default: true},             //是否显示左侧的额外按钮面板
     })
 
+    //默认展开的面板
+    const expandeds = (()=>{
+        let a = ['basic']
+
+        if(lifeCycles.some(v=> !!props.form[v.name]))
+            a.push("hook")
+
+        return a
+    })()
     const themeOptions = buildOptions(["default|普通", "primary|主配色", "info|蓝色", "warning|橙色", "error|红色"])
     const typeTexts = {post:"提交", download:"下载", script:"脚本"}
     const typeOptions = buildOptions(typeTexts)

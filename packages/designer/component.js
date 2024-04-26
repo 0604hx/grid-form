@@ -75,7 +75,7 @@ const MAX_LENGTH    = (value)=> ({ label:"最大字数", id:"maxlength", widget:
 const FILTERABLE    = (value=false)=> ({ label:"可过滤", id:"filterable", widget:Types.SWITCH, value, summary:"是否可以输入关键字进行选项过滤" })
 const SHOW_COUNT    = (value=false)=> ({ label:"显示字数", id:"show-count", widget:Types.SWITCH, value, summary:"是否在尾部显示已输入的字数统计" })
 const TYPE          = (value, label="配色")=> ({ label, id:"type", widget:Types.SELECT, value, options:["default|DEFAULT-默认", "success|SUCCESS-成功", "info|INFO-信息", "warning|WARN-警告", "error|ERROR-错误"] })
-const ROWS          = (value=1)=> ({ label:"显示行数", id:"rows", widget:Types.NUMBER, value, summary:"当行数大于 1 时显示 TEXTAREA 样式" })
+const ROWS          = (value=1)=> ({ label:"输入框行数", id:"rows", widget:Types.NUMBER, value, summary:"当行数大于 1 时显示 TEXTAREA 样式" })
 const TITLE         = (value="提示信息", label="标题")=> ({ label, id:"title", widget:Types.INPUT, value })
 const CONTENT       = (value="")=> ({ label:"内容", id:"content", widget:Types.INPUT, rows: 3, value })
 const BORDERED      = (value=true)=> ({ label:"显示边框", id:"bordered", widget:Types.SWITCH, value })
@@ -250,7 +250,7 @@ const _DIVIDER = {
             { id:"title-placement", label:"标题位置", widget:Types.RADIO, value:"center", options:"left|靠左,center|居中,right|靠右" }
         ])
     ]
-}
+}2
 //图片组件，支持事件交互，其实在 TEXT、ALERT 组件，启用 html 也能进行图片渲染 😄
 const _IMAGE = {
     id:"IMAGE", label:"单张图片", icon:Image, hideLabel: true, script:true, summary:"显示一张远程或者BASE64编码图片，可定义宽度与高度，支持自定义脚本",

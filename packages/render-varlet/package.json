@@ -1,7 +1,7 @@
 {
-    "name": "@grid-form/common",
+    "name": "@grid-form/render-varlet",
     "version": "0.1.4",
-    "description": "",
+    "description": "基于 Varlet3 的渲染器",
     "homepage": "https://github.com/0604hx/grid-form",
     "repository": "https://github.com/0604hx/grid-form",
     "main": "index.js",
@@ -11,5 +11,9 @@
     "license": "MIT",
     "publishConfig": {
         "access": "public"
+    },
+    "dependencies": {
+        "@grid-form/common": "workspace:*",
+        "@varlet/ui": "^3.2.3"
     }
 }

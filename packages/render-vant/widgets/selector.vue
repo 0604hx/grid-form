@@ -39,7 +39,7 @@
         Checkbox as VanCheckbox, Cell as VanCell, CellGroup as VanCellGroup
     } from 'vant'
 
-    const emits = defineEmits(['update:modelValue', 'change'])
+    const emits = defineEmits(['update:modelValue'])
     const props = defineProps({
         modelValue:{type: [String, Array], default:undefined},
         label:{type:String, default:"下拉选择"},

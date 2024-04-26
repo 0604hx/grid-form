@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>演示·树形编辑</title>
+
+    <script type="module">
+        import { register } from './dist/render-tree.js'
+
+        register()
+
+        const form = {
+            title:"ABC"
+        }
+    </script>
+</head>
+<body>
+    <h2>原生环境调用 WebComponents</h2>
+    <render-tree form="{title:'ABC'}"></render-tree>
+</body>
+</html>

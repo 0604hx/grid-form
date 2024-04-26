@@ -23,7 +23,7 @@
                     <n-layout position="absolute" :style="{top: headerHeight + 'px', bottom: showFooter?(footerHeight + 'px'):'0px'}" has-sider>
                         <!--左侧表单配置面板-->
                         <n-layout-sider collapse-mode="transform" :collapsed-width="collapsedWidth" :width="siderWidth" show-trigger="arrow-circle" content-style="padding: 12px;" :native-scrollbar="false" bordered>
-                            <FormSetting :form="form" :compact="compact" />
+                            <FormSetting :form :compact :paneHook :paneHide :paneButton />
                         </n-layout-sider>
 
                         <!--设计器主体-->
@@ -107,6 +107,10 @@
         footerHeight: {type:Number, default: 50 },
         contextMenu: {type:Boolean, default: false},            //开启右键菜单
         enableCtrlS: {type:Boolean, default: false},            //是否开启 CTRL+S 保存快捷键
+
+        paneHook: {type:Boolean, default: true},                //是否显示左侧的回调函数面板
+        paneHide: {type:Boolean, default: true},                //是否显示左侧的默认值面板
+        paneButton: {type: Boolean, default: true},             //是否显示左侧的额外按钮面板
     })
 
     const track = (...ps)=> console.debug("%c[GRID-FORM DESIGNER]", "background:#8c0776;padding:3px;color:white", ...ps)

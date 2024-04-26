@@ -10,6 +10,7 @@ const SINGLE        = "single"
 export const RenderProps = {
     renders:{type:Object},
     form: {type:Object},
+    transformNumber: {type:Boolean, default: true},         //是否将 NUMBER、RATE 等类型的值，转换为数值型
     initValue: {type:Object},                               //外部的表单初始值
     gridGap: {type:Number, default: 10},                    //栅栏间隔，单位 px
     debug: {type:Boolean, default: false},                  //开启debug 模式后，会在控制台输入各种信息
@@ -196,7 +197,7 @@ export default (props, emits, suffix="")=>{
                         if(v._widget === "SWITCH" && typeof(itemV)!='boolean'){
                             itemV = typeof(itemV)==='string'? itemV.toLowerCase()=='true': (typeof(itemV)==='number'? itemV != 0: !!itemV)
                         }
-                        else if((v._widget === 'RATE' || v._widget === 'NUMBER') && !isNaN(itemV)){
+                        else if((v._widget === 'RATE' || v._widget === 'NUMBER') && props.transformNumber && !isNaN(itemV)){
                             itemV = Number(itemV)
                         }
                         bean[v._uuid] = itemV
@@ -243,7 +244,7 @@ export default (props, emits, suffix="")=>{
 
         _setupWatchForChange()
 
-        extendFormItems(items)
+        items && extendFormItems(items)
 
         nextTick(()=>{
             if(props.form.onLoad){

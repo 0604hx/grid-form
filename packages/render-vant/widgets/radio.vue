@@ -16,7 +16,7 @@
     import { ref, watch } from 'vue'
     import { Field as VanField, RadioGroup as VanRadioGroup, Radio as VanRadio } from 'vant'
 
-    const emits = defineEmits(['update:modelValue', 'change'])
+    const emits = defineEmits(['update:modelValue'])
     const props = defineProps({
         modelValue:{type: [String, Number], default:undefined},
         label:{type:String, default:"单选框"},
