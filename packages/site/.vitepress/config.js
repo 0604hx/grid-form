@@ -45,7 +45,8 @@ export default defineConfig({
                 text: '在线渲染器',
                 items:[
                     { text: '汇总展示', link: DEMO_RENDER, target:"_blank" },
-                    { text: 'Varlet3（Material 风格）', link: '/demo/render-varlet', target:"_blank" }
+                    { text: 'Vant4（有赞出品）', link: '/demo/render-vant', target:"_blank" },
+                    { text: 'Varlet（Material）', link: '/demo/render-varlet', target:"_blank" }
                 ]
             }
         ],
@@ -53,30 +54,30 @@ export default defineConfig({
             {
                 text: '使用说明',
                 items: [
-                    { text: '快速开始', link: GUIDE_STARTED },
-                    { text: '可视化设计器', link: GUIDE_DESIGNER },
-                    { text: '内置组件', link:'/guide/component' },
-                    { text: '渲染器', link: GUIDE_RENDER },
-                    { text: '数据结构', link: '/guide/data-structure' }
+                    { text: '快速开始 / Start', link: GUIDE_STARTED },
+                    { text: '可视化设计器 / Designer', link: GUIDE_DESIGNER },
+                    { text: '内置组件 / Component', link:'/guide/component' },
+                    { text: '渲染器 / Render', link: GUIDE_RENDER },
+                    { text: '数据结构 / Schema', link: '/guide/data-structure' }
                 ]
             },
             {
                 text: "进阶",
                 items: [
-                    { text: '事件及数据联动', link: '/guide/advance' },
-                    { text: '自定义组件', link:"/guide/custom" }
+                    { text: '事件及数据联动 / Advance', link: '/guide/advance' },
+                    { text: '自定义组件 / Custom', link:"/guide/custom" }
                 ]
             },
             {
                 text: "其他",
                 items: [
-                    { text: '更新日志', link: '/guide/changelog' }
+                    { text: '更新日志 / Changelog', link: '/guide/changelog' }
                 ]
             }
         ],
         outline:{
             level: [2,4],
-            label: '目录'
+            label: '文档目录'
         },
         footer: {
             message: '基于<a href="https://github.com/0604hx/grid-form/LICENSE"> MIT</a> 许可发布',

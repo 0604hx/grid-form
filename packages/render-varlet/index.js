@@ -10,6 +10,7 @@ import SelectorImage from "./widgets/selector-img.vue"
 import Rate from "./widgets/rate.vue"
 import Alert from "./widgets/alert.vue"
 import Card from "./widgets/card.vue"
+import Number from "./widgets/number.vue"
 
 import { Input, Button, Select, Option, Checkbox, CheckboxGroup, RadioGroup, Radio, Divider } from '@varlet/ui'
 
@@ -33,13 +34,17 @@ const _toProps = (props, attrs, ps={})=>Object.assign({
  * @param {Object} attrs
  * @returns
  */
-const inputField = (props, attrs)=> h(Input, _toProps(props, attrs, {
-    showWordLimit       : props["show-count"],
-    rows                : props.rows,
-    maxlength           : props.maxlength,
-    textarea            : props.rows>1,
-    type                : attrs._widget=='NUMBER'?"number":"text"
-}))
+const inputField = (props, attrs)=> {
+    let isNum = attrs._widget=='NUMBER'
+    let ps = {
+        showWordLimit       : props["show-count"],
+        rows                : props.rows,
+        maxlength           : props.maxlength,
+        textarea            : props.rows>1,
+        type                : isNum?"number":"text"
+    }
+    return h(isNum? Number:Input, _toProps(props, attrs, ps))
+}
 
 const RenderFuncs = {
     "INPUT": inputField,

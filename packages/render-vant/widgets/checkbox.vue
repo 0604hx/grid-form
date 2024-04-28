@@ -16,7 +16,7 @@
 
 <script setup>
     import { ref, watch } from 'vue'
-    import { CheckboxGroup as VanCheckboxGroup, Space as VanSpace, Checkbox as VanCheckbox } from 'vant'
+    import { Field as VanField, CheckboxGroup as VanCheckboxGroup, Space as VanSpace, Checkbox as VanCheckbox } from 'vant'
 
     const emits = defineEmits(['update:modelValue'])
     const props = defineProps({

@@ -1,5 +1,5 @@
 <template>
-    <FormRender :transformNumber="false" :renders="RenderFuncs" :form :initValue @submit="onSubmit" @failed="onFailed" @inited="onInited" debug lockLabelPlacement="left"/>
+    <FormRender :renders="RenderFuncs" :form :initValue @submit="onSubmit" @failed="onFailed" @inited="onInited" debug lockLabelPlacement="left"/>
 </template>
 
 <script setup>

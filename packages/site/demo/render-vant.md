@@ -3,12 +3,11 @@ layout: false
 ---
 
 <script setup>
-    //window.VARLET_VARIANT = "outlined"
-
     import { ref } from 'vue'
-    import Render from '../components/render/varlet.vue'
+    import Render from '../components/render/vant.vue'
 
-    import form from '../components/render/data/student-info.js'
+    import form from '../components/render/data/demo.js'
+    // import form from '../components/render/data/student-info.js'
 
     let result = ref({})
     const onSubmit = (formObj, action)=> result.value = formObj

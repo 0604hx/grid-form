@@ -2,7 +2,7 @@ import { h } from 'vue'
 
 import { buildOptions  } from '@grid-form/common'
 
-import { Divider, CellGroup, Button, Rate } from 'vant'
+import { Divider, CellGroup, Button } from 'vant'
 
 import Input from "./widgets/input.vue"
 import SelectorDate from "./widgets/selector-date.vue"
@@ -12,6 +12,8 @@ import Alert from "./widgets/alert.vue"
 import Checkbox from "./widgets/checkbox.vue"
 import Radio from "./widgets/radio.vue"
 import Switch from "./widgets/switch.vue"
+import Rate from "./widgets/rate.vue"
+
 import FormRender from "./Render.vue"
 
 const fixType = p=> {
@@ -52,7 +54,7 @@ const RenderFuncs = {
         props.plain = props.text === true
         props.block = true
         props.text = props.label
-        return h(Button, props)
+        return h('div', {style:{margin:"0px 16px 0px 16px"}}, h(Button, props))
     },
 
     "SELECT"    : (props, attrs)=> h(Selector, _toProps(props, attrs, {placeholder:props.placeholder, multiple:props.multiple, options:buildOptions(props.options, "value", "text")})),
@@ -66,8 +68,8 @@ const RenderFuncs = {
 
         return h(SelectorDate, ps)
     },
-    "RATE"      : props=>{
-        return h(Rate, props)
+    "RATE"      : (props, attrs)=>{
+        return h(Rate, _toProps(props, attrs, { count: props.count, half: !!props['allow-half'] }))
     },
     "COLOR"     : props=> undefined,
 

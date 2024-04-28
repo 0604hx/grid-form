@@ -48,7 +48,7 @@
 
     import NaiveRender from './naiveui.vue'
     import ElementRender from './elementplus.vue'
-    import VantRender from './vant4.vue'
+    import VantRender from './vant.vue'
 
     const message = useMessage()
 
