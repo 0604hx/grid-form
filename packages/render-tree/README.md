@@ -5,3 +5,9 @@
 
 * [jsoneditor](https://github.com/josdejong/jsoneditor)
 * [fancytree](https://github.com/mar10/fancytree)：JavaScript tree view / tree grid plugin with support for keyboard, inline editing, filtering, checkboxes, drag'n'drop, and lazy loading
+
+
+## 使用 Vue3 构建 WebComponents
+
+### SFC 构建
+> 注意，需要以后缀`.ce.vue`结尾，否则无法正确编译内联的 css

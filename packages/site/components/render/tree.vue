@@ -4,27 +4,24 @@
 </template>
 
 <script setup>
-    import { ref, onMounted, defineCustomElement } from 'vue'
+    import { ref, onMounted } from 'vue'
+    import { ConfigProvider } from 'vant'
+    import 'vant/lib/index.css'
 
+    import { register } from "@grid-form/render-tree"
+
+    register()
     import { useData } from 'vitepress'
 
-    import { RenderProps } from '@grid-form/common/render.mixin'
-
-    import Render from './Render.ce.vue'
+    import { renderProps } from "."
 
     const { isDark } = useData()
 
-    const props = defineProps(Object.assign(RenderProps, {
-        onSubmit: {type:Function},
-        onInited: {type:Function},
-        onFailed: {type:Function}
-    }))
+    const props = defineProps(renderProps)
+
     const container = ref()
 
     onMounted(() => {
-        customElements.define("render-tree", defineCustomElement(Render))
-
-        console.debug("渲染器参数", props)
         const render = document.createElement('render-tree')
         Object.assign(render, props)
 

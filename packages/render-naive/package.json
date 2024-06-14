@@ -16,6 +16,6 @@
         "@grid-form/common": "workspace:*"
     },
     "devDependencies": {
-        "naive-ui": "^2.38.1"
+        "naive-ui": "^2.38.2"
     }
 }

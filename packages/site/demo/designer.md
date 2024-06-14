@@ -11,7 +11,5 @@ import Designer from '../components/Designer.vue'
 https://vitepress.dev/zh/guide/ssr-compat 
 -->
 <ClientOnly>
-    <NaiveWrapper>
-        <Designer />
-    </NaiveWrapper>
+    <Designer />
 </ClientOnly>

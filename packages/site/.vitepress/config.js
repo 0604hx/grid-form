@@ -46,7 +46,8 @@ export default defineConfig({
                 items:[
                     { text: '汇总展示', link: DEMO_RENDER, target:"_blank" },
                     { text: 'Vant4（有赞出品）', link: '/demo/render-vant', target:"_blank" },
-                    { text: 'Varlet（Material）', link: '/demo/render-varlet', target:"_blank" }
+                    { text: 'Varlet（Material）', link: '/demo/render-varlet', target:"_blank" },
+                    { text: 'Tree（极简风）', link: '/demo/render-tree', target:"_blank" }
                 ]
             }
         ],
