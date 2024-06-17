@@ -5,7 +5,7 @@ layout: false
 <script setup>
     import { ref } from 'vue'
 
-    import { WebComponentWrapper as FormRender } from "@grid-form/render-tree"
+    import { FormRender } from "@grid-form/render-tree"
     // import Render from '../components/render/tree.vue'
 
     // import form from '../components/render/data/demo.js'

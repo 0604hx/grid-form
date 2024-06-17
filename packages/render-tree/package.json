@@ -17,7 +17,8 @@
         "build": "vite build"
     },
     "dependencies": {
-        "@grid-form/common": "workspace:*"
+        "@grid-form/common": "workspace:*",
+        "@vueuse/core": "^10.11.0"
     },
     "devDependencies": {
         "naive-ui": "^2.38.1"

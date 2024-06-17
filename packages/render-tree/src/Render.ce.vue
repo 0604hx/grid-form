@@ -2,22 +2,14 @@
     <div v-if="inited" class="grid-render-tree">
         <Container :form="form" :formData="formData" :showIcon />
 
-        <div style="margin-top:10px;"><button type="submit" @click="toSubmit">{{form.submitText}}</button></div>
+        <div style="margin-top:10px;text-align: center;"><button type="submit" @click="toSubmit">{{form.submitText}}</button></div>
     </div>
 </template>
 
 <script setup>
     import { ref, onMounted } from 'vue'
 
-    import { buildComponent, buildOptions } from '@grid-form/common'
     import { default as RenderMixin, RenderEvent, RenderProps } from '@grid-form/common/render.mixin'
-
-    import Icon from "./icon.vue"
-
-    import Input from "./widgets/input.vue"
-    import Select from "./widgets/select.vue"
-    import Checkbox from "./widgets/checkbox.vue"
-    import Radio from "./widgets/radio.vue"
 
     import Container from "./container.vue"
 
@@ -28,7 +20,7 @@
                 fontSize: {type:String, default:"14rpx"},
                 showIcon: {type:Boolean, default: true},        //是否显示图标
                 indent: {type:Number, default: 30},             //层级缩进，单位 px
-                indentColor:{type:String, default:"#f6f7f8"},   //层级缩进背景色
+                indentColor:{type:String, default:"#FFFFFF"},   //层级缩进背景色，如浅灰色 #f6f7f8
                 labelColor: {type:String, default:"gray"},      //标签颜色
                 labelMarginRight: {type:Number, default:15},    //标签右边距，单位 px
             },
@@ -38,15 +30,7 @@
 
     let { inited, formData, toSubmit, onExtraBtn } = RenderMixin(props, emits, " TREE")
 
-    const inputs = ["INPUT", "NUMBER", "DATE"]
-    const unavailables = ["BUTTON","IMAGE", "ALERT", "DIVIDER", "RATE"]
-
-    const canRender = widget => !["BUTTON","IMAGE", "ALERT", "DIVIDER"].includes(widget)
     const toLowercase = v=> v.toLowerCase()
-
-    onMounted(() => {
-        console.debug("树形渲染器", props)
-    })
 </script>
 
 <style>
@@ -54,6 +38,22 @@
         .item {
             display: flex;
             align-items: center;
+        }
+        .rowIndex {
+            cursor: pointer;
+            text-align: right;
+            color: v-bind(props.labelColor);
+        }
+        .sub-table {
+            border-collapse: collapse;
+            width: 100%;
+            border-spacing: 0px;
+            td {
+                padding:0px;
+            }
+            .striped {
+                background: #fafafa;
+            }
         }
         .title {
             border-bottom: 1px solid #adadad;

@@ -24,7 +24,6 @@
     onMounted(() => {
         customElements.define("render-tree", defineCustomElement(Render))
 
-        console.debug("渲染器参数", props)
         const render = document.createElement('render-tree')
         Object.assign(render, props)
 
