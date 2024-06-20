@@ -9,6 +9,9 @@
 //     {"_widget":"FILE","_uuid":"yyzz","_text":"营业执照", "_col":1}
 // ]
 
+const tableContent = `表格列A,表格列B,表格列C
+张三,男,130xxxxxxxx`
+
 export default {
     "id": "演示表单",
     "size":"medium",
@@ -39,7 +42,8 @@ export default {
                 {"_widget":"RATE", "_uuid":"rate","_text":"您对本问卷的评分", "count":10, "allow-half":true},
             ]
         },
-        {"_widget":"BUTTON","label":"自定义脚本：随机年龄","text":false,"round":false,"disabled":false,"scriptTrigger":"click","script":"form.age = Math.floor(Math.random()*20)+10;","_hideLabel":true,"type":"default"}
+        {"_widget":"BUTTON","label":"自定义脚本：随机年龄","text":false,"round":false,"disabled":false,"scriptTrigger":"click","script":"form.age = Math.floor(Math.random()*20)+10;","_hideLabel":true,"type":"default"},
+        {"_widget":"TABLE","label":"表格演示","content":tableContent}
     ],
     "submitText":"保存",
     "url":"",

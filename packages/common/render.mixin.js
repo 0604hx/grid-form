@@ -8,7 +8,7 @@ const SIMPLE        = "simple"
 const SINGLE        = "single"
 
 export const RenderProps = {
-    renders:{type:Object},
+    renders:{type:Object, default:({})},
     form: {type:Object},
     transformNumber: {type:Boolean, default: true},         //是否将 NUMBER、RATE 等类型的值，转换为数值型
     initValue: {type:Object},                               //外部的表单初始值

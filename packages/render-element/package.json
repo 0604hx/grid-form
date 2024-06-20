@@ -1,6 +1,6 @@
 {
     "name": "@grid-form/render-element",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "description": "基于 element-plus 的渲染器",
     "homepage": "https://github.com/0604hx/grid-form",
     "repository": "https://github.com/0604hx/grid-form",

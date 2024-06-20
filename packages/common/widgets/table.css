@@ -1,0 +1,19 @@
+.grid-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+.grid-table td,th {
+    border-bottom:1px solid #ebeef5;
+    padding: 3px;
+    height: 24px;
+}
+.grid-table .striped {
+    background: #fafafa;
+}
+.grid-table.bordered th, .grid-table.bordered td {
+    border: 1.0px solid #ebeef5 !important;
+}
+.grid-table .text {
+    text-align:left; margin-left:20px; padding:8px 0 8px 0;
+}

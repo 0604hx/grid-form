@@ -2,22 +2,25 @@
     <DefineTemplate v-slot="{ useIndent=true }">
         <template v-for="item in form.items">
             <template v-if="item._hide!=true && !unavailables.includes(item._widget)">
-                <render-container v-if="item._container && item.items" :form="item" :formData="childForm(item)" :showIcon :level="level+1" :title="item.title"/>
+                <render-container v-if="item._container && item.items" :form="item" :formData="childForm(item)" :showIcon :level="level+1" :title="item.title" :onScript />
                 <div v-else class="item">
                     <div v-if="useIndent && clazz" class="item_level" :class="clazz">
                         {{ !(item._widget=='IMAGE' || item._widget=='TABLE')?"|":"" }}
                     </div>
 
                     <span v-if="item._widget==='TEXT'" v-html="item._value"></span>
-                    <ImageWidget v-else-if="item._widget==='IMAGE'" :src="item.src" :full="item.full" :maxHeight="item.maxHeight" :height="item.height" />
+                    <ImageWidget v-else-if="item._widget==='IMAGE'" :src="item.src" :full="item.full" @click="handleClick(item)" :maxHeight="item.maxHeight" :height="item.height" />
                     <TableWidget v-else-if="item._widget==='TABLE'" :content="item.content"/>
                     <template v-else>
-                        <span class="label">{{ item._text||item._widget }}</span>
+                        <span v-if="item._hideLabel != true" class="label">{{ item._text||item._widget }}</span>
+
                         <Input v-if="inputs.includes(item._widget)" :type="toLowercase(item._widget)" v-model="formData[item._uuid]" />
                         <Select v-else-if="item._widget==='SELECT'" v-model="formData[item._uuid]" :options="buildOptions(item.options)" />
                         <Checkbox v-else-if="item._widget==='CHECKBOX'" v-model="formData[item._uuid]" :options="buildOptions(item.options)" />
                         <Radio v-else-if="item._widget==='RADIO'" v-model="formData[item._uuid]" :options="buildOptions(item.options)" />
                         <Radio v-else-if="item._widget==='SWITCH'" v-model="formData[item._uuid]" switch />
+                        <!-- @dblclick="handleClick(item,'dblclick')"  -->
+                        <button v-else-if="item._widget==='BUTTON'" class="w-full" style="margin: 5px 0px 5px 0px;" @click="handleClick(item)" :title="item.tip">{{ item.label }}</button>
                         <span v-else class="empty"></span>
 
                         <Icon v-if="showIcon" :type="item._widget" />
@@ -78,15 +81,22 @@
         form: {type:Object},
         formData: {type:Object},
         showIcon: {type:Boolean, default: true},
-        level: {type:Number, default: 0}
+        level: {type:Number, default: 0},
+        onScript:{type:Function}
     })
     const { isMultiple, canAdd, childForm, onAddRow } = ContainerMixin(props)
 
     const clazz = props.level == 0?"":`item_level_${props.level}`
     const inputs = ["INPUT", "NUMBER", "DATE"]
-    const unavailables = ["BUTTON", "ALERT", "DIVIDER", "RATE"]
+    const unavailables = ["ALERT", "DIVIDER", "RATE"]
 
     const toLowercase = v=> v.toLowerCase()
 
     const toDelRow = i=> confirm(`删除第${i+1}行数据吗？`) &&  props.formData.splice(i, 1)
+
+    /**
+     * 按钮或者图片的点击事件处理
+     * 目前仅支持单击
+     */
+    const handleClick = (item, type='click')=> props.onScript && props.onScript(item, type)
 </script>

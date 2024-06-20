@@ -1,6 +1,6 @@
 <template>
     <div v-if="inited" class="grid-render-tree">
-        <Container :form="form" :formData="formData" :showIcon />
+        <Container :form="form" :formData="formData" :showIcon :onScript :debug />
 
         <div style="margin-top:10px;text-align: center;"><button type="submit" @click="toSubmit">{{form.submitText}}</button></div>
     </div>
@@ -28,13 +28,27 @@
         )
     )
 
-    let { inited, formData, toSubmit, onExtraBtn } = RenderMixin(props, emits, " TREE")
+    let { inited, formData, toSubmit, onExtraBtn, track } = RenderMixin(props, emits, " TREE")
 
     const toLowercase = v=> v.toLowerCase()
+    //执行自定义脚本
+    const onScript = (item, type='click')=>{
+        if(props.debug==true)   track("组件被点击", item, type)
+
+        if(item.scriptTrigger != type)      return
+        if(!item.script)                    return
+
+        props.renders.runScript && props.renders.runScript(item.script.trim())
+    }
 </script>
 
 <style>
+    @import '@grid-form/common/widgets/table.css';
+
     .grid-render-tree {
+        .w-full {
+            width: 100%;
+        }
         .item {
             display: flex;
             align-items: center;
