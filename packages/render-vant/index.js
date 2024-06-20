@@ -57,7 +57,7 @@ const RenderFuncs = {
         return h('div', {style:{margin:"0px 16px 0px 16px"}}, h(Button, props))
     },
 
-    "SELECT"    : (props, attrs)=> h(Selector, _toProps(props, attrs, {placeholder:props.placeholder, multiple:props.multiple, options:buildOptions(props.options, "value", "text")})),
+    "SELECT"    : (props, attrs)=> h(Selector, _toProps(props, attrs, {placeholder:props.placeholder, multiple:props.multiple, options:props.options})),
     "CHECKBOX"  : (props, attrs)=> h(Checkbox, _toProps(props, attrs, {options:buildOptions(props.options), max:props.max})),
     "RADIO"     : (props, attrs)=> h(Radio, _toProps(props, attrs, {options:buildOptions(props.options)})),
     "SWITCH"    : (props, attrs)=> h(Switch, _toProps(props, attrs)),
