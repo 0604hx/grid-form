@@ -28,6 +28,8 @@
         )
     )
 
+    console.debug(props)
+
     let { inited, formData, toSubmit, onExtraBtn, track } = RenderMixin(props, emits, " TREE")
 
     const toLowercase = v=> v.toLowerCase()

@@ -7,6 +7,7 @@
     "scripts": {
         "site": "pnpm -F site dev",
         "site:build": "pnpm -F site build",
+        "build:tree": "pnpm -F @grid-form/render-tree build",
         "release": "pnpm publish -r"
     },
     "keywords": [

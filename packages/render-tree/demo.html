@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>演示·树形编辑</title>
 
-    <link rel="stylesheet" href="./dist/style.css">
+    <link rel="stylesheet" href="./dist/render.css">
 
     <script type="module">
-        import { register } from './dist/render-tree.js'
+        import { register } from './dist/render.js'
 
         register()
 
@@ -16,6 +16,7 @@
         const render = document.createElement('render-tree')
         render.form = {
             title:"WebComponent 渲染器示例",
+            "submitText":"显示表单信息",
             "items":[
                 {"_widget":"IMAGE","_col":4,"height":"auto","maxHeight":"160px","full":true,"scriptTrigger":"click","script":"","_hideLabel":true, "src": "" },
                 {"_widget":"INPUT","_uuid":"name","_text":"姓名","_col":1,"disabled":false,"_watch":false,"_required":false,"_regex":"","_message":"","placeholder":"请输入","clearable":true,"show-count":false,"rows":1,"_value":""},
@@ -25,6 +26,18 @@
                 {"_widget":"BUTTON","_col":4,"label":"自定义脚本：随机年龄","text":false,"round":false,"disabled":false,"scriptTrigger":"click","script":"form.age = Math.floor(Math.random()*20)+10;","_hideLabel":true,"type":"default"}
             ]
         }
+        render.showIcon = false
+        render.debug = true
+
+        //按需增加事件监听
+        render.addEventListener("submit", e=> {
+            let [ formObj, action ] = e.detail
+            console.debug("表单内容", formObj)
+        })
+        render.addEventListener("failed", e=> console.debug("表单失败：", ...e.detail))
+        render.addEventListener("inited", e=> console.debug("表单初始化完成 ^.^"))
+
+        //将元素挂载到 body 下
         document.querySelector("body").appendChild(render)
     </script>
 </head>

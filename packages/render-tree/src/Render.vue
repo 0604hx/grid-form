@@ -1,18 +1,14 @@
+<!--对 WebComponent 的简单封装，方便在 Vue 环境中使用-->
 <template>
-    <!-- <FormRender :form :initValue @submit="onSubmit" @failed="onFailed" @inited="onInited" debug lockLabelPlacement="left"/> -->
     <div ref="container"></div>
 </template>
 
 <script setup>
     import { ref, onMounted, defineCustomElement } from 'vue'
 
-    import { useData } from 'vitepress'
-
     import { RenderProps } from '@grid-form/common/render.mixin'
 
     import Render from './Render.ce.vue'
-
-    const { isDark } = useData()
 
     const props = defineProps(Object.assign(RenderProps, {
         onSubmit: {type:Function},

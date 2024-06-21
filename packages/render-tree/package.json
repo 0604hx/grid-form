@@ -20,7 +20,5 @@
         "@grid-form/common": "workspace:*",
         "@vueuse/core": "^10.11.0"
     },
-    "devDependencies": {
-        "naive-ui": "^2.38.1"
-    }
+    "files": ["/dist","package.json","/src","README.md"]
 }

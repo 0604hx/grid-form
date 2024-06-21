@@ -114,7 +114,7 @@ script|String||脚本代码（仅支持原生 JS 语法）
 
 ### 图片 / IMAGE
 
-### 提示信息 / TIP
+### 提示信息 / ALERT
 
 ### 静态表格 / TABLE
 

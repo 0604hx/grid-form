@@ -46,3 +46,71 @@ standard 示例|outlined 示例
 
 2、渲染器本身不会自动引入样式文件，请在使用时手动引入：`import '@varlet/ui/es/style'`
 :::
+
+## Tree 树形渲染器
+> 基于树形结构（原生 HTML 元素）实现渲染器，打包为通用组件（Web Components）
+
+![](/screenshot/render-tree.webp)
+
+::: warning 注意
+此渲染器功能极为简单，且不能支持全部的组件，请慎用🙂
+
+不支持组件：`提示信息/ALERT`、`分割线/DIVIDER`、`评分/RATE`
+:::
+
+使用方式：
+
+::: code-group
+```html [原生/WebComponent]
+<!-- 提前安装依赖 -->
+<link rel="stylesheet" href="@grid-form/render-tree/dist/render.css">
+
+<script type="module">
+    import { register } from '@grid-form/render-tree/dist/render.js'
+    
+    // 注册自定义元素
+    register()
+
+    const render = document.createElement('render-tree')
+    // 表单对象
+    render.form = {}
+    // 是否显示右侧图标            
+    render.showIcon = false
+    // 开启控制台日志
+    render.debug = true
+
+    // 按需增加事件监听
+    render.addEventListener("submit", e=> console.debug("表单内容：", ...e.detail))
+    render.addEventListener("failed", e=> console.debug("表单失败：", ...e.detail))
+    render.addEventListener("inited", e=> console.debug("表单初始化完成 ^.^"))
+
+    // 将元素挂载到 body 下
+    document.querySelector("body").appendChild(render)
+</script>
+```
+
+```js-vue [Vue]
+<template>
+    <FormRender :form :onSubmit />
+</template>
+
+<script setup>
+    import { ref } from 'vue'
+    import { FormRender } from "@grid-form/render-tree"
+
+    const form = ref({})
+    const onSubmit = (formObj,action)=> console.debug("表单提交：", formObj)
+</script>
+```
+:::
+
+### 专属 PROPS
+
+名称|类型|默认值|说明
+-|-|-|-
+fontSize|String|14px|字体大小
+showIcon|Boolean|true|是否显示右侧图标
+indent|Number|30|层级缩进宽度，单位 px
+indentColor|String|#FFFFFF|层级缩进背景色，默认为白色
+labelColor|String|gray|标签字体颜色
+labelMarginRight|Number|15|标签右边距，单位 px
