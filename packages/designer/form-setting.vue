@@ -144,7 +144,7 @@
         </template>
 
         <n-alert :title="hooker.func.summary" type="info" :bordered="false"/>
-        <CodeEditor v-model:value="form[hooker.func.name]" height="360px" style="margin-top: 8px;"/>
+        <CodeEditor v-model:value="form[hooker.func.name]" height="360px" style="margin-top: 8px;" :codeExtensions/>
     </n-modal>
 
     <n-modal v-model:show="btner.show" preset="card" :style="{width: '1000px'}" :title="'⌈'+btner.item.text+'⌋的脚本'" :mask-closable="false">
@@ -176,7 +176,7 @@
             </n-table>
         </n-alert>
 
-        <CodeEditor v-model:value="btner.item.code" height="360px" style="margin-top: 8px;"/>
+        <CodeEditor v-model:value="btner.item.code" height="360px" style="margin-top: 8px;" />
     </n-modal>
 </template>
 
@@ -198,6 +198,7 @@
     const props = defineProps({
         form: {type:Object},
         compact: {type:Boolean, default:false },
+        codeExtensions: {type:[Array, Object], default:[]},
         paneHook: {type:Boolean, default: true},                //是否显示左侧的回调函数面板
         paneHide: {type:Boolean, default: true},                //是否显示左侧的默认值面板
         paneButton: {type: Boolean, default: true},             //是否显示左侧的额外按钮面板

@@ -55,6 +55,25 @@ app.use(naive)
 
 ![设计器](/designer.png)
 
+## 进阶配置
+
+### 代码提示
+
+如需扩展默认的代码提示，可通过配置`codeExtensions`
+
+```js
+import { autocompletion, completeFromList, snippetCompletion as snip } from "@codemirror/autocomplete"
+
+const codeExtensions = autocompletion({
+    override: [
+        completeFromList([
+            snip("console.debug(`${}`)", {label:"console.debug", info:"打印DEBUG日志"}),
+        ])
+    ]
+})
+```
+
+![](/screenshot/designer-code-exts.webp)
 
 ## PROPS
 
@@ -72,6 +91,7 @@ showFooter|Boolean|false|是否显示设计器底部
 footerHeight|Number|50|设计器底部高度，单位 px
 contextMenu|Boolean|false|是否启用右键菜单（方便操控表单项）<Badge>0.0.6</Badge>
 enableCtrlS|Boolean|false|是否启用 CTRL+S 保存快捷键 <Badge>0.0.8</Badge>
+codeExtensions|Array/Object|[]||代码编辑器扩展
 debug|Boolean|false|开启debug 模式后，会在控制台输入各种信息
 
 ## SLOTS

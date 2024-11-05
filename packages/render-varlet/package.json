@@ -1,6 +1,6 @@
 {
     "name": "@grid-form/render-varlet",
-    "version": "0.1.4",
+    "version": "0.2.0",
     "description": "基于 Varlet3 的渲染器",
     "homepage": "https://github.com/0604hx/grid-form",
     "repository": "https://github.com/0604hx/grid-form",
@@ -14,6 +14,6 @@
     },
     "dependencies": {
         "@grid-form/common": "workspace:*",
-        "@varlet/ui": "^3.2.3"
+        "@varlet/ui": "^3.6.3"
     }
 }

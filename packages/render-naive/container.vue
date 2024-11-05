@@ -11,6 +11,7 @@
                     </NPopconfirm>
                 </td>
                 <td>
+                    <!--此处其实与下方的代码一致，可以通过 @vueuse/core 进行组件复用，但是考虑到不增加额外依赖，不落实😄-->
                     <n-grid :x-gap="gridGap" :y-gap="gridGap" :cols="form.grid" :style="{width: form.width, margin:'0px auto' }">
                         <template v-for="(item, index) in form.items" :key="index">
                             <NFormItemGridItem v-if="item._hide!=true" :span="item._col" :show-feedback="false" :show-label="!(item._hideLabel === true || !form.labelShow)"
@@ -36,21 +37,21 @@
     </template>
     <template v-else>
         <n-grid :x-gap="gridGap" :y-gap="gridGap" :cols="form.grid" :style="{width: form.width, margin:'0px auto' }">
-        <template v-for="(item, index) in form.items" :key="index">
-            <NFormItemGridItem v-if="item._hide!=true" :span="item._col" :show-feedback="false" :show-label="!(item._hideLabel === true || !form.labelShow)"
-                :label-placement="form.labelPlacement" :label-align="form.labelAlign" :label-width="form.labelWidth">
-                <template #label>
-                    {{item._text}}<span v-if="item._required" style="color: red;"> *</span>
-                </template>
+            <template v-for="(item, index) in form.items" :key="index">
+                <NFormItemGridItem v-if="item._hide!=true" :span="item._col" :show-feedback="false" :show-label="!(item._hideLabel === true || !form.labelShow)"
+                    :label-placement="form.labelPlacement" :label-align="form.labelAlign" :label-width="form.labelWidth">
+                    <template #label>
+                        {{item._text}}<span v-if="item._required" style="color: red;"> *</span>
+                    </template>
 
-                <component v-if="item._container && item.items" :is="buildComponent(item, renders, false)">
-                    <render-container :gridGap="gridGap" :renders="renders" :form="item" :formData="childForm(item)" :labelPlacement="item.labelPlacement" :labelAlign="item.labelAlign" />
-                </component>
-                <component v-else-if="item._widget=='DATE'" v-model:formatted-value="formData[item._uuid]" :is="buildComponent(item, renders, false)" />
-                <component v-else v-model:value="formData[item._uuid]" :is="buildComponent(item, renders, false)" />
-            </NFormItemGridItem>
-        </template>
-    </n-grid>
+                    <component v-if="item._container && item.items" :is="buildComponent(item, renders, false)">
+                        <render-container :gridGap="gridGap" :renders="renders" :form="item" :formData="childForm(item)" :labelPlacement="item.labelPlacement" :labelAlign="item.labelAlign" />
+                    </component>
+                    <component v-else-if="item._widget=='DATE'" v-model:formatted-value="formData[item._uuid]" :is="buildComponent(item, renders, false)" />
+                    <component v-else v-model:value="formData[item._uuid]" :is="buildComponent(item, renders, false)" />
+                </NFormItemGridItem>
+            </template>
+        </n-grid>
     </template>
 </template>
 

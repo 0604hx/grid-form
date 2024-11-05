@@ -11,7 +11,7 @@
 
 此工具仅适用于布局简单纯粹的表单场景 😄
 
-在线文档及演示：👉[Github Pages](https://0604hx.github.io/grid-form/) 、[Gitee Pages（国内推荐）](https://0604hx.gitee.io/grid-form/)👈
+在线文档及演示：👉[Github Pages](https://0604hx.github.io/grid-form/) 、[Gitee Pages（暂无法访问）](https://0604hx.gitee.io/grid-form/)👈
 
 包名|说明|进度|版本
 -|-|-|-
@@ -23,11 +23,14 @@ render-vant|基于[Vant4](https://vant-ui.github.io)实现的渲染器|✅|![ren
 render-varlet|基于[varlet](https://github.com/varletjs/varlet)实现的渲染器|✅|![render-vant](https://img.shields.io/npm/v/%40grid-form%2Frender-varlet?color=6750a4)
 render-tree|简单树形结构渲染器（Web Components）|✅|![render-tree](https://img.shields.io/npm/v/%40grid-form%2Frender-varlet?color=gray)
 
+**说明：** Web Components 渲染器可以在任何 web 项目中使用（不限于 vue 环境）😄
+
 **相关博文**
 
 * [基于 VUE3 可视化低代码表单设计器](https://blog.csdn.net/ssrc0604hx/article/details/128825163)
 * [嵌套子表单与自定义脚本交互](https://blog.csdn.net/ssrc0604hx/article/details/135828101)
-
+* [文档网站搭建（VitePress）与部署（Github Pages）](https://blog.csdn.net/ssrc0604hx/article/details/135970166)
+* [必填项检验 BUG 修复实录](https://blog.csdn.net/ssrc0604hx/article/details/136617743)
 
 ## 1. 总览 / OVERVIEW
 
@@ -38,6 +41,7 @@ render-tree|简单树形结构渲染器（Web Components）|✅|![render-tree](h
 ## 2. 开始使用 / GETTING STARTED
 
 ### 2.1 仅使用渲染器
+> 详细文档见：[render.md](packages/site/guide/render.md)
 
 1. 安装依赖
 
@@ -59,21 +63,6 @@ import { FormRender, RenderFuncs } from "@grid-form/render-naive"
 // 表单对象通常来自后端，详细数据结构请查看 packages/example/src/views/渲染器.vue
 let form = reactive({})
 ```
-
-**Props**
-
-名称|类型|默认值|说明
--|-|-|-
-renders|Object|{}|组件渲染函数
-gridGap|Number|10|可视化区域栅栏间隔，单位 px
-form|Object|undefined|表单对象
-review|Boolean|false|是否在提交前对表单项做校验
-debug|Boolean|false|开启debug 模式后，会在控制台输入各种信息
-placeholder|String|`^\\${(.*)}$`|默认值占位符检测正则表达式
-valueProvider|Object|{}|占位符内容计算函数，详见下一节的说明
-on-inited|()=>void|undefined|
-on-submit|(formObj:Object,action="post")=>void|undefined|用户点击提交按钮后触发（如设置了 `review` 则自检成功后方触发）
-on-failed|(fails:Array[String])=>void|undefined|设置`review`后自检失败触发
 
 #### 2.1.1 表单项默认值
 > 我们可以通过`${xxxx}`的格式设置（注意，前后不能有其他字符）表单项的默认值，渲染过程中会将占位符替换为计算后的值
@@ -142,83 +131,11 @@ import { createForm } from "@grid-form/common"
 let form = reactive(createForm())
 ```
 
-**Props**
-
-名称|类型|默认值|说明
--|-|-|-
-components|Array|[]|组件库
-renders|Object|{}|组件渲染函数
-siderWidth|Number,String|360|左右侧边栏的宽度，支持 px、% 单位，建议直接传递数值
-gridGap|Number|10|可视化区域栅栏间隔，单位 px
-review|Boolean|false|是否对表单项做校验（如id、名称不能为空，不允许重复 id），校验不通过则抛出异常
-form|Object|undefined|表单对象
-compact|Boolean|false|紧凑的布局，如果设置为true，则左右两侧的属性编辑行距缩短
-headerHeight|Number|55|设计器头部高度
-showFooter|Boolean|false|是否显示设计器底部
-footerHeight|Number|50|设计器底部高度，单位 px
-contextMenu|Boolean|false|`SINCE 0.0.6`是否启用右键菜单（方便操控表单项）
-enableCtrlS|Boolean|false|`SINCE 0.0.8`是否启用 CTRL+S 保存快捷键
-debug|Boolean|false|开启debug 模式后，会在控制台输入各种信息
-
-**Slots**
-
-名称|说明
--|-
-title|设计器头部标题内容
-footer|设计器底部内容（需要设置 `show-footer` 为 true）
-
-效果如下
-
 ![设计器](docs/screenshot/designer.png)
 
 ## 3. 数据结构 / DATA STRUCTURE
 
-### 3.1 表单
-
-属性|类型|默认值|说明
--|-|-|-
-id|String|undefined|表单ID（由业务系统自行填充）
-size|String|medium|整体表单尺寸，其他值：`small`、`large`
-width|String,Number|100%|表单宽度（支持 px、% 格式）
-grid|Number|3|栅栏格数（1 到 24 之间）
-labelWidth|Number|120|标签宽度（单位 px）
-labelShow|Boolean|true|全局设置标签是否显示
-labelPlacement|String|top|标签位置，其他值：`left`（左边），`Vant`渲染器不适用
-labelAlign|String|left|标签对齐方式，其他值：`right`（靠右）
-submitText|String|提交数据|默认按钮的文本（若为空，则不显示该按钮）
-okText|String||提交完成后回显文案（由业务系统进行回显）
-url|String||后端接口地址（由业务系统完成数据提交）
-onLoad|String|undefined|`JS 代码`表单初始化后调用
-onSubmit|String|undefined|`JS 代码`表单提交前调用钩子，用于进行数据预处理，也可以中断表单（返回 Promise）
-onChange|String|undefined|`JS 代码`表单值变动时调用钩子，通常用于表单联动（`since v0.0.4`）
-afterSubmit|String|undefined|`JS 代码`表单提交完成后调用钩子（注意：需要由业务系统自行调用）
-hides|Array|[]|表单默认值（隐藏项），包含`id`、`value`两个属性
-items|Array|[]|表单项
-buttons|Array|[]|自定义按钮
-
-### 3.2 表单项
-> 表单项属性分两类：控件属性、基本信息（以`_`开头），分别对应了组件渲染函数的两个参数：`props`、`attrs`
-
-属性|类型|默认值|说明
--|-|-|-
-_uuid|String||表单项ID（对于显示类组件不存在该属性）
-_text|String||标签内容
-_widget|String||组件编号（按此定位渲染函数）
-_col|Number|1|组件所占格子数
-_value|String||默认值（支持占位符）
-_required|Boolean|false|是否必填
-_regex|String||检验正则表达式
-_message|String||校验不通过时回显的文字
-
-### 3.3 额外按钮
-
-属性|类型|默认值|说明
--|-|-|-
-text|String|按钮|文本信息
-theme|String|default|按钮配色，其他值：`success`（绿色）、`warning`（橙色）、`error`（红色）
-type|String|post|触发事件类型，`post`（与`默认按钮`一致，表单提交）、`download`（下载操作）、`script`（仅执行代码）
-code|String|undefined|若脚本返回`false`则中断后续流程
-
+详见：[data-structure.md](packages/site/guide/data-structure.md)
 
 ## 4. 开发 / DEVELOPMENT
 > 本项目采用 `pnpm` 进行管理，请确保相应环境已安装
@@ -229,6 +146,8 @@ git clone https://github.com/0604hx/grid-form
 
 # 安装依赖
 pnpm i
+# 如果网络卡顿，可以使用镜像
+pnpm i --registry https://registry.npmmirror.com/
 
 # 运行示例（基于 VitePress）
 pnpm site

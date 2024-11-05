@@ -1,6 +1,6 @@
 {
     "name": "@grid-form/designer",
-    "version": "0.1.4",
+    "version": "0.2.0",
     "description": "基于 naive-ui 组件库的表单设计器",
     "homepage": "https://github.com/0604hx/grid-form",
     "repository": "https://github.com/0604hx/grid-form",
@@ -17,7 +17,7 @@
         "@grid-form/common": "workspace:*",
         "@vicons/fa": "^0.12.0",
         "codemirror": "^6.0.1",
-        "naive-ui": "^2.38.1",
+        "naive-ui": "^2.40.1",
         "vue-codemirror": "^6.1.1"
     }
 }

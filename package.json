@@ -7,7 +7,7 @@
     "scripts": {
         "site": "pnpm -F site dev",
         "site:build": "pnpm -F site build",
-        "build:tree": "pnpm -F @grid-form/render-tree build",
+        "tree:build": "pnpm -F @grid-form/render-tree build",
         "release": "pnpm publish -r"
     },
     "keywords": [
@@ -18,8 +18,8 @@
     "author": "0604hx <zxingming@foxmail.com>",
     "license": "MIT",
     "devDependencies": {
-        "@vitejs/plugin-vue": "^5.0.4",
-        "vite": "^5.2.8",
-        "vue": "^3.4.21"
+        "@vitejs/plugin-vue": "^5.1.4",
+        "vite": "^5.4.10",
+        "vue": "^3.5.12"
     }
 }

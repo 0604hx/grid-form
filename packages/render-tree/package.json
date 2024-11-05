@@ -1,6 +1,6 @@
 {
     "name": "@grid-form/render-tree",
-    "version": "0.1.4",
+    "version": "0.2.0",
     "description": "基于树形结构的渲染器（Web Components）",
     "homepage": "https://github.com/0604hx/grid-form",
     "repository": "https://github.com/0604hx/grid-form",
@@ -18,7 +18,7 @@
     },
     "dependencies": {
         "@grid-form/common": "workspace:*",
-        "@vueuse/core": "^10.11.0"
+        "@vueuse/core": "^11.2.0"
     },
     "files": ["/dist","package.json","/src","README.md"]
 }

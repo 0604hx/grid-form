@@ -10,6 +10,7 @@
         "preview": "vitepress preview"
     },
     "devDependencies": {
+        "@codemirror/autocomplete": "^6.18.2",
         "@grid-form/common": "workspace:*",
         "@grid-form/designer": "workspace:*",
         "@grid-form/render-data": "workspace:*",
@@ -18,10 +19,10 @@
         "@grid-form/render-tree": "workspace:*",
         "@grid-form/render-vant": "workspace:*",
         "@grid-form/render-varlet": "workspace:*",
-        "dayjs": "^1.11.11",
-        "vitepress": "1.2.3"
+        "dayjs": "^1.11.13",
+        "vitepress": "1.5.0"
     },
     "dependencies": {
-        "@varlet/touch-emulator": "^3.2.14"
+        "@varlet/touch-emulator": "^3.6.3"
     }
 }
