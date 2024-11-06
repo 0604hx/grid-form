@@ -8,7 +8,6 @@
     "keywords": [],
     "author": "0604hx <zxingming@foxmail.com>",
     "license": "MIT",
-    "private": true,
     "type": "module",
     "publishConfig": {
         "access": "public"
