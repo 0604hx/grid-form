@@ -258,8 +258,8 @@
             importForm.show = true
         }
         else{
-            let json = JSON.stringify(_toSimpleObject(), null, type=='pretty'? 4 : undefined)
-            if(props.debug) track("表单导出", type, json)
+            let json = JSON.stringify(_toSimpleObject(), null, key=='pretty'? 4 : undefined)
+            if(props.debug) track("表单导出", key, json)
             copyText(json)
             message.success(`表单数据已复制到粘贴板`)
         }

@@ -9,7 +9,7 @@
 <script setup>
     import { ref, onMounted } from 'vue'
 
-    import { default as RenderMixin, RenderEvent, RenderProps } from '@grid-form/common/render.mixin'
+    import { default as RenderMixin, RenderEvent, RenderProps, triggerSubmit, getFormData, exec } from '@grid-form/common/render.mixin'
 
     import Container from "./container.vue"
 
@@ -42,6 +42,8 @@
 
         props.renders.runScript && props.renders.runScript(item.script.trim())
     }
+
+    defineExpose({ triggerSubmit, getFormData, exec })
 </script>
 
 <style>

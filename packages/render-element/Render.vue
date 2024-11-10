@@ -29,7 +29,8 @@
     const emits = defineEmits(RenderEvent)
     const props = defineProps(RenderProps)
 
-    let { inited, formData, toSubmit, onExtraBtn } = RenderMixin(props, emits, " NaiveUI")
+    let { inited, formData, toSubmit, onExtraBtn, triggerSubmit, getFormData, exec } = RenderMixin(props, emits, " Element Plus")
+    defineExpose({ triggerSubmit, getFormData, exec })
 </script>
 
 <style>

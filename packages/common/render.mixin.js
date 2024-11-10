@@ -141,6 +141,31 @@ export default (props, emits, suffix="")=>{
         }
     }
 
+    const triggerSubmit = (withHook=false)=>{
+        if(props.debug) track(`外部触发提交事件 withHook=${withHook}`)
+        if(withHook)
+            toSubmit()
+        else
+            _submitDo(_raw(formData))
+    }
+
+    /**
+     *
+     * @param {Boolean} check
+     * @returns
+     */
+    const getFormData = (check=true)=> {
+        if(props.debug) track(`获取表单数据，预检测=${check}`)
+        if(!check)  return { error: null, data: _raw(formData) }
+
+        let data = _raw(formData)
+        delete data['_disabled']
+        let fails = []
+        _checkRequire(props.form.items, data, fails)
+
+        return fails.length? { error: fails, data: undefined } : { error: null, data }
+    }
+
     const _computeValue = async (text, id)=>{
         /**
          * 对于符合 placeholder 的特定默认值（如 ${date}）
@@ -287,10 +312,25 @@ export default (props, emits, suffix="")=>{
     //     if(inited.value === false)  initForm()
     // }, 1000)
 
+    /**
+     * 对外提供的方法，用于调用各类动作
+     * 注意这是一个异步方法
+     * @param {String} action
+     * @param {*} ps
+     * @returns
+     */
+    const exec = async (action, ps)=>{
+        if(action=='triggerSubmit')     return triggerSubmit(ps)
+        if(action=='getFormData')       return getFormData(ps)
+
+        if(props.debug) track(`调用 exec 方法（action=${action}），暂无实现...`)
+    }
+
     return {
         _raw, track,
         inited, formData,
-        toSubmit, onExtraBtn
+        toSubmit, onExtraBtn,
+        triggerSubmit, getFormData, exec
     }
 }
 

@@ -1,5 +1,11 @@
 # 更新日志
 
+### 0.2.1 <Badge>24.11.10</Badge>
+* 新增渲染器暴露方法：`getFormData`（获取当前表单值）、`triggerSubmit`（手动触发提交事件）
+
+🐛 修复
+- 设计器数据导出异常
+
 ### 0.2.0 🎉 <Badge>24.11.5</Badge>
 * 新增[`Varlet（Material 风格移动端组件库）`](https://varlet.gitee.io/varlet-ui/)渲染器
 * 新增`树形/Tree`极简渲染器（Web Components）

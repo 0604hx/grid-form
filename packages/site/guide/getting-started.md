@@ -15,6 +15,7 @@ layout: doc
 @grid-form/render-naive|基于[Naive UI](https://www.naiveui.com)实现的渲染器|![render-naive](https://img.shields.io/npm/v/%40grid-form%2Frender-naive?color=5fbc21)
 @grid-form/render-element|基于[Element Plus](https://element-plus.org/zh-CN/)实现的渲染器|![render-element](https://img.shields.io/npm/v/%40grid-form%2Frender-element?color=49a2fe)
 @grid-form/render-vant|基于[Vant4](https://vant-ui.github.io)实现的渲染器（适配移动端）|![render-vant](https://img.shields.io/npm/v/%40grid-form%2Frender-vant?color=36d7b7)
+@grid-form/render-varlet|基于[varlet](https://github.com/varletjs/varlet)实现的渲染器|![render-vant](https://img.shields.io/npm/v/%40grid-form%2Frender-varlet?color=6750a4)
 
 :::tip 提示
 设计器与渲染器可单独使用，按需引入包即可😄
@@ -76,6 +77,8 @@ const form = eval(demoFormBean)
 <NaiveWrapper>
     <RenderSimple :bean="form" />
 </NaiveWrapper>
+
+
 
 ## 内置组件 <Badge type="info">18+</Badge>
 > 我们内置了常用的输入、选择、展示组件，并支持扩展自定义组件

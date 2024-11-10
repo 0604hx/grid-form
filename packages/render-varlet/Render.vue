@@ -24,7 +24,8 @@
     const emits = defineEmits(RenderEvent)
     const props = defineProps(RenderProps)
 
-    let { inited, formData, toSubmit, onExtraBtn } = RenderMixin(props, emits, " VARLET")
-
     const toTheme = type=> type=='info'? 'primary':type
+
+    let { inited, formData, toSubmit, onExtraBtn, triggerSubmit, getFormData, exec } = RenderMixin(props, emits, " VARLET")
+    defineExpose({ triggerSubmit, getFormData, exec })
 </script>
