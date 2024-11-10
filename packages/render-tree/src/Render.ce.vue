@@ -9,7 +9,7 @@
 <script setup>
     import { ref, onMounted } from 'vue'
 
-    import { default as RenderMixin, RenderEvent, RenderProps, triggerSubmit, getFormData, exec } from '@grid-form/common/render.mixin'
+    import { default as RenderMixin, RenderEvent, RenderProps } from '@grid-form/common/render.mixin'
 
     import Container from "./container.vue"
 
@@ -30,7 +30,7 @@
 
     console.debug(props)
 
-    let { inited, formData, toSubmit, onExtraBtn, track } = RenderMixin(props, emits, " TREE")
+    let { inited, formData, toSubmit, onExtraBtn, track, triggerSubmit, getFormData, exec } = RenderMixin(props, emits, " TREE")
 
     const toLowercase = v=> v.toLowerCase()
     //执行自定义脚本
