@@ -1,13 +1,13 @@
 <!--弹出选择器-->
 <template>
     <template v-if="multiple===false">
-        <van-field v-model="shadow" :disabled="disabled" :required="required" is-link readonly name="picker" :label="label" :placeholder="placeholder" @click="show = true" />
+        <van-field v-model="_shadowText" :disabled="disabled" :required="required" is-link readonly name="picker" :label="label" :placeholder="placeholder" @click="show = true" />
         <van-popup v-model:show="show" position="bottom">
             <van-picker :title="label" :columns="options" @confirm="onConfirm" @cancel="close" />
         </van-popup>
     </template>
     <template v-else>
-        <van-field v-model="shadow" :disabled="disabled" is-link readonly :label="label" :placeholder="placeholder" @click="show = true" />
+        <van-field v-model="_shadowText" :disabled="disabled" is-link readonly :label="label" :placeholder="placeholder" @click="show = true" />
         <van-popup v-model:show="show" position="bottom" :style="{height:'45%'}">
             <div class="van-picker__toolbar">
                 <button type="button" class="van-picker__cancel van-haptics-feedback" @click="close">取消</button>
@@ -33,7 +33,7 @@
 </script>
 
 <script setup>
-    import { ref, onMounted, watch } from 'vue'
+    import { ref, onMounted, watch, computed } from 'vue'
     import {
         Field as VanField, Popup as VanPopup, Picker as VanPicker, CheckboxGroup as VanCheckboxGroup, Space as VanSpace,
         Checkbox as VanCheckbox, Cell as VanCell, CellGroup as VanCellGroup
@@ -58,11 +58,21 @@
 
     let checkboxRefs= ref([])
 
+    const _shadowText = computed(() => {
+        const findItem = props.options.find(item => {
+            if (item instanceof Object) {
+                return item.value === shadow.value
+            }
+            return item === shadow.value
+        })
+        return findItem?.text || findItem
+    })
+
+
     const onConfirm = ({ selectedOptions }) => {
         show.value = false
         let item = selectedOptions[0]
         emits("update:modelValue", item.value)
-        shadow.value = item.text
     }
 
     const close = ()=> show.value = false
