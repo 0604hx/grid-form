@@ -15,7 +15,7 @@
                     <el-form :size="computeSize" :label-width="form.labelWidth" class="grid-render" :label-position="position" @submit.prevent>
                         <el-row :gutter="gridGap" :style="{width: form.width, margin:'0px auto' }">
                             <template v-for="(item, index) in form.items" :key="index">
-                                <el-col :span="computeSpan(item._col)">
+                                <el-col v-if="item._hide!=true" :span="computeSpan(item._col)">
                                     <el-form-item :label-width="!(item._hideLabel === true || !form.labelShow)? form.labelWidth : '0px'" :label="item._text" :required="item._required">
                                         <component v-if="item._container && item.items" :is="buildComponent(item, renders, false)">
                                             <render-container :gridGap="gridGap" :renders="renders" :form="item" :formData="childForm(item)" />
@@ -36,7 +36,7 @@
     <el-form v-else :size="computeSize" :label-width="form.labelWidth" class="grid-render" :label-position="position" @submit.prevent>
         <el-row :gutter="gridGap" :style="{width: form.width, margin:'0px auto' }">
             <template v-for="(item, index) in form.items" :key="index">
-                <el-col :span="computeSpan(item._col)">
+                <el-col v-if="item._hide!=true" :span="computeSpan(item._col)">
                     <el-form-item :label-width="!(item._hideLabel === true || !form.labelShow)? form.labelWidth : '0px'" :label="item._text" :required="item._required">
                         <component v-if="item._container && item.items" :is="buildComponent(item, renders, false)">
                             <render-container :gridGap="gridGap" :renders="renders" :form="item" :formData="childForm(item)" />
@@ -62,7 +62,7 @@
 
     const props = defineProps(ContainerProps)
 
-    const computeSpan = (col=1)=> 24*col/props.form.grid
+    const computeSpan = (col=1)=> Math.min(24, 24*col/props.form.grid)
     const computeSize = computed(()=> !props.form.size || props.form.size=='medium'?"default": props.form.size)
 
     /**

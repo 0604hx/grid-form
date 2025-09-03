@@ -64,11 +64,13 @@ const RenderFuncs = {
         if(!isNaN(props.min) && props.min>0) ps.min = props.min
         if(!isNaN(props.max) && props.max>0) ps.max = props.max
 
-        return h(ElCheckboxGroup, ps, ()=> options.map(o=> h(ElCheckbox, {label: o.value}, ()=>o.label)))
+        return h(ElCheckboxGroup, ps, ()=> options.map(o=> h(ElCheckbox, { value: o.value }, ()=>o.label)))
     },
     "DATE"      : props=> {
         buildWidthFull(props)
-        if(props.format.indexOf("yyyy")>=0) props.format = props.format.toUpperCase()
+        //日期格式化处理
+        if(props.format && props.format.indexOf("yyyy")>=0)
+            props.format = props.format.toUpperCase()
         props.valueFormat = props.format
         return h(ElDatePicker, props)
     },
