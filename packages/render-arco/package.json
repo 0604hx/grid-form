@@ -1,6 +1,6 @@
 {
     "name": "@grid-form/render-arco",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "description": "基于字节跳动 Arco Design 的渲染器",
     "homepage": "https://github.com/0604hx/grid-form",
     "repository": "https://github.com/0604hx/grid-form",

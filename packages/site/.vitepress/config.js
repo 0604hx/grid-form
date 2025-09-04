@@ -7,7 +7,7 @@ const base = isProd ? "/grid-form/":"/"
 const head = [ ['link', { rel: 'icon', href: `${base}logo.svg` }] ]
 
 if(isProd){
-    console.log(`➕ 百度统计代码...`)
+    console.log(`➕ 构建到生产环境，添加百度统计代码...`)
     //增加百度统计
     head.push([
         'script',
@@ -47,6 +47,7 @@ export default defineConfig({
                     { text: '汇总展示', link: DEMO_RENDER, target:"_blank" },
                     { text: 'NaiveUI', link: '/demo/render-naive', target:"_blank" },
                     { text: 'ElementPlus', link: '/demo/render-element', target:"_blank" },
+                    { text: 'Arco Desigin', link: '/demo/render-arco', target:"_blank" },
                     { text: 'Vant4（有赞出品）', link: '/demo/render-vant', target:"_blank" },
                     { text: 'Varlet（Material）', link: '/demo/render-varlet', target:"_blank" },
                     { text: 'Tree（极简风）', link: '/demo/render-tree', target:"_blank" }

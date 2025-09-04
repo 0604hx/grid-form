@@ -11,6 +11,9 @@
                         <n-tab-pane tab="Element Plus" name="element" display-directive="if">
                             <ElementRender class="p10" :form :initValue :onInited :onSubmit :onFailed />
                         </n-tab-pane>
+                        <n-tab-pane tab="Arco Design" name="arco" display-directive="if">
+                            <ArcoRender class="p10" :form :initValue :onInited :onSubmit :onFailed />
+                        </n-tab-pane>
                         <n-tab-pane tab="Vant4（移动端）" name="vant" display-directive="if">
                             <VantRender :form :initValue :onInited :onSubmit :onFailed />
                         </n-tab-pane>
@@ -48,6 +51,7 @@
 
     import NaiveRender from './naiveui.vue'
     import ElementRender from './elementplus.vue'
+    import ArcoRender from './arcodesign.vue'
     import VantRender from './vant.vue'
 
     const message = useMessage()
