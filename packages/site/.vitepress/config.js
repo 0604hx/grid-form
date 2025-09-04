@@ -111,8 +111,13 @@ export default defineConfig({
              * Named export 'dateZhCN' not found. The requested module 'naive-ui' is a CommonJS module
              *
              * https://github.com/tusen-ai/naive-ui/issues/4641
+             *
+             * 2025-09-04
+             *  升级了 @varlet/ui 版本后，构建时报错：未知的文件后缀 .css
+             *  需要将其排除 SSR 外
+             *  但凡碰到引入失败的依赖，都加到这里来😂
              */
-            noExternal: ['naive-ui']
+            noExternal: ['naive-ui', '@varlet/ui', 'dayjs', 'element-plus', '@popperjs/core', 'vueuc']
         },
         build:{
             chunkSizeWarningLimit: 2000
